@@ -14,8 +14,11 @@ return [
         'https://www.googleapis.com/auth/plus.login',
         'https://gdata.youtube.com',
         'https://www.googleapis.com/auth/plus.circles.read',
+        'https://www.googleapis.com/auth/books',
+        'https://www.googleapis.com/auth/coordinate.readonly',
+        'https://maps.google.com/maps/feeds/',
     ],
     "redirectUri" => "http://social-recommender.ro/oauth2callback",
     "appName" => "SoR",
-    "refreshToken" => '1/1cnLjqyCWwThVuAsFq1Q-ML1RmnN5FuaOuykSBXbWU8',
+    "refreshToken" => '1/15QW_cC53yEQQnI_wR5LfwCALDovGDOotga8tCZsfrNIgOrJDtdun6zK6XiATCKT',
 ];
