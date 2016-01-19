@@ -528,6 +528,64 @@ Don't forget to subscribe to www.youtube.com/tellymasala.﻿</sch:description>
 		</sch:attendee>
 	</sch:Event>
 	<sch:Book rdf:ID="">
+		<sch:name>The Lord of the Rings</sch:name>
+		<sch:author>
+			<foaf:Person>
+				<foaf:name>J. R. R. Tolkien</foaf:name>
+			</foaf:Person>
+		</sch:author>
+		<sch:publisher>
+			<foaf:Organization>
+				<foaf:name>Houghton Mifflin</foaf:name>
+			</foaf:Organization>
+		</sch:publisher>
+		<sch:description>Three-volume paperback edition featuring cover art from the film. One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them In ancient times the Rings of Power were crafted by the Elven-smiths, and ...</sch:description>
+		<sch:isbn>0618260293</sch:isbn>
+		<sch:isbn>9780618260294</sch:isbn>
+		<sch:numberOfPages>1124</sch:numberOfPages>
+		<sch:url rdf:resource="http://books.google.ro/books/about/The_Lord_of_the_Rings.html?hl=&id=q06njwEACAAJ"/>
+		<foaf:depiction rdf:resource="http://books.google.ro/books/content?id=q06njwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"/>
+		<sch:aggregateRating>
+			<sch:AggregateRating>
+				<sch:ratingCount>252</sch:ratingCount>
+				<sch:ratingValue>4.5</sch:ratingValue>
+			</sch:AggregateRating>
+		</sch:aggregateRating>
+		<sch:genre>Fiction</sch:genre>
+	</sch:Book>
+	<sch:Book rdf:ID="">
+		<sch:name>Enigma Otiliei</sch:name>
+		<sch:author>
+			<foaf:Person>
+				<foaf:name>George Călinescu</foaf:name>
+			</foaf:Person>
+		</sch:author>
+		<sch:isbn>IND:30000006242386</sch:isbn>
+		<sch:url rdf:resource="http://books.google.ro/books/about/Enigma_Otiliei.html?hl=&id=plzhAAAAMAAJ"/>
+		<foaf:depiction rdf:resource="http://books.google.ro/books/content?id=plzhAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"/>
+	</sch:Book>
+	<sch:Book rdf:ID="">
+		<sch:name>The Snow Child</sch:name>
+		<sch:author>
+			<foaf:Person>
+				<foaf:name>Eowyn Ivey</foaf:name>
+			</foaf:Person>
+		</sch:author>
+		<sch:description>Alaska, 1920: a brutal place to homestead, and especially tough for recent arrivals Jack and Mabel. Childless, they are drifting apart--he breaking under the weight of the work of the farm; she crumbling from loneliness and despair. In a moment ...</sch:description>
+		<sch:isbn>0316192961</sch:isbn>
+		<sch:isbn>9780316192965</sch:isbn>
+		<sch:numberOfPages>235</sch:numberOfPages>
+		<sch:url rdf:resource="http://books.google.ro/books/about/The_Snow_Child.html?hl=&id=uyiwoQEACAAJ"/>
+		<foaf:depiction rdf:resource="http://books.google.ro/books/content?id=uyiwoQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"/>
+		<sch:aggregateRating>
+			<sch:AggregateRating>
+				<sch:ratingCount>139</sch:ratingCount>
+				<sch:ratingValue>4</sch:ratingValue>
+			</sch:AggregateRating>
+		</sch:aggregateRating>
+		<sch:genre>FICTION</sch:genre>
+	</sch:Book>
+	<sch:Book rdf:ID="">
 		<sch:name>Harry Potter and the Sorcerer's Stone</sch:name>
 		<sch:author>
 			<foaf:Person>
@@ -556,6 +614,6 @@ Don't forget to subscribe to www.youtube.com/tellymasala.﻿</sch:description>
 				<sch:ratingValue>4.5</sch:ratingValue>
 			</sch:AggregateRating>
 		</sch:aggregateRating>
-		<sch:about>Juvenile Fiction</sch:about>
+		<sch:genre>Juvenile Fiction</sch:genre>
 	</sch:Book>
 </rdf:RDF>

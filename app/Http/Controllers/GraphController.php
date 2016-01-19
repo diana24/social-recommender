@@ -76,26 +76,38 @@ class GraphController extends Controller
                 foreach($events as $event){
                     fwrite($fh, "\t<sch:Event rdf:ID=\"".$event->id."\">\n");
                     fwrite($fh, "\t\t<sch:name>".$event->summary."</sch:name>\n");
-                    fwrite($fh, "\t\t<sch:description>"
-                        .strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n",html_entity_decode($event->description))))
+                    if(isset($event->description)){
+                        fwrite($fh, "\t\t<sch:description>"
+                            .strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n",html_entity_decode($event->description))))
                             ."</sch:description>\n");
-                    fwrite($fh, "\t\t<sch:startDate>".$event->start['dateTime']."</sch:startDate>\n");
-                    fwrite($fh, "\t\t<sch:endDate>".$event->end['dateTime']."</sch:endDate>\n");
-                    fwrite($fh, "\t\t<sch:url rdf:resource=\"".$event->htmlLink."\"/>\n");
-                    $curl     = new CurlHttpAdapter();
-                    $geocoder = new GoogleMaps($curl);
-
-                    try{
-                        $loc = $geocoder->geocode($event->location);
-                        $this->writeCurrentLocations($fh, $loc, "\t\t");
-                    }catch(\Exception $e){
-//                            dd($e);
                     }
-                    fwrite($fh, "\t\t<sch:organizer>\n");
-                    fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"".$event->organizer['id']."\">\n");
-                    fwrite($fh, "\t\t\t\t<foaf:name>".$event->organizer['displayName']."</foaf:name>\n");
-                    fwrite($fh, "\t\t\t</foaf:Person>\n");
-                    fwrite($fh, "\t\t</sch:organizer>\n");
+                    if(isset($event->start)){
+                        fwrite($fh, "\t\t<sch:startDate>".$event->start['dateTime']."</sch:startDate>\n");
+                    }
+                    if(isset($event->end)){
+                        fwrite($fh, "\t\t<sch:endDate>".$event->end['dateTime']."</sch:endDate>\n");
+                    }
+                    if(isset($event->htmlLink)){
+                        fwrite($fh, "\t\t<sch:url rdf:resource=\"".$event->htmlLink."\"/>\n");
+                    }
+                    if(isset($event->location)) {
+                        $curl = new CurlHttpAdapter();
+                        $geocoder = new GoogleMaps($curl);
+
+                        try {
+                            $loc = $geocoder->geocode($event->location);
+                            $this->writeCurrentLocations($fh, $loc, "\t\t");
+                        } catch (\Exception $e) {
+//                            dd($e);
+                        }
+                    }
+                    if(isset($event->organizer)) {
+                        fwrite($fh, "\t\t<sch:organizer>\n");
+                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"" . $event->organizer['id'] . "\">\n");
+                        fwrite($fh, "\t\t\t\t<foaf:name>" . $event->organizer['displayName'] . "</foaf:name>\n");
+                        fwrite($fh, "\t\t\t</foaf:Person>\n");
+                        fwrite($fh, "\t\t</sch:organizer>\n");
+                    }
                     foreach($event->attendees as $attendee){
                         $id = $attendee['id'];
                         if(isset($attendee['self']) && $attendee['self']==true){
@@ -125,13 +137,16 @@ class GraphController extends Controller
                     fwrite($fh, "\t<sch:Book rdf:ID=\"" . $book['íd'] . "\">\n");
                     $info = $book['volumeInfo'];
                     fwrite($fh, "\t\t<sch:name>" . $info['title'] . "</sch:name>\n");
-                    foreach ($info['authors'] as $author) {
-                        fwrite($fh, "\t\t<sch:author>\n");
-                        fwrite($fh, "\t\t\t<foaf:Person>\n");
-                        fwrite($fh, "\t\t\t\t<foaf:name>" . $author . "</foaf:name>\n");
-                        fwrite($fh, "\t\t\t</foaf:Person>\n");
-                        fwrite($fh, "\t\t</sch:author>\n");
+                    if(isset($info['authors'])) {
+                        foreach ($info['authors'] as $author) {
+                            fwrite($fh, "\t\t<sch:author>\n");
+                            fwrite($fh, "\t\t\t<foaf:Person>\n");
+                            fwrite($fh, "\t\t\t\t<foaf:name>" . $author . "</foaf:name>\n");
+                            fwrite($fh, "\t\t\t</foaf:Person>\n");
+                            fwrite($fh, "\t\t</sch:author>\n");
+                        }
                     }
+
                     if (isset($info['publisher'])) {
                         fwrite($fh, "\t\t<sch:publisher>\n");
                         fwrite($fh, "\t\t\t<foaf:Organization>\n");
@@ -144,23 +159,29 @@ class GraphController extends Controller
                             strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i", "", str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n", html_entity_decode($info['description']))))
                             . "</sch:description>\n");
                     }
-                    foreach ($info['industryIdentifiers'] as $idf) {
-                        fwrite($fh, "\t\t<sch:isbn>" . $idf['identifier'] . "</sch:isbn>\n");
+                    if(isset($info['industryIdentifiers'])) {
+                        foreach ($info['industryIdentifiers'] as $idf) {
+                            fwrite($fh, "\t\t<sch:isbn>" . $idf['identifier'] . "</sch:isbn>\n");
+                        }
                     }
-                    fwrite($fh, "\t\t<sch:numberOfPages>" . $info['pageCount'] . "</sch:numberOfPages>\n");
+                    if(isset($info['pageCount'])) {
+                        fwrite($fh, "\t\t<sch:numberOfPages>" . $info['pageCount'] . "</sch:numberOfPages>\n");
+                    }
                     fwrite($fh, "\t\t<sch:url rdf:resource=\"" . $info['canonicalVolumeLink'] . "\"/>\n");
                     if (isset($info['imageLinks']) && isset($info['imageLinks']['thumbnail'])) {
                         fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $info['imageLinks']['thumbnail'] . "\"/>\n");
                     }
-                    fwrite($fh, "\t\t<sch:aggregateRating>\n");
-                    fwrite($fh, "\t\t\t<sch:AggregateRating>\n");
-                    fwrite($fh, "\t\t\t\t<sch:ratingCount>".$info['ratingsCount']."</sch:ratingCount>\n");
-                    fwrite($fh, "\t\t\t\t<sch:ratingValue>".$info['averageRating']."</sch:ratingValue>\n");
-                    fwrite($fh, "\t\t\t</sch:AggregateRating>\n");
-                    fwrite($fh, "\t\t</sch:aggregateRating>\n");
+                    if(isset($info['ratingsCount']) && isset($info['averageRating'])) {
+                        fwrite($fh, "\t\t<sch:aggregateRating>\n");
+                        fwrite($fh, "\t\t\t<sch:AggregateRating>\n");
+                        fwrite($fh, "\t\t\t\t<sch:ratingCount>" . $info['ratingsCount'] . "</sch:ratingCount>\n");
+                        fwrite($fh, "\t\t\t\t<sch:ratingValue>" . $info['averageRating'] . "</sch:ratingValue>\n");
+                        fwrite($fh, "\t\t\t</sch:AggregateRating>\n");
+                        fwrite($fh, "\t\t</sch:aggregateRating>\n");
+                    }
                     if(isset($info['categories'])){
                         foreach($info['categories'] as $categ){
-                            fwrite($fh, "\t\t<sch:about>".$categ."</sch:about>\n");
+                            fwrite($fh, "\t\t<sch:genre>".$categ."</sch:genre>\n");
                         }
                     }
                     fwrite($fh, "\t</sch:Book>\n");
