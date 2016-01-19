@@ -34,4 +34,4 @@ Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
 Route::get('rdf', 'RdfController@test');
 Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
 Route::get('oauth2callback', 'GoogleAuthController@oauth2callback');
-Route::get('getPeople', 'GoogleController@getPeople');
+Route::get('buildGraph', 'GraphController@makeGraph');

@@ -5,11 +5,11 @@
 	xmlns:rel="http://www.perceive.net/schemas/relationship/"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
 	xmlns:dbo="http://dbpedia.org/ontology/"
 	xmlns:dbp="http://dbpedia.org/property/"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:sch="http://schema.org"
-	xmlns:sp="http://schema.org/Person"
 >
 	<foaf:PersonalProfileDocument rdf:about="">
 		<foaf:maker rdf:resource="#me"/>
@@ -34,26 +34,26 @@
 				<dbp:name>Alexandru Ioan Cuza University</dbp:name>
 			</dbo:EducationalInstitution>
 		</dbo:school>
-		<sp:description>#####</sp:description>
+		<sch:description>#####</sch:description>
 		<foaf:knows>
-			<foaf:Person rdf:about="#114516229266117254951">
+			<foaf:Person rdf:ID="114516229266117254951">
 				<foaf:name>Alternosfera</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-E8n0AKh6PhY/AAAAAAAAAAI/AAAAAAAAACQ/fQlAgN2wc7s/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+AlternosferaOfficial"/>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#111479611123826366977">
+			<foaf:Person rdf:ID="111479611123826366977">
 				<foaf:name>Animals Forever</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-o38-BKsx5pU/AAAAAAAAAAI/AAAAAAAAAoA/-jCOEjf32-8/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/111479611123826366977"/>
 				<dbp:website dc:name="theanimalhelper.com" rdf:resource="http://theanimalhelper.com"/>
 				<foaf:page dc:name="Our Youtube-" rdf:resource="http://www.youtube.com/user/animalhelperforever?feature=guide"/>
-				<sp:description>We think that animals are important to keeping the world beautiful. We hope you are inspired by us to help the majestic, graceful, wonderful animals that share our planet. Try and give back what we have taken from the animals. Volunteer, foster, donate, there are so many ways to help.</sp:description>
+				<sch:description>We think that animals are important to keeping the world beautiful. We hope you are inspired by us to help the majestic, graceful, wonderful animals that share our planet. Try and give back what we have taken from the animals. Volunteer, foster, donate, there are so many ways to help.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#108206481304899504241">
+			<foaf:Person rdf:ID="108206481304899504241">
 				<foaf:name>Christmas Crackered</foaf:name>
 				<foaf:depiction rdf:resource="https://lh4.googleusercontent.com/-eEuRdRJNUg0/AAAAAAAAAAI/AAAAAAAAAKE/PWAgr5THYhg/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+ChristmasCrackeredcouk"/>
@@ -71,11 +71,12 @@
 						<dbp:name>Christmas College<dbp:name>
 					</dbo:EducationalInstitution>
 				</dbo:school>
-				<sp:description>Christmas is my time of year...its a season in itself. I regard the festive season to be from September 1st to December 31st and blog during those times. You can visit my Christmas Crackered website here and please drop by an say hello...!</sp:description>
+				<foaf:based_near geo:lat="67.9222304" geo:long="26.5046438"/>
+				<sch:description>Christmas is my time of year...its a season in itself. I regard the festive season to be from September 1st to December 31st and blog during those times. You can visit my Christmas Crackered website here and please drop by an say hello...!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#113548578007914774906">
+			<foaf:Person rdf:ID="113548578007914774906">
 				<foaf:name>ChristmasStore</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-6DuOMvO08qQ/AAAAAAAAAAI/AAAAAAAAAV4/ZbPj6h1Z8bY/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/113548578007914774906"/>
@@ -86,11 +87,11 @@
 				<foaf:page dc:name="StrangeStore" rdf:resource="https://plus.google.com/u/0/b/113956979479896677978/113956979479896677978/posts"/>
 				<foaf:page dc:name="PatternStore" rdf:resource="https://plus.google.com/b/115102798448605215093/115102798448605215093/posts"/>
 				<foaf:page dc:name="TruckStore" rdf:resource="https://plus.google.com/b/113442617361489854610/113442617361489854610/posts"/>
-				<sp:description>Welcome to ChristmasStore! full of seasonal Christmas  and Holiday Gifts, Party Invitations, Holiday Gift Tags, Christmas Ornaments, Xmas Mugs and more.Featuring the art of Paul Stickland, illustrator of the best selling childrens book, The Christmas Bear.Jolly Santas, cute bears and piles of presents!Lots of fabulous custom christmas gifts here at ChristmasStore!Do check out our Fabulous Retro Gift Tags!#christmas #christmas+gifts #holidays</sp:description>
+				<sch:description>Welcome to ChristmasStore! full of seasonal Christmas  and Holiday Gifts, Party Invitations, Holiday Gift Tags, Christmas Ornaments, Xmas Mugs and more.Featuring the art of Paul Stickland, illustrator of the best selling childrens book, The Christmas Bear.Jolly Santas, cute bears and piles of presents!Lots of fabulous custom christmas gifts here at ChristmasStore!Do check out our Fabulous Retro Gift Tags!#christmas #christmas+gifts #holidays</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#100508603487025952092">
+			<foaf:Person rdf:ID="100508603487025952092">
 				<foaf:name>Grumpy Cat</foaf:name>
 				<foaf:depiction rdf:resource="https://lh4.googleusercontent.com/--47MIiKsG88/AAAAAAAAAAI/AAAAAAAABa4/FPxOXFnQQDI/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/100508603487025952092"/>
@@ -103,7 +104,7 @@
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#103168340956691405565">
+			<foaf:Person rdf:ID="103168340956691405565">
 				<foaf:name>HALIDONMUSIC</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-LFti8mQBHdE/AAAAAAAAAAI/AAAAAAAAAKQ/V-lsbMbVrj0/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+HALIDONMUSIC"/>
@@ -114,25 +115,25 @@
 				<foaf:page dc:name="hsquared2music" rdf:resource="https://www.youtube.com/user/hsquared2music"/>
 				<foaf:page dc:name="KidzPartyPop" rdf:resource="https://www.youtube.com/user/KidzPartyPop"/>
 				<foaf:page dc:name="MusicFromParis" rdf:resource="https://www.youtube.com/user/MusicFromParis"/>
-				<sp:description>Halidon is one of the most important Italian independent music label.</sp:description>
+				<sch:description>Halidon is one of the most important Italian independent music label.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#110342143721327645253">
+			<foaf:Person rdf:ID="110342143721327645253">
 				<foaf:name>Hikers For Life</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-KQks5zXU8J4/AAAAAAAAAAI/AAAAAAAAAKo/MwXWNKKVyOs/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/110342143721327645253"/>
 				<dbp:website dc:name="hikersforlife.com" rdf:resource="http://hikersforlife.com"/>
-				<sp:description>We are a trio who became close friends after going on numerous hiking trips. Aiming to share the passion for hiking and experiencing the beauty of nature, we created a hiking information portal - Share My Hikes where hikers can get and share information on hikes, empowering anyone to organise their own hiking trips.</sp:description>
+				<sch:description>We are a trio who became close friends after going on numerous hiking trips. Aiming to share the passion for hiking and experiencing the beauty of nature, we created a hiking information portal - Share My Hikes where hikers can get and share information on hikes, empowering anyone to organise their own hiking trips.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#111323565985129481908">
+			<foaf:Person rdf:ID="111323565985129481908">
 				<foaf:name>Hobby Lobby</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-H-hZNpy6AA8/AAAAAAAAAAI/AAAAAAAAEnw/nkM690KgF6w/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+hobbylobby"/>
 				<dbp:website dc:name="www.hobbylobby.com" rdf:resource="http://www.hobbylobby.com"/>
-				<sp:description>In 1970, entrepreneurs David and Barbara Green, along with				
+				<sch:description>In 1970, entrepreneurs David and Barbara Green, along with				
 their young family, began making miniature picture frames in their garage.  A few years later, on August 3, 1972, the				
 Green family opened the first Hobby Lobby store with a mere 300 square feet of				
 retail space.  Hobby Lobby has not				
@@ -174,31 +175,31 @@ Life!™
 				
 Store hours are Monday through				
 Saturday from 9 a.m. to 8 p.m.  All Hobby				
-Lobby stores are closed on Sunday.</sp:description>
+Lobby stores are closed on Sunday.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#108417947685954743462">
+			<foaf:Person rdf:ID="108417947685954743462">
 				<foaf:name>Home Garden Labs</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-M3Tps5vbZBU/AAAAAAAAAAI/AAAAAAAAAMg/LOXuHPZDpXM/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+Homegardenlabs"/>
 				<dbp:website dc:name="www.homegardenlabs.fr/" rdf:resource="http://www.homegardenlabs.fr/"/>
 				<foaf:page dc:name="BLOG" rdf:resource="http://www.homegardenlabs.com/"/>
 				<foaf:page dc:name="E-SHOP" rdf:resource="http://www.homegardenlabs.fr/"/>
-				<sp:description>Home Garden Labs est créé fin 2013 pour favoriser le développement dune éco-logique en France et plus largement dans la francophonie, incitant chacun dentre nous à organiser des jardins selon ses besoins : nourriciers, dépolluants, éducatifs ou ornementaux.Conscients des enjeux environnementaux et des incidences sur nos modes de vie ainsi que des générations futures, nous souhaitons entraîner une communauté éco-responsable et oeuvrons pour la re-végétalisation des villes.Rejoignez-nous : plus on est de jardiniers, plus on jardine !</sp:description>
+				<sch:description>Home Garden Labs est créé fin 2013 pour favoriser le développement dune éco-logique en France et plus largement dans la francophonie, incitant chacun dentre nous à organiser des jardins selon ses besoins : nourriciers, dépolluants, éducatifs ou ornementaux.Conscients des enjeux environnementaux et des incidences sur nos modes de vie ainsi que des générations futures, nous souhaitons entraîner une communauté éco-responsable et oeuvrons pour la re-végétalisation des villes.Rejoignez-nous : plus on est de jardiniers, plus on jardine !</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#118192056161135085602">
+			<foaf:Person rdf:ID="118192056161135085602">
 				<foaf:name>Iasi City Tour</foaf:name>
 				<foaf:depiction rdf:resource="https://lh4.googleusercontent.com/-KkMiym3C7v4/AAAAAAAAAAI/AAAAAAAAACI/e1XTRJQcxog/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/118192056161135085602"/>
 				<dbp:website dc:name="http://www.iasicitytour.com/" rdf:resource="http://www.iasicitytour.com/"/>
-				<sp:description>Iasi City Tour is the perfect combination for all your senses:See - a part of Iași historical beauties in a professional tour offered in five languages: English, Russian, French, German and Romanian.  (for details contact here, duration of tours)Taste - a gourmet delight with traditional Romanian food and rich wines of Moldavia.Experience -   Let’s go to discover Iași history and to try  to know the culture together!</sp:description>
+				<sch:description>Iasi City Tour is the perfect combination for all your senses:See - a part of Iași historical beauties in a professional tour offered in five languages: English, Russian, French, German and Romanian.  (for details contact here, duration of tours)Taste - a gourmet delight with traditional Romanian food and rich wines of Moldavia.Experience -   Let’s go to discover Iași history and to try  to know the culture together!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#117922408910128759995">
+			<foaf:Person rdf:ID="117922408910128759995">
 				<foaf:name>Ionela Ababi</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-Q0ZNsdZg_7k/AAAAAAAAAAI/AAAAAAAAAJM/jSyT1h5A0Ac/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/117922408910128759995"/>
@@ -206,7 +207,7 @@ Lobby stores are closed on Sunday.</sp:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#109708551447490359802">
+			<foaf:Person rdf:ID="109708551447490359802">
 				<foaf:name>Jeremy Soule</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-f0CV2sRedYU/AAAAAAAAAAI/AAAAAAAAAB4/QqNVRfJrvFQ/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/109708551447490359802"/>
@@ -217,29 +218,29 @@ Lobby stores are closed on Sunday.</sp:description>
 						<dbp:name>Western Illinois University<dbp:name>
 					</dbo:EducationalInstitution>
 				</dbo:school>
-				<sp:description>Hi, I am the Jeremy Soule you seek... if youre looking for the composer of video games including Skyrim and Harry Potter.</sp:description>
+				<sch:description>Hi, I am the Jeremy Soule you seek... if youre looking for the composer of video games including Skyrim and Harry Potter.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#115120551612309422302">
+			<foaf:Person rdf:ID="115120551612309422302">
 				<foaf:name>KOH-I-NOOR HARDTMUTH Polska Sp. z o.o., show room, sklep firmowy, Wilanów</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-OYSAkTrPUcQ/AAAAAAAAAAI/AAAAAAAAABI/-fg5b_aCVeA/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/115120551612309422302"/>
 				<dbp:website dc:name="http://www.facebook.com/kohinoorpolskaartpap" rdf:resource="http://www.facebook.com/kohinoorpolskaartpap"/>
-				<sp:description>KOH-I-NOOR HARDTMUTH to czeski producent artykułów plastycznych, szkolnych czy biurowych z 225 letnim doświadczeniem – firma została założona w 1790 roku.  Produkty naszej firmy są szeroko znane i cenione za swoją jakość, można dostać je w sklepach papierniczych i plastycznych. Czy znacie kogoś, kto nie lubi chodzić do sklepów papierniczych? My nie. Kojarzycie ten charakterystyczny zapach? Zapach ołówków, kredek, farb i czystych, nieotwieranych zeszytów – tak właśnie pachnie Sklep KOH-I-NOOR na warszawskim Wilanowie. Nasza oferta jest bardzo szeroka – poza pełną gamą produktów KOH-I-NOOR, oferujemy także produkty papiernicze do użytku domowego i biurowego, a także szeroko zakrojony asortyment szkolny – plecaki, tornistry i wszelkiego rodzaju szkolne przybory. Mniejsze maluchy znajdą u nas kolorowanki, specjalne, dostosowane do ich wieku kredki i farby, a także wspomagające ich rozwój zestawy kreatywne. Dla bardziej wymagającego klienta przygotowaliśmy atrakcyjną ofertę ekskluzywnych artykułów piśmienniczych.  Zapraszamy do nas tych, którzy czują się artystami i tych, którzy po prostu lubią kolorowo spędzać czas. Słuchamy Was – naszych Klientów, i dlatego nieustannie wzbogacamy swoją ofertę o to, czego potrzebujecie. Nasi pracownicy ciągle poszerzają swoje doświadczenie i wiedzę, zatem każdy Klient może liczyć na profesjonalną obsługę. Zapraszamy, Sklep KOH I NOOR Al. Rzeczypospolitej 10/44</sp:description>
+				<sch:description>KOH-I-NOOR HARDTMUTH to czeski producent artykułów plastycznych, szkolnych czy biurowych z 225 letnim doświadczeniem – firma została założona w 1790 roku.  Produkty naszej firmy są szeroko znane i cenione za swoją jakość, można dostać je w sklepach papierniczych i plastycznych. Czy znacie kogoś, kto nie lubi chodzić do sklepów papierniczych? My nie. Kojarzycie ten charakterystyczny zapach? Zapach ołówków, kredek, farb i czystych, nieotwieranych zeszytów – tak właśnie pachnie Sklep KOH-I-NOOR na warszawskim Wilanowie. Nasza oferta jest bardzo szeroka – poza pełną gamą produktów KOH-I-NOOR, oferujemy także produkty papiernicze do użytku domowego i biurowego, a także szeroko zakrojony asortyment szkolny – plecaki, tornistry i wszelkiego rodzaju szkolne przybory. Mniejsze maluchy znajdą u nas kolorowanki, specjalne, dostosowane do ich wieku kredki i farby, a także wspomagające ich rozwój zestawy kreatywne. Dla bardziej wymagającego klienta przygotowaliśmy atrakcyjną ofertę ekskluzywnych artykułów piśmienniczych.  Zapraszamy do nas tych, którzy czują się artystami i tych, którzy po prostu lubią kolorowo spędzać czas. Słuchamy Was – naszych Klientów, i dlatego nieustannie wzbogacamy swoją ofertę o to, czego potrzebujecie. Nasi pracownicy ciągle poszerzają swoje doświadczenie i wiedzę, zatem każdy Klient może liczyć na profesjonalną obsługę. Zapraszamy, Sklep KOH I NOOR Al. Rzeczypospolitej 10/44</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#117654568006664765574">
+			<foaf:Person rdf:ID="117654568006664765574">
 				<foaf:name>Lex Hobby Store</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-q1Smh9d8d0g/AAAAAAAAAAM/AAAAAAAAAAA/3YaY0XeTIPc/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/117654568006664765574"/>
 				<dbp:website dc:name="http://www.lexshop.ro/" rdf:resource="http://www.lexshop.ro/"/>
-				<sp:description>Locul perfect pentru jocuri, board games, puzzle-uri si multe alte rechizite</sp:description>
+				<sch:description>Locul perfect pentru jocuri, board games, puzzle-uri si multe alte rechizite</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#116444551490997222436">
+			<foaf:Person rdf:ID="116444551490997222436">
 				<foaf:name>Nikonisti</foaf:name>
 				<foaf:depiction rdf:resource="https://lh4.googleusercontent.com/-_n34thc8JoQ/AAAAAAAAAAI/AAAAAAAAAD8/gTGrnkI17NA/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+nikonisti"/>
@@ -247,14 +248,14 @@ Lobby stores are closed on Sunday.</sp:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#110013189323649727795">
+			<foaf:Person rdf:ID="110013189323649727795">
 				<foaf:name>Romania Fericita</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-p_pe3-RmlMw/AAAAAAAAAAI/AAAAAAAAABY/GwRFgQ6TXHA/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+RomaniafericitaRo-magazin-online"/>
 				<dbp:website dc:name="www.romaniafericita.ro/" rdf:resource="http://www.romaniafericita.ro/"/>
 				<foaf:page dc:name="https://www.facebook.com/romaniafericita" rdf:resource="https://www.facebook.com/romaniafericita"/>
 				<foaf:page dc:name="https://twitter.com/romaniafericita" rdf:resource="https://twitter.com/romaniafericita"/>
-				<sp:description>Romania Fericita este un magazin online				
+				<sch:description>Romania Fericita este un magazin online				
 care comercializeaza produse personalizate cu inscriptii patriotice,				
 citate celebre si cu mesaje optimiste cu gandire pozitiva. Nu avem				
 absolut nicio influenta politica, suntem un site independent cu				
@@ -265,21 +266,21 @@ inregistrata fiind proiectate si inventate de noi. Intentia noastra
 este ca prin  sa trezim simtaminte de iubire fata de propria persoana				
 si fata de tara in care ne-am nascut, Romania, sa ne unim noi,romanii				
 din toate colturile lumii, macar in ganduri fericite. Este o solutie				
-sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
+sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#113696399890538570698">
+			<foaf:Person rdf:ID="113696399890538570698">
 				<foaf:name>Romania WOW</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-ISDDqZKoIeI/AAAAAAAAAAI/AAAAAAAAABU/EB1ri1ynay4/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+RomaniaWOW"/>
 				<dbp:website dc:name="romaniawow.com/" rdf:resource="http://romaniawow.com/"/>
 				<foaf:page dc:name="Facebook" rdf:resource="https://www.facebook.com/RomaniaWOW"/>
-				<sp:description>Hello World,I am Ana, a proud Romanian in love with Romania, travelling and digital. Out of my passions it came out this project Romania WOW!, or my little baby, as I like to call it :).I travel a lot abroad and I hear so often that Romanians are thieves, beggers…you got the picture that I decided that it’s time to make a change. Let’s not wait for the goverment to do something (or we are all going to die…) and do it ourselves. I know Romania doesn’t deserve the image it has right now and I also know that we have an amazing country. As much I try to present it to do world, I know that alone I won’t succeed. But TOGETHER we can do it.Each of us can be the ambassador of our region, city or village. Let’s speak the international language of images and videos and show the world how WOW is Romania.  You don’t have to be a professional photographer to make a good picture. Sometimes passion and a wow scenery is enough. Some of you already did it  without me asking for it and I thank you from the bottom of my heart. Very soon we will start presenting the first ambassadors – people in love with Romania that try to present their loved regions to the world.If there are wow places undiscovered, even better…just send me an email atRomaniaWow1@gmail.com or a message on Facebook  and I will publish it. Afterwords, you could share it to help me distribute it. Thank you in advance for joining me.Let’s show to the whole world how WOW is Romania!From Romania with love, passion and hope,Ana</sp:description>
+				<sch:description>Hello World,I am Ana, a proud Romanian in love with Romania, travelling and digital. Out of my passions it came out this project Romania WOW!, or my little baby, as I like to call it :).I travel a lot abroad and I hear so often that Romanians are thieves, beggers…you got the picture that I decided that it’s time to make a change. Let’s not wait for the goverment to do something (or we are all going to die…) and do it ourselves. I know Romania doesn’t deserve the image it has right now and I also know that we have an amazing country. As much I try to present it to do world, I know that alone I won’t succeed. But TOGETHER we can do it.Each of us can be the ambassador of our region, city or village. Let’s speak the international language of images and videos and show the world how WOW is Romania.  You don’t have to be a professional photographer to make a good picture. Sometimes passion and a wow scenery is enough. Some of you already did it  without me asking for it and I thank you from the bottom of my heart. Very soon we will start presenting the first ambassadors – people in love with Romania that try to present their loved regions to the world.If there are wow places undiscovered, even better…just send me an email atRomaniaWow1@gmail.com or a message on Facebook  and I will publish it. Afterwords, you could share it to help me distribute it. Thank you in advance for joining me.Let’s show to the whole world how WOW is Romania!From Romania with love, passion and hope,Ana</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#106712038428008129940">
+			<foaf:Person rdf:ID="106712038428008129940">
 				<foaf:name>Sanda Minzat</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-cAC-eiLTqag/AAAAAAAAAAI/AAAAAAAAABc/98Ld5rpECtw/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/106712038428008129940"/>
@@ -287,7 +288,7 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#108514047690420664042">
+			<foaf:Person rdf:ID="108514047690420664042">
 				<foaf:name>Star Wars</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-H1KqX5HicIU/AAAAAAAAAAI/AAAAAAABOuo/ENj4lcl2ekE/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+StarWars"/>
@@ -295,11 +296,11 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<foaf:page dc:name="Facebook" rdf:resource="http://www.facebook.com/starwars"/>
 				<foaf:page dc:name="Twitter" rdf:resource="http://www.twitter.com/starwars"/>
 				<foaf:page dc:name="YouTube" rdf:resource="http://www.youtube.com/starwars"/>
-				<sp:description>Welcome to the official home of Star Wars on G+. Follow along and become entrenched in the franchise through exclusive photos and information, showcasing the heart & soul of the movies. Share the experience with other passionate fans who want to expand their understanding of the universe. May the Force Be With You... Always!</sp:description>
+				<sch:description>Welcome to the official home of Star Wars on G+. Follow along and become entrenched in the franchise through exclusive photos and information, showcasing the heart & soul of the movies. Share the experience with other passionate fans who want to expand their understanding of the universe. May the Force Be With You... Always!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#117120573785166759146">
+			<foaf:Person rdf:ID="117120573785166759146">
 				<foaf:name>Trains At Glance !!!</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-sPTOApzfmEM/AAAAAAAAAAI/AAAAAAAACJw/f_P6bcbryFM/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+TrainsAtGlance"/>
@@ -307,21 +308,21 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<foaf:page dc:name="Click Here For My Facebook Link" rdf:resource="https://www.facebook.com/nitin.bhardwaj.5"/>
 				<foaf:page dc:name="Click Here For My YouTube Channel" rdf:resource="https://www.youtube.com/user/3railfans/videos"/>
 				<foaf:page dc:name="Click Here And Check Out My Best Railroad Photography Available Only @ Flickr." rdf:resource="https://www.flickr.com/photos/66825081@N03/"/>
-				<sp:description>Blogging/Video Blogging provides me with an opportunity to share my thoughts & passion. Bringing to you a variety of railroad action in India !!!Includes:High Speed Diesel, Electric Action, Videos from beautiful & scenic locations, Departure & Arrival Videos, Soundtrack Videos, and much more!Check out the High Definition Videos: Taken with Canon SX130 & SX30, SX50, EOS 70D & Kodak Z980 Cameras.I hope you enjoy my videos and please stay tuned for much more Rail-fanning action to come in the near future!</sp:description>
+				<sch:description>Blogging/Video Blogging provides me with an opportunity to share my thoughts & passion. Bringing to you a variety of railroad action in India !!!Includes:High Speed Diesel, Electric Action, Videos from beautiful & scenic locations, Departure & Arrival Videos, Soundtrack Videos, and much more!Check out the High Definition Videos: Taken with Canon SX130 & SX30, SX50, EOS 70D & Kodak Z980 Cameras.I hope you enjoy my videos and please stay tuned for much more Rail-fanning action to come in the near future!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#104094101398063921605">
+			<foaf:Person rdf:ID="104094101398063921605">
 				<foaf:name>Trains Zone</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-xLqYQ-AeTUY/AAAAAAAAAAI/AAAAAAAAAXo/Y1OE4cC2Se4/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+TrainsZone"/>
 				<dbp:website dc:name="www.facebook.com/sanyal.somjit" rdf:resource="https://www.facebook.com/sanyal.somjit"/>
 				<foaf:page dc:name="MY YOUTUBE CHANNEL: RAILWAYS OF INDIA" rdf:resource="http://www.youtube.com/user/Riksanyal"/>
-				<sp:description>WELCOME AND HELLO EVERYONE.....!!!!!THIS IS TRAINS ZONE A.K.A. SOMJIT SANYAL IN REALITY. WELCOME TO MY GOOGLE+ PAGE..... HERE YOU WILL FIND ALL KINDS OF ACTIVITY RELATED TO RAILWAYS IN INDIA A.K.A. INDIAN RAILWAYS-THE LIFELINE OF NATION. IT IS EXTREMELY RARE TO BE A RAILFAN OR A TRAIN-LOVER..... INFACT IT IS ONE OF THE MOST UNIQUE PASSION IN THIS WORLD TO BE A COMPASSIONATE LOVER OF RAILWAYS. A DEEP LOVE AND UNDERSTANDING NEED TO BE DEVELOPED WITHIN ONESELF TO UNDERSTAND THE CHARM AND BEAUTY OF RAILWAYS.NOW AS I AM FROM INDIA..... ITS NATURAL THAT I WILL DEDICATE MY PAGE TO OUR RAILWAYS KNOWN AS INDIAN RAILWAYS WHICH IS THE LIFE-LINE OF OUR NATION. SO COME AND EXPLORE MY GOOGLE+ PAGE OF "TRAINS SOMJIT" AND ADD ME TO YOUR CIRCLES TO FIND OUT MORE ACTIVITIES ON INDIAN RAILWAYS. I AM ALSO IN FACEBOOK. TO KNOW MORE ABOUT ME, SEND ME FRIEND REQUEST IN FACEBOOK: https://www.facebook.com/sanyal.somjitI AM ALSO IN YOUTUBE. TO KNOW AND EXPLORE MORE ABOUT MY YOUTUBE CHANNEL, SUBSCRIBE ME AND VISIT:https://www.youtube.com/user/riksanyalI AM ALSO IN FLICKR. TO KNOW AND EXPLORE MY FLICKR CHANNEL, SUBSCRIBE AND ADD ME HERE:https://www.flickr.com/people/emd_somjit</sp:description>
+				<sch:description>WELCOME AND HELLO EVERYONE.....!!!!!THIS IS TRAINS ZONE A.K.A. SOMJIT SANYAL IN REALITY. WELCOME TO MY GOOGLE+ PAGE..... HERE YOU WILL FIND ALL KINDS OF ACTIVITY RELATED TO RAILWAYS IN INDIA A.K.A. INDIAN RAILWAYS-THE LIFELINE OF NATION. IT IS EXTREMELY RARE TO BE A RAILFAN OR A TRAIN-LOVER..... INFACT IT IS ONE OF THE MOST UNIQUE PASSION IN THIS WORLD TO BE A COMPASSIONATE LOVER OF RAILWAYS. A DEEP LOVE AND UNDERSTANDING NEED TO BE DEVELOPED WITHIN ONESELF TO UNDERSTAND THE CHARM AND BEAUTY OF RAILWAYS.NOW AS I AM FROM INDIA..... ITS NATURAL THAT I WILL DEDICATE MY PAGE TO OUR RAILWAYS KNOWN AS INDIAN RAILWAYS WHICH IS THE LIFE-LINE OF OUR NATION. SO COME AND EXPLORE MY GOOGLE+ PAGE OF "TRAINS SOMJIT" AND ADD ME TO YOUR CIRCLES TO FIND OUT MORE ACTIVITIES ON INDIAN RAILWAYS. I AM ALSO IN FACEBOOK. TO KNOW MORE ABOUT ME, SEND ME FRIEND REQUEST IN FACEBOOK: https://www.facebook.com/sanyal.somjitI AM ALSO IN YOUTUBE. TO KNOW AND EXPLORE MORE ABOUT MY YOUTUBE CHANNEL, SUBSCRIBE ME AND VISIT:https://www.youtube.com/user/riksanyalI AM ALSO IN FLICKR. TO KNOW AND EXPLORE MY FLICKR CHANNEL, SUBSCRIBE AND ADD ME HERE:https://www.flickr.com/people/emd_somjit</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#118294736482650299130">
+			<foaf:Person rdf:ID="118294736482650299130">
 				<foaf:name>TripAdvisor</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-o1LAgBfiB48/AAAAAAAAAAI/AAAAAAAAN_M/TBjeipMj_p8/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+TripAdvisor"/>
@@ -330,20 +331,20 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<foaf:page dc:name="TripAdvisor Twitter" rdf:resource="https://twitter.com/#!/TripAdvisor"/>
 				<foaf:page dc:name="TripAdvisor Blog" rdf:resource="http://blog.tripadvisor.com"/>
 				<foaf:page dc:name="TripAdvisor Instagram" rdf:resource="http://www.tripadvisor.com/instagram"/>
-				<sp:description>Welcome to TripAdvisors official page on Google+!TripAdvisor is the worlds largest travel site, with more than 290 million reviews and opinions. Join the travel conversation!</sp:description>
+				<sch:description>Welcome to TripAdvisors official page on Google+!TripAdvisor is the worlds largest travel site, with more than 290 million reviews and opinions. Join the travel conversation!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#112769659440080981306">
+			<foaf:Person rdf:ID="112769659440080981306">
 				<foaf:name>Universitatea Alexandru Ioan Cuza din Iași</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-JnEn7Ykzvp0/AAAAAAAAAAI/AAAAAAAAACI/yWcTHNwgkRA/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/112769659440080981306"/>
 				<dbp:website dc:name="http://www.uaic.ro/" rdf:resource="http://www.uaic.ro/"/>
-				<sp:description>Prima universitate a României.Universitatea “Alexandru Ioan Cuza” din Iaşi este cea mai veche instituţie de învăţământ superior din România continuând, din anul 1860, o tradiţie a excelenţei şi inovaţiei în educaţie şi cercetare. Cu peste 25.000 de studenţi şi aproximativ 800 de cadre didactice, universitatea se bucură de un important prestigiu la nivel naţional şi internaţional, având colaborări cu aproximativ 265 de universităţi din străinătate.Pentru a afla cum poți deveni student al Universității cuza, vizitează site-ul de admitere!</sp:description>
+				<sch:description>Prima universitate a României.Universitatea “Alexandru Ioan Cuza” din Iaşi este cea mai veche instituţie de învăţământ superior din România continuând, din anul 1860, o tradiţie a excelenţei şi inovaţiei în educaţie şi cercetare. Cu peste 25.000 de studenţi şi aproximativ 800 de cadre didactice, universitatea se bucură de un important prestigiu la nivel naţional şi internaţional, având colaborări cu aproximativ 265 de universităţi din străinătate.Pentru a afla cum poți deveni student al Universității cuza, vizitează site-ul de admitere!</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#113005385612801774361">
+			<foaf:Person rdf:ID="113005385612801774361">
 				<foaf:name>Vasile-Octavian Fermuș</foaf:name>
 				<foaf:depiction rdf:resource="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/113005385612801774361"/>
@@ -351,7 +352,7 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#114662329588792403341">
+			<foaf:Person rdf:ID="114662329588792403341">
 				<foaf:name>Vatra Dornei</foaf:name>
 				<foaf:depiction rdf:resource="https://lh5.googleusercontent.com/-ZbZhsufiLrM/AAAAAAAAAAI/AAAAAAAAAEE/YmXgQjZPk0s/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+VatraDornei-Ghid-Turistic"/>
@@ -359,11 +360,12 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<dbp:website dc:name="www.vatra-dornei.info" rdf:resource="http://www.vatra-dornei.info"/>
 				<foaf:page dc:name="Web design Bacau" rdf:resource="http://www.smartwebsite.ro"/>
 				<dbo:occupation>Ghid turistic pentru statiunea Vatra Dornei</dbo:occupation>
-				<sp:description>www.vatra-dornei.info este site-ul care va prezinta cele mai multe si mai actualizate informatii turistice despre statiunea Vatra Dornei si informatii despre unitatile de cazare atat din statiune cat si din zonele apropiate statiunii.</sp:description>
+				<foaf:based_near geo:lat="47.3447576" geo:long="25.3521039"/>
+				<sch:description>www.vatra-dornei.info este site-ul care va prezinta cele mai multe si mai actualizate informatii turistice despre statiunea Vatra Dornei si informatii despre unitatile de cazare atat din statiune cat si din zonele apropiate statiunii.</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#108117154164729476609">
+			<foaf:Person rdf:ID="108117154164729476609">
 				<foaf:name>Vatra Dornei Live</foaf:name>
 				<foaf:depiction rdf:resource="https://lh6.googleusercontent.com/-TDCwPr0H-_o/AAAAAAAAAAI/AAAAAAAAA-A/QaNLffBJoo4/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+VatraDorneiLiveSuceava"/>
@@ -373,10 +375,11 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<dbp:website dc:name="VATRA DORNEI LIVE" rdf:resource="http://www.vatradorneilive.ro/"/>
 				<foaf:page dc:name="VatraDorneiLive.ro" rdf:resource="http://www.vatradorneilive.ro"/>
 				<foaf:gender>other</foaf:gender>
+				<foaf:based_near geo:lat="47.3447576" geo:long="25.3521039"/>
 			</foaf:Person>
 		</foaf:knows>
 		<foaf:knows>
-			<foaf:Person rdf:about="#110498055526373404220">
+			<foaf:Person rdf:ID="110498055526373404220">
 				<foaf:name>Virtual Piano</foaf:name>
 				<foaf:depiction rdf:resource="https://lh4.googleusercontent.com/-9Zx_KZ6tKjQ/AAAAAAAAAAI/AAAAAAAAAXk/5qvXq7zCVII/photo.jpg?sz=50"/>
 				<foaf:homepage rdf:resource="https://plus.google.com/+virtualpianonet"/>
@@ -386,7 +389,7 @@ sa se nasca Romania Fericita pe care ne-o dorim cu totii.</sp:description>
 				<foaf:page dc:name="Virtual Piano-Twitter" rdf:resource="http://www.twitter.com/bestpiano"/>
 				<foaf:page dc:name="Virtual Piano-YouTube" rdf:resource="http://www.youtube.com/cmagicspiano"/>
 				<foaf:page dc:name="Prestigious Venues" rdf:resource="http://www.prestigiousvenues.com"/>
-				<sp:description>To empower, innovate and entertain.Virtual				
+				<sch:description>To empower, innovate and entertain.Virtual				
  Piano (VirtualPiano.Net) empowers you to experience the Piano on your 				
 computer - online. You dont have to download or install this 				
 application, just visit the website and use your computer 				
@@ -394,8 +397,165 @@ keyboard to play.Virtual
  Piano first launched as a beta project in 2006 followed by another 				
 release in December, 2008. Since then a number of other online pianos have appeared looking to ride on the success of this app, but the 				
 original Virtual Piano remains the most popular				
- and well known application across the globe. You can follow CMAGICS on Twitter: http://twitter.com/CMAGICSFor all the latest Virtual Piano videos visit:YOUTUBE: http://www.youtube.com/cmagicspianoFor all the latest songs and news visit: FACEBOOK: http://Facebook.com/VirtualPianoTo join the conversation visit: TWITTER: http://twitter.com/bestpianoTo play visit:http://VirtualPiano.Net</sp:description>
+ and well known application across the globe. You can follow CMAGICS on Twitter: http://twitter.com/CMAGICSFor all the latest Virtual Piano videos visit:YOUTUBE: http://www.youtube.com/cmagicspianoFor all the latest songs and news visit: FACEBOOK: http://Facebook.com/VirtualPianoTo join the conversation visit: TWITTER: http://twitter.com/bestpianoTo play visit:http://VirtualPiano.Net</sch:description>
 			</foaf:Person>
 		</foaf:knows>
 	</foaf:Person>
+	<sch:Event rdf:ID="kkvvdpo4vf1ck9j7fpgll09ecc">
+		<sch:name>29th Annual Boca Fest at the Town Center Mall at Boca</sch:name>
+		<sch:description>Howard Alan Events is excited to announce that Boca Fest will now take place at The Town Center Mall at Boca Raton. The Town Center is one of South Florida's top luxury shopping destinations and one of Boca's main attractions. The show will be located in the parking lot of The Terrace, a recent expansion near Bloomingdales, The Blue Martini and Gap. The Town Center is located right off I-95 and Glades Road.  The show offers a convenient location with over 200 national artists and plenty of parking, including valet! 				
+				
+Venue: The Town Center Mall of Boca Raton on Glades Road in Boca Raton, FL				
+				
+- See more at: http://www.artfestival.com/festivals/annual-boca-fest#sthash.xGvTYDAQ.dpuf</sch:description>
+		<sch:startDate>2016-01-09T17:00:00+02:00</sch:startDate>
+		<sch:endDate>2016-01-11T00:00:00+02:00</sch:endDate>
+		<sch:url rdf:resource="https://plus.google.com/events/ckkvvdpo4vf1ck9j7fpgll09ecc"/>
+		<foaf:based_near geo:lat="26.3659037" geo:long="-80.1343444"/>
+		<sch:organizer>
+			<foaf:Person rdf:ID="117418788530762842203">
+				<foaf:name>ArtFestival.com ~ Howard Alan Events</foaf:name>
+			</foaf:Person>
+		</sch:organizer>
+		<sch:attendee>
+			<foaf:Person rdf:ID="me">
+				<foaf:name>Diana Mînzat</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+		<sch:attendee>
+			<foaf:Person rdf:ID="117418788530762842203">
+				<foaf:name>ArtFestival.com ~ Howard Alan Events</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+	</sch:Event>
+	<sch:Event rdf:ID="9bmfatel87sj1rtef5h8f2nif8">
+		<sch:name>28th Annual Las Olas Art Fair</sch:name>
+		<sch:description>Start the year off in style and join the show that put Howard Alan Events on the map! Now considered a South Florida tradition in its 28th year on Las Olas Boulevard, the Howard Alan Events art festival is nationally recognized as one of the top events in America. Over the years, this Las Olas Boulevard festival has become a premiere & must see event in South Florida. People come out yearly to see more than 150 artists display their work in what looks like an art gallery linining the iconic Las Olas Boulevard. Meet the creators of the art on display; commission a specific piece; ask questions about techniques; learn the sources of their inspirations; and purchase fine works of art at affordable prices. 				
+				
+Located in the heart of Fort Lauderdale, Las Olas Boulevard is known as the jewel of the city. Las Olas has everything for a wonderful evening out, or a relaxing day window-shopping and dining at one of the fabulous sidewalk cafes. On Las Olas Boulevard you will find a multitude of art galleries, eclectic boutiques, and dining options that range from Cuban-American cuisine to fresh seafood caught in the Atlantic Ocean. 				
+ 				
+				
+Directions: Take I-95 to Broward Boulevard and go east on Broward. Make a right on Andrews Avenue, and then a left on East Las Olas Boulevard.				
+				
+- See more at: http://www.artfestival.com/festivals/las-olas-art-fair-part-i#sthash.b7Pbapn7.dpuf</sch:description>
+		<sch:startDate>2016-01-09T17:00:00+02:00</sch:startDate>
+		<sch:endDate>2016-01-11T00:00:00+02:00</sch:endDate>
+		<sch:url rdf:resource="https://plus.google.com/events/c9bmfatel87sj1rtef5h8f2nif8"/>
+		<foaf:based_near geo:lat="26.1186894" geo:long="-80.13687"/>
+		<sch:organizer>
+			<foaf:Person rdf:ID="117418788530762842203">
+				<foaf:name>ArtFestival.com ~ Howard Alan Events</foaf:name>
+			</foaf:Person>
+		</sch:organizer>
+		<sch:attendee>
+			<foaf:Person rdf:ID="me">
+				<foaf:name>Diana Mînzat</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+		<sch:attendee>
+			<foaf:Person rdf:ID="117418788530762842203">
+				<foaf:name>ArtFestival.com ~ Howard Alan Events</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+	</sch:Event>
+	<sch:Event rdf:ID="sfgp9vhut877u0k5jq5sd3h9pk">
+		<sch:name>Top 10 animals in need of protection.</sch:name>
+		<sch:description>Let's join with us in this protecting animal event and more than that, we share the awsome facts to everyone!</sch:description>
+		<sch:startDate>2016-01-18T07:00:00+02:00</sch:startDate>
+		<sch:endDate>2016-01-18T09:00:00+02:00</sch:endDate>
+		<sch:url rdf:resource="https://plus.google.com/events/csfgp9vhut877u0k5jq5sd3h9pk"/>
+		<sch:organizer>
+			<foaf:Person rdf:ID="105144655799280982615">
+				<foaf:name>Maria Adina</foaf:name>
+			</foaf:Person>
+		</sch:organizer>
+		<sch:attendee>
+			<foaf:Person rdf:ID="105144655799280982615">
+				<foaf:name>Maria Adina</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+		<sch:attendee>
+			<foaf:Person rdf:ID="me">
+				<foaf:name>Diana Mînzat</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+	</sch:Event>
+	<sch:Event rdf:ID="9uop7epkrrnrdmc3v5hruje9nc">
+		<sch:name>Mother's Day</sch:name>
+		<sch:description>A new event in 2016 with the National Trust tea room at Aira Force to celebrate Mothers Day on 6th March. Enjoy a return cruise for two people from Glenridding Pier to Aira Force with a National Trust cream tea in the tea room at Aira Force. This cream tea treat comprises of a scone with jam and cream, cake selection and complimentary tea/coffee and return cruise tickets to Aira Force Pier. Plus, take a walk around the beautiful waterfall at Aira Force and take in the stunning views of Ullswater Lake. Ticket numbers are very limited and tickets must be booked in advance, £40 for two persons.</sch:description>
+		<sch:startDate>2016-03-06T11:00:00+02:00</sch:startDate>
+		<sch:endDate>2016-03-06T19:00:00+02:00</sch:endDate>
+		<sch:url rdf:resource="https://plus.google.com/events/c9uop7epkrrnrdmc3v5hruje9nc"/>
+		<foaf:based_near geo:lat="54.544836" geo:long="-2.9497729"/>
+		<sch:organizer>
+			<foaf:Person rdf:ID="108199120026230374399">
+				<foaf:name>Ullswater 'Steamers'</foaf:name>
+			</foaf:Person>
+		</sch:organizer>
+		<sch:attendee>
+			<foaf:Person rdf:ID="108199120026230374399">
+				<foaf:name>Ullswater 'Steamers'</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+		<sch:attendee>
+			<foaf:Person rdf:ID="me">
+				<foaf:name>Diana Mînzat</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+	</sch:Event>
+	<sch:Event rdf:ID="r18alna2k5rqsq54le9piv1dbk">
+		<sch:name>#LIVEWithNiti</sch:name>
+		<sch:description>Join us for an interactive session with #NitiTaylor  from Kaisi Yeh Yaariaan on 19th Jan 2016 at 12:30 PM. Feel free to interact with her through comments and Q&A. Share this event with your family and friends and invite them to join the hangout.				
+				
+Don't forget to subscribe to www.youtube.com/tellymasala.﻿</sch:description>
+		<sch:startDate>2016-01-19T09:00:00+02:00</sch:startDate>
+		<sch:endDate>2016-01-19T10:00:00+02:00</sch:endDate>
+		<sch:url rdf:resource="https://plus.google.com/events/cr18alna2k5rqsq54le9piv1dbk"/>
+		<sch:organizer>
+			<foaf:Person rdf:ID="113985400750240490690">
+				<foaf:name>TellyMasala</foaf:name>
+			</foaf:Person>
+		</sch:organizer>
+		<sch:attendee>
+			<foaf:Person rdf:ID="me">
+				<foaf:name>Diana Mînzat</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+		<sch:attendee>
+			<foaf:Person rdf:ID="113985400750240490690">
+				<foaf:name>TellyMasala</foaf:name>
+			</foaf:Person>
+		</sch:attendee>
+	</sch:Event>
+	<sch:Book rdf:ID="">
+		<sch:name>Harry Potter and the Sorcerer's Stone</sch:name>
+		<sch:author>
+			<foaf:Person>
+				<foaf:name>Inc. Scholastic</foaf:name>
+			</foaf:Person>
+		</sch:author>
+		<sch:author>
+			<foaf:Person>
+				<foaf:name>J. K. Rowling</foaf:name>
+			</foaf:Person>
+		</sch:author>
+		<sch:publisher>
+			<foaf:Organization>
+				<foaf:name>Arthur A. Levine Books</foaf:name>
+			</foaf:Organization>
+		</sch:publisher>
+		<sch:description>For the first time, J. K. Rowling's beloved Harry Potter and the Sorcerer's Stone will be presented in a lavishly illustrated full-color edition. Kate Greenaway Award-winning artist Jim Kay has created over 100 stunning illustrations, making this ...</sch:description>
+		<sch:isbn>0545919665</sch:isbn>
+		<sch:isbn>9780545919661</sch:isbn>
+		<sch:numberOfPages>256</sch:numberOfPages>
+		<sch:url rdf:resource="http://books.google.ro/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=06nSsgEACAAJ"/>
+		<foaf:depiction rdf:resource="http://books.google.ro/books/content?id=06nSsgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"/>
+		<sch:aggregateRating>
+			<sch:AggregateRating>
+				<sch:ratingCount>10</sch:ratingCount>
+				<sch:ratingValue>4.5</sch:ratingValue>
+			</sch:AggregateRating>
+		</sch:aggregateRating>
+		<sch:about>Juvenile Fiction</sch:about>
+	</sch:Book>
 </rdf:RDF>

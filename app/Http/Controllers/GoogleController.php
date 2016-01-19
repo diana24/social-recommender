@@ -15,7 +15,5 @@ use Google_Service_YouTube_Channel;
 
 class GoogleController extends Controller
 {
-    function getPeople(){
-        (new GraphController())->makeGraph();
-    }
+
 }
