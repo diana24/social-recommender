@@ -10,3 +10,4 @@ storage/*
 .gitattributes
 artisan
 readme (2).md
+front-dev/node_modules
