@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Graph;
+use Geocoder\Model\Address;
+use Geocoder\Model\AddressCollection;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,25 +17,27 @@ use Google_Service_Coordinate_Location;
 use Google_Service_Books;
 use Illuminate\Support\Facades\Auth;
 use Google_Service_MapsEngine;
+use Ivory\HttpAdapter\CurlHttpAdapter;
+use Geocoder\Provider\GoogleMaps;
+use Google_Service_Calendar;
 
 class GraphController extends Controller
 {
     function makeGraph()
     {
         $client = (new GoogleAuthController())->getGoogleClientS();
-        $booksServ = new Google_Service_Books($client);
-        $books = $booksServ->volumes_mybooks->listVolumesMybooks();
-//        dd($books);
 
-        $locationsServ = new Google_Service_Coordinate_Location($client);
-        $locations = $locationsServ;
-//        dd($locations);
-
-        $mapsServ = new Google_Service_MapsEngine($client);
-        $maps = $mapsServ->maps;
-//        dd($maps->listMaps());
+//
+//        $locationsServ = new Google_Service_Coordinate_Location($client);
+//        $locations = $locationsServ;
+////        dd($locations);
+//
+//        $mapsServ = new Google_Service_MapsEngine($client);
+//        $maps = $mapsServ->maps;
+////        dd($maps->listMaps());
 
         $plus = new Google_Service_Plus($client);
+
         $me = $plus->people->get('me');
 //        dd($me->toSimpleObject());
         $list = $plus->people->listPeople('me', 'visible');
@@ -60,6 +64,7 @@ class GraphController extends Controller
         fwrite($fh, "\txmlns:rel=\"http://www.perceive.net/schemas/relationship/\"\n");
         fwrite($fh, "\txmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n");
         fwrite($fh, "\txmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n");
+        fwrite($fh, "\txmlns:geo=\"http://www.w3.org/2003/01/geo/wgs84_pos#\"\n");
         fwrite($fh, "\txmlns:dbo=\"http://dbpedia.org/ontology/\"\n");
         fwrite($fh, "\txmlns:dbp=\"http://dbpedia.org/property/\"\n");
         fwrite($fh, "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n");
@@ -127,6 +132,23 @@ class GraphController extends Controller
             }
             }
 
+        if(isset($me->placesLived)){
+            foreach($me->placesLived as $place){
+                $curl     = new CurlHttpAdapter();
+                $geocoder = new GoogleMaps($curl);
+
+                try{
+                    $loc = $geocoder->geocode($place['value']);
+                    if(isset($place['primary']) && $place['primary']==true){
+                        $this->writeCurrentLocations($fh, $loc, "\t\t");
+                    }
+                }catch(\Exception $e){
+//                            dd($e);
+                }
+            }
+//                    $geocoder->reverse(...);
+        }
+
         if(isset($me->aboutMe)){
             //description
             fwrite($fh, "\t\t<sp:description>" .
@@ -141,13 +163,10 @@ class GraphController extends Controller
                 $gperson = $plus->people->get($gperson->id)->toSimpleObject();
 //                dd($gperson);
 
-//                if($gperson->displayName == 'HALIDONMUSIC'){
-//                    dd($gperson);
-//                }
-
                 if(true /*$gperson->objectType == 'person'*/){
                     fwrite($fh, "\t\t<foaf:knows>\n");
-                    fwrite($fh, "\t\t\t<foaf:Person rdf:about=\"#" . $gperson->id . "\">\n");
+//                    fwrite($fh, "\t\t\t<foaf:Person rdf:about=\"#" . $gperson->id . "\">\n");
+                    fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"" . $gperson->id . "\">\n");
 
                     if(isset($gperson->displayName)){
                         // foaf:name
@@ -201,6 +220,23 @@ class GraphController extends Controller
                         }
                     }
 
+                    if(isset($gperson->placesLived)){ //dd($gperson);
+                        foreach($gperson->placesLived as $place){ //dd($place);
+                            $curl     = new CurlHttpAdapter();
+                            $geocoder = new GoogleMaps($curl);
+
+                            try{
+                                $loc = $geocoder->geocode($place['value']);
+                                if(isset($place['primary']) && $place['primary']==true){
+                                    $this->writeCurrentLocations($fh, $loc, "\t\t\t\t");
+                                }
+                            }catch(\Exception $e){
+//                            dd($e);
+                            }
+                        }
+//                    $geocoder->reverse(...);
+                    }
+
                     if(isset($gperson->aboutMe)){
                         //description
                         fwrite($fh, "\t\t\t\t<sp:description>" .
@@ -223,35 +259,111 @@ class GraphController extends Controller
             }
         } while ($stop == false);
 
-
 //        $this->addYoutubeData($client, $fh);
 
         fwrite($fh, "\t</foaf:Person>\n");
+
+        $this->addEvents($fh,$client);
+        $this->addBooks($fh,$client);
+
         fwrite($fh, "</rdf:RDF>\n");
 
         fclose($fh);
-//
+
 //        $g = new Graph($filepath);
 //        $g->upload(Auth::user()->id);
     }
 
-    function addYoutubeData($client,$fh){
-        $youtube = new Google_Service_YouTube($client);
-        $channelsResponse = $youtube->channels->listChannels('contentDetails', array(
-            'mine' => 'true',
-        ));
-//        dd($channelsResponse);
-        $subscriptions = $youtube->subscriptions->listSubscriptions('snippet', array(
-            'mine' => 'true',
-        ));
+//    function addYoutubeData($client,$fh){
+//        $youtube = new Google_Service_YouTube($client);
+//        $channelsResponse = $youtube->channels->listChannels('contentDetails', array(
+//            'mine' => 'true',
+//        ));
+////        dd($channelsResponse);
+//        $subscriptions = $youtube->subscriptions->listSubscriptions('snippet', array(
+//            'mine' => 'true',
+//        ));
+//
+//        $subscriptions = $subscriptions->getItems();
+//        dd($subscriptions);
+////        $channel = new Google_Service_YouTube_Channel();
+//////        $channel->
+//    }
 
-        $subscriptions = $subscriptions->getItems();
-        dd($subscriptions);
-//        $channel = new Google_Service_YouTube_Channel();
-////        $channel->
+    function writeCurrentLocations($fh, $loc, $tabs){
+        if(count($loc->all()) > 0){
+            foreach($loc->all() as $address){
+                if(count($address->getCoordinates()) > 0
+                    && count($address->getLatitude()) > 0
+                    && count($address->getLongitude()) > 0){
+                    fwrite($fh, $tabs."<foaf:based_near geo:lat=\""
+                        . $address->getLatitude() . "\" geo:long=\""
+                        . $address->getLongitude() ."\"/>\n");
+                }
+            }
+        }
     }
 
     function uploadGraph($filepath){
 
+    }
+
+    function addEvents($fh, $client){
+        $calendarServ = new Google_Service_Calendar($client);
+        $calendars = $calendarServ->calendarList->listCalendarList(); //dd($calendars);
+        foreach($calendars as $calendar){
+            if($calendar->accessRole=='owner'){
+                $events = $calendarServ->events->listEvents($calendar->id);
+                foreach($events as $event){
+                    fwrite($fh, "\t<sch:Event rdf:ID=\"".$event->id."\">\n");
+                    fwrite($fh, "\t\t<sch:name>".$event->summary."</sch:name>\n");
+                    fwrite($fh, "\t\t<sch:description>"
+                        .strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n",html_entity_decode($event->description))))
+                            ."</sch:description>\n");
+                    fwrite($fh, "\t\t<sch:startDate>".$event->start['dateTime']."</sch:startDate>\n");
+                    fwrite($fh, "\t\t<sch:endDate>".$event->end['dateTime']."</sch:endDate>\n");
+                    fwrite($fh, "\t\t<sch:url>".$event->htmlLink."</sch:url>\n");
+                    $curl     = new CurlHttpAdapter();
+                    $geocoder = new GoogleMaps($curl);
+
+                    try{
+                        $loc = $geocoder->geocode($event->location);
+                        $this->writeCurrentLocations($fh, $loc, "\t\t");
+                    }catch(\Exception $e){
+//                            dd($e);
+                    }
+                    fwrite($fh, "\t\t<sch:organizer>\n");
+                    fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"".$event->organizer['id']."\">\n");
+                    fwrite($fh, "\t\t\t\t<foaf:name>".$event->organizer['displayName']."</foaf:name>\n");
+                    fwrite($fh, "\t\t\t</foaf:Person>\n");
+                    fwrite($fh, "\t\t</sch:organizer>\n");
+                    foreach($event->attendees as $attendee){
+                        $id = $attendee['id'];
+                        if(isset($attendee['self']) && $attendee['self']==true){
+                            $id='me';
+                        }
+                        fwrite($fh, "\t\t<sch:attendee>\n");
+                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"".$id."\">\n");
+                        fwrite($fh, "\t\t\t\t<foaf:name>".$attendee['displayName']."</foaf:name>\n");
+                        fwrite($fh, "\t\t\t</foaf:Person>\n");
+                        fwrite($fh, "\t\t</sch:attendee>\n");
+
+                    }
+                    fwrite($fh, "\t</sch:Event>\n");
+                }
+            }
+
+        }
+    }
+
+    function addBooks($fh, $client){
+        $booksServ = new Google_Service_Books($client);
+        $shelves = $booksServ->mylibrary_bookshelves->listMylibraryBookshelves(); //dd($shelves);
+        foreach($shelves as $shelf){
+            if($shelf['volumeCount']>0 && in_array($shelf['title'], ['Favorites', 'Reading now', 'Have read' ])){
+                $books = $booksServ->mylibrary_bookshelves_volumes->listMylibraryBookshelvesVolumes($shelf['id']);
+//                dd($books);
+            }
+        }
     }
 }

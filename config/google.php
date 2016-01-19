@@ -17,8 +17,10 @@ return [
         'https://www.googleapis.com/auth/books',
         'https://www.googleapis.com/auth/coordinate.readonly',
         'https://maps.google.com/maps/feeds/',
+        'https://www.google.com/calendar/feeds/',
+        'https://www.google.com/m8/feeds/',
     ],
     "redirectUri" => "http://social-recommender.ro/oauth2callback",
     "appName" => "SoR",
-    "refreshToken" => '1/15QW_cC53yEQQnI_wR5LfwCALDovGDOotga8tCZsfrNIgOrJDtdun6zK6XiATCKT',
+    "refreshToken" => '1/on01PCDqD0_i1wh92hgAiza2i2U9i028u7atLiUyBzw',
 ];
