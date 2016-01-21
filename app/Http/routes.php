@@ -30,8 +30,10 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::get('getFacebookAuthUrl', 'FacebookAuthController@getAuthUrl');
 Route::get('login', 'FacebookAuthController@authenticate');
 
-Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
-Route::get('rdf', 'RdfController@test');
-Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
-Route::get('oauth2callback', 'GoogleAuthController@oauth2callback');
-Route::get('buildGraph', 'GraphController@makeGraph');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
+    Route::get('rdf', 'RdfController@test');
+    Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
+    Route::get('oauth2callback', 'GoogleAuthController@oauth2callback');
+    Route::get('buildGraph', 'GraphController@makeGraph');
+});

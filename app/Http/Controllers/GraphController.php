@@ -47,6 +47,7 @@ class GraphController extends Controller
 
 //        $g = new Graph($filepath);
 //        $g->upload(Auth::user()->id);
+        return ("Done! Get your graph at ".url("/")."/".$filepath);
     }
 
     function writeCurrentLocations($fh, $loc, $tabs){
@@ -67,6 +68,10 @@ class GraphController extends Controller
 
     }
 
+    function toCdata($text){
+        return str_replace("&","&amp;", $text);
+    }
+
     function addEvents($fh, $client){
         $calendarServ = new Google_Service_Calendar($client);
         $calendars = $calendarServ->calendarList->listCalendarList(); //dd($calendars);
@@ -78,7 +83,7 @@ class GraphController extends Controller
                     fwrite($fh, "\t\t<sch:name>".$event->summary."</sch:name>\n");
                     if(isset($event->description)){
                         fwrite($fh, "\t\t<sch:description>"
-                            .strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n",html_entity_decode($event->description))))
+                            .$this->toCdata(strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",html_entity_decode($event->description))))
                             ."</sch:description>\n");
                     }
                     if(isset($event->start)){
@@ -88,7 +93,7 @@ class GraphController extends Controller
                         fwrite($fh, "\t\t<sch:endDate>".$event->end['dateTime']."</sch:endDate>\n");
                     }
                     if(isset($event->htmlLink)){
-                        fwrite($fh, "\t\t<sch:url rdf:resource=\"".$event->htmlLink."\"/>\n");
+                        fwrite($fh, "\t\t<sch:url rdf:resource=\"".$this->toCdata($event->htmlLink)."\"/>\n");
                     }
                     if(isset($event->location)) {
                         $curl = new CurlHttpAdapter();
@@ -134,7 +139,7 @@ class GraphController extends Controller
             if($shelf['volumeCount']>0 && in_array($shelf['title'], ['Reading now', 'Have read' ])){
                 $books = $booksServ->mylibrary_bookshelves_volumes->listMylibraryBookshelvesVolumes($shelf['id']);
                 foreach($books as $book) {
-                    fwrite($fh, "\t<sch:Book rdf:ID=\"" . $book['íd'] . "\">\n");
+                    fwrite($fh, "\t<sch:Book rdf:ID=\"" . $book->id . "\">\n");
                     $info = $book['volumeInfo'];
                     fwrite($fh, "\t\t<sch:name>" . $info['title'] . "</sch:name>\n");
                     if(isset($info['authors'])) {
@@ -156,7 +161,7 @@ class GraphController extends Controller
                     }
                     if (isset($info['description'])) {
                         fwrite($fh, "\t\t<sch:description>" .
-                            strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i", "", str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n", html_entity_decode($info['description']))))
+                            $this->toCdata(strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i", "", html_entity_decode($info['description']))))
                             . "</sch:description>\n");
                     }
                     if(isset($info['industryIdentifiers'])) {
@@ -167,9 +172,9 @@ class GraphController extends Controller
                     if(isset($info['pageCount'])) {
                         fwrite($fh, "\t\t<sch:numberOfPages>" . $info['pageCount'] . "</sch:numberOfPages>\n");
                     }
-                    fwrite($fh, "\t\t<sch:url rdf:resource=\"" . $info['canonicalVolumeLink'] . "\"/>\n");
+                    fwrite($fh, "\t\t<sch:url rdf:resource=\"" . $this->toCdata($info['canonicalVolumeLink']) . "\"/>\n");
                     if (isset($info['imageLinks']) && isset($info['imageLinks']['thumbnail'])) {
-                        fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $info['imageLinks']['thumbnail'] . "\"/>\n");
+                        fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($info['imageLinks']['thumbnail']) . "\"/>\n");
                     }
                     if(isset($info['ratingsCount']) && isset($info['averageRating'])) {
                         fwrite($fh, "\t\t<sch:aggregateRating>\n");
@@ -266,20 +271,20 @@ class GraphController extends Controller
             fwrite($fh, "\t\t<foaf:family_name>" . $me->getName()['familyName'] . "</foaf:family_name>\n");
         }
         //photo
-        fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $me->image['url'] . "\"/>\n");
+        fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($me->image['url']) . "\"/>\n");
 
         //homepage
-        fwrite($fh, "\t\t<foaf:homepage rdf:resource=\"" . $me->url . "\"/>\n");
+        fwrite($fh, "\t\t<foaf:homepage rdf:resource=\"" . $this->toCdata($me->url) . "\"/>\n");
         //sites
         if(isset($me->urls) && count($me->urls)>0){
             foreach($me->urls as $url){
                 if($url['type']=='website' || $url['type']=='contributor'){
                     fwrite($fh, "\t\t\t\t<dbp:website dc:name=\"".$url['label']
-                        ."\" rdf:resource=\"".$url['value']."\"/>\n");
+                        ."\" rdf:resource=\"".$this->toCdata($url['value'])."\"/>\n");
                 }
                 else{
                     fwrite($fh, "\t\t\t\t<foaf:page dc:name=\"".$url['label']
-                        ."\" rdf:resource=\"".$url['value']."\"/>\n");
+                        ."\" rdf:resource=\"".$this->toCdata($url['value'])."\"/>\n");
                 }
             }
         }
@@ -326,7 +331,7 @@ class GraphController extends Controller
         if(isset($me->aboutMe)){
             //description
             fwrite($fh, "\t\t<sch:description>" .
-                str_replace("\n","\t\t\n",strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",html_entity_decode($me->aboutMe))))
+                $this->toCdata(strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",html_entity_decode($me->aboutMe))))
                 . "</sch:description>\n");
         }
     }
@@ -349,19 +354,19 @@ class GraphController extends Controller
             fwrite($fh, "\t\t\t\t<foaf:family_name>" . $gperson->getName()['familyName'] . "</foaf:family_name>\n");
         }
         //photo
-        fwrite($fh, "\t\t\t\t<foaf:depiction rdf:resource=\"" . $gperson->image['url'] . "\"/>\n");
+        fwrite($fh, "\t\t\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($gperson->image['url']) . "\"/>\n");
         //homepage
-        fwrite($fh, "\t\t\t\t<foaf:homepage rdf:resource=\"" . $gperson->url . "\"/>\n");
+        fwrite($fh, "\t\t\t\t<foaf:homepage rdf:resource=\"" . $this->toCdata($gperson->url) . "\"/>\n");
         //sites
         if(isset($gperson->urls) && count($gperson->urls)>0){
             foreach($gperson->urls as $url){
                 if($url['type']=='website' || $url['type']=='contributor'){
                     fwrite($fh, "\t\t\t\t<dbp:website dc:name=\"".$url['label']
-                        ."\" rdf:resource=\"".$url['value']."\"/>\n");
+                        ."\" rdf:resource=\"".$this->toCdata($url['value'])."\"/>\n");
                 }
                 else{
                     fwrite($fh, "\t\t\t\t<foaf:page dc:name=\"".$url['label']
-                        ."\" rdf:resource=\"".$url['value']."\"/>\n");
+                        ."\" rdf:resource=\"".$this->toCdata($url['value'])."\"/>\n");
                 }
             }
         }
@@ -381,7 +386,7 @@ class GraphController extends Controller
                     fwrite($fh, "\t\t\t\t\t<dbo:EducationalInstitution>\n");
                     fwrite($fh, "\t\t\t\t\t\t<dbp:name>");
                     fwrite($fh, $org['name']);
-                    fwrite($fh, "<dbp:name>\n");
+                    fwrite($fh, "</dbp:name>\n");
                     fwrite($fh, "\t\t\t\t\t</dbo:EducationalInstitution>\n");
                     fwrite($fh, "\t\t\t\t</dbo:school>\n");
                 }
@@ -408,7 +413,7 @@ class GraphController extends Controller
         if(isset($gperson->aboutMe)){
             //description
             fwrite($fh, "\t\t\t\t<sch:description>" .
-                strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",str_replace(array("\r\n", "\r", "\n"), "\t\t\t\t\n",html_entity_decode($gperson->aboutMe))))
+                $this->toCdata(strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",html_entity_decode($gperson->aboutMe))))
                 . "</sch:description>\n");
         }
 
