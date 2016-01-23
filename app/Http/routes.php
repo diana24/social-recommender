@@ -32,7 +32,7 @@ Route::get('login', 'FacebookAuthController@authenticate');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
-    Route::get('rdf', 'RdfController@test');
+    Route::get('rdf', 'RdfController@getAutoRec');
     Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
     Route::get('oauth2callback', 'GoogleAuthController@oauth2callback');
     Route::get('buildGraph', 'GraphController@makeGraph');

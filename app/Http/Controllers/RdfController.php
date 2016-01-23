@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use EasyRdf_Graph;
 use EasyRdf_Namespace;
 use EasyRdf_Sparql_Client;
+use Illuminate\Support\Facades\Auth;
 
 class RdfController extends Controller
 {
@@ -24,8 +25,10 @@ class RdfController extends Controller
         EasyRdf_Namespace::set('owl', 'http://www.w3.org/2002/07/owl#');
         EasyRdf_Namespace::set('geo', 'http://www.w3.org/2003/01/geo/wgs84_pos#');
         EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
+        EasyRdf_Namespace::set('dbr', 'http://dbpedia.org/resource/');
         EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
         EasyRdf_Namespace::set('sch', 'http://schema.org');
+        // http://bnb.data.bl.uk/sparql
     }
 
     public function getMyData(EasyRdf_Graph $graph){
@@ -58,11 +61,11 @@ class RdfController extends Controller
         if($person->get('dbo:occupation')){
             $me['occupation']=$person->get('dbo:occupation')->getValue();
         }
-//        $me['schools']=[];dd($person->get('dbo:school'));
-//        foreach($person->get('dbo:school') as $school){dd($school);
-//            array_add($me['schools'],$school->get('dbp:name')->getValue());
-//        }
-//        dd($me);
+        $me['schools']=[]; dd($person->all('dbo:school'));
+        foreach($person->get('dbo:school') as $school){
+            array_push($me['schools'],$school->get('dbp:name')->getValue());
+        }
+        dd($me);
         return $me;
     }
 
@@ -105,15 +108,21 @@ class RdfController extends Controller
                 if($resource->get('sch:name')){
                     $book['name'] = $resource->get('sch:name')->getValue();
                 }
-
+                $book['authors']=[];
+                foreach($resource->all('sch:author') as $author){
+                    array_push($book['authors'], $author->get('foaf:name')->getValue());
+                }
                 if($resource->get('sch:description')){
                     $book['description'] = $resource->get('sch:description')->getValue();
                 }
-
-                if($resource->get('sch:isbn')){
-                    $book['isbn'] = $resource->get('sch:isbn')->getValue();
+                $book['isbn']=[];
+                foreach($resource->all('sch:isbn') as $isbn){
+                    array_push($book['isbn'], $isbn->getValue());
                 }
-
+                $book['publishers']=[];
+                foreach($resource->all('sch:publisher') as $publisher){
+                    array_push($book['publishers'], $publisher->get('foaf:name')->getValue());
+                }
                 if($resource->get('sch:numberOfPages')){
                     $book['numberOfPages'] = $resource->get('sch:numberOfPages')->getValue();
                 }
@@ -122,43 +131,171 @@ class RdfController extends Controller
                     $book['genre'] = $resource->get('sch:genre')->getValue();
                 }
 
+                if($resource->get('sch:aggregateRating')){
+                    $agr = $resource->get('sch:aggregateRating');
+                    $count = $agr->get('sch:ratingCount')->getValue();
+                    $value = $agr->get('sch:ratingValue')->getValue();
+                    $book['ratingCount']=$count;
+                    $book['ratingValue']=$value;
+                }
+
                 array_push($books,$book);
             }
         }
-        dd($books);
         return $books;
     }
+
+    public function getDBPediaUri($resourceName="J. K. Rowling"){
+        $resourceName = str_replace(" ","_",ucwords(strtolower($resourceName)));
+        $this->initRdf();
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $uri = 'http://dbpedia.org/resource/'.$resourceName; //dd($uri);
+        $result = $sparql->query(
+            'select ?uri ?id { values ?uri { <'.$uri.'> } ?uri <http://dbpedia.org/ontology/wikiPageID> ?id }'
+        );
+        return $result[0]->uri->getUri();
+    }
+
+    function getAllLiteraryGenres(){
+        $this->initRdf();
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $result = $sparql->query(
+            'SELECT str(?literary_genre) AS ?gen_literar, count($book) AS $nr_carti WHERE {'.
+            '  ?book rdf:type dbo:Book .'.
+            '  ?book <http://dbpedia.org/ontology/literaryGenre> ?literary_genre .'.
+            '} ORDER BY DESC(count($book)) '.
+            'LIMIT 100'
+        );
+        dd($result->primaryTopic());
+    }
+
+    public function getResourceInfo($resourceName="The Lord of the Rings"){
+//        $resourceName = str_replace(" ","_",ucwords(strtolower($resourceName)));
+        $this->initRdf();
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+//        $uri = 'http://dbpedia.org/resource/'.$resourceName; //dd($uri);
+        $query = 'describe ?book where { ?book dbp:name \''.$resourceName.'\'@en }';
+        $result = $sparql->query($query);
+
+        return $result;
+    }
+
+    function getAutoRec($graphUri=""){
+        $path = Auth::user()->getGraphPath();
+
+        $this->initRdf();
+        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+
+        $books = $this->getBooks($graph);
+//        $me = $this->getMyData($graph);
+//        $events = $this->getEvents($graph);
+
+        foreach($books as $book){
+            $this->getBookRec($book);
+        }
+
+//        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+//        $result = $sparql->query(
+//            'SELECT * WHERE {'.
+//            '  ?book rdf:type dbo:Book .'.
+//            '  ?book rdfs:label ?label .'.
+//            '  ?book dbp:name ?name .'.
+//            '  ?book dbo:author ?author .'.
+//            '  ?book dbo:literaryGenre ?literaryGenre .'.
+//            '  ?book dbo:numberOfPages ?numberOfPages .'.
+//            '  ?book dbo:isbn ?isbn .'.
+//            '  FILTER ( lang(?label) = "en" )'.
+//            '} ORDER BY ?label '.
+//            'LIMIT 10'
+//        );
+
+    }
+
+    function getBookRec($book){
+        $name = $book['name'];
+        $graph = $this->getResourceInfo($name);
+        foreach($graph->resources() as $resource){
+            $uri = $resource->getUri();
+            $works = $graph->allOfType('dbo:Work');
+            $books = $graph->allOfType('dbo:Book');
+            $films = $graph->allOfType('dbo:Film');
+            $people = $graph->allOfType('foaf:Person');
+            dd($people);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function test(){
         $this->initRdf();
         $docuri = url("/")."/graphs/2.xml";
         $graph = EasyRdf_Graph::newAndLoad($docuri, 'rdfxml');
-
-        $this->getBooks($graph);
+//        return $graph->dump('html');
 
 //        dd(json_decode($graph->serialise('json')));
-//        return $graph->dump('html');
 
 
 //        $books = $person->resource('sch:Book');
-        dd($person->get('foaf:name'));
+//        dd($person->get('foaf:name'));
 
-        EasyRdf_Namespace::set('category', 'http://dbpedia.org/resource/Category:');
+
+
+
+
+
+
+        EasyRdf_Namespace::set('category', 'http://dbpedia.org/property/category:');
         EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
 
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
-            'SELECT * WHERE {'.
-            '  ?country rdf:type dbo:Book .'.
-            '  ?country rdfs:label ?label .'.
-            '  ?country dc:subject category:Fiction .'.
+            'SELECT ?name, ?nr WHERE {'.
+            '  ?book rdf:type dbo:Book .'.
+            '  ?book rdfs:label ?label .'.
+            '  ?book dbp:name ?name .'.
+            '  ?book dbo:numberOfPages ?nr .'.
+            '  ?book dbo:isbn ?isbn .'.
+//            '  ?country dc:subject category:Fiction .'.
             '  FILTER ( lang(?label) = "en" )'.
             '} ORDER BY ?label '.
-            'LIMIT 20'
+            'LIMIT 50'
         );
-
-        foreach($result as $row){
-            dd($row);
-        }
+dd($result);
+//        foreach($result as $row){
+//            dd($row);
+//        }
     }
 }

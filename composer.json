@@ -11,7 +11,8 @@
         "lucadegasperi/oauth2-server-laravel": "^5.1",
         "google/apiclient": "^1.1",
         "willdurand/geocoder": "^3.3",
-		"illuminate/html": "~5.0"
+		"illuminate/html": "~5.0",
+		"ml/json-ld": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

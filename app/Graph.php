@@ -3,13 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Graph extends Model
 {
-    public $filepath;
+    protected $table = 'graphs';
+    protected $fillable = ['user_id','filepath'];
 
-    public function __construct($path_to_file){
+    public function __construct($path_to_file=null){
         $this->filepath = $path_to_file;
+        $this->user_id = Auth::user()->id;
     }
 
     public function parse(){
@@ -34,5 +37,9 @@ class Graph extends Model
         {
             return false;
         }
+    }
+
+    public function user(){
+        return $this->belongsTo('\App\User');
     }
 }

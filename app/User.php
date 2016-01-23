@@ -45,4 +45,11 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany('App\GoogleAccount');
     }
+    public function graphs()
+    {
+        return $this->hasMany('App\Graph');
+    }
+    public function getGraphPath(){
+        return $this->graphs()->orderBy('id','asc')->first()['filepath'];
+    }
 }

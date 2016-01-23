@@ -22,7 +22,18 @@ use Geocoder\Provider\GoogleMaps;
 use Google_Service_Calendar;
 
 class GraphController extends Controller
-{
+{    
+	private $schools;
+    private $schoolCount;
+
+	private $authors;
+    private $authorCount;
+
+	private $organizations;
+    private $organizationCount;
+
+    private $otherPeople;
+
     function makeGraph()
     {
         $filepath = "graphs/".Auth::user()->id.'.xml';
@@ -36,10 +47,27 @@ class GraphController extends Controller
 
         $this->addHeader($fh);
 
+        $this->schools=[];
+        $this->schoolCount=0;
+
         $this->addPeople($fh, $client);
 
+        $this->addSchools($fh);
+
+        $this->otherPeople=[];
+
         $this->addEvents($fh,$client);
+
+        $this->authors=[];
+        $this->authorCount=0;
+
+        $this->organizations=[];
+        $this->organizationCount=0;
+
         $this->addBooks($fh,$client);
+
+        $this->addOtherPeople($fh);
+        $this->addOrganizations($fh);
 
         fwrite($fh, "</rdf:RDF>\n");
 
@@ -47,7 +75,44 @@ class GraphController extends Controller
 
 //        $g = new Graph($filepath);
 //        $g->upload(Auth::user()->id);
+        $g = new Graph(url("/")."/".$filepath);
+        Auth::user()->graphs()->save($g);
         return ("Done! Get your graph at ".url("/")."/".$filepath);
+    }
+	
+    function addSchools($fh){
+        foreach($this->schools as $id => $name){
+            fwrite($fh, "\t<dbo:EducationalInstitution rdf:ID=\"".$id."\">\n");
+            fwrite($fh, "\t\t<dbp:name>");
+            fwrite($fh, $this->toCdata($name));
+            fwrite($fh, "</dbp:name>\n");
+            fwrite($fh, "\t</dbo:EducationalInstitution>\n");
+        }
+    }
+    function addOrganizations($fh){
+        foreach($this->organizations as $id => $name){
+            fwrite($fh, "\t<foaf:Organization rdf:ID=\"".$id."\">\n");
+            fwrite($fh, "\t\t<foaf:name>");
+            fwrite($fh, $this->toCdata($name));
+            fwrite($fh, "</foaf:name>\n");
+            fwrite($fh, "\t</foaf:Organization>\n");
+        }
+    }
+    function addOtherPeople($fh){
+        foreach($this->otherPeople as $id => $name){
+            fwrite($fh, "\t<foaf:Person rdf:ID=\"".$id."\">\n");
+            fwrite($fh, "\t\t<foaf:name>");
+            fwrite($fh, $this->toCdata($name));
+            fwrite($fh, "</foaf:name>\n");
+            fwrite($fh, "\t</foaf:Person>\n");
+        }
+        foreach($this->authors as $id => $name){
+            fwrite($fh, "\t<foaf:Person rdf:ID=\"".$id."\">\n");
+            fwrite($fh, "\t\t<foaf:name>");
+            fwrite($fh, $this->toCdata($name));
+            fwrite($fh, "</foaf:name>\n");
+            fwrite($fh, "\t</foaf:Person>\n");
+        }
     }
 
     function writeCurrentLocations($fh, $loc, $tabs){
@@ -80,7 +145,7 @@ class GraphController extends Controller
                 $events = $calendarServ->events->listEvents($calendar->id);
                 foreach($events as $event){
                     fwrite($fh, "\t<sch:Event rdf:ID=\"".$event->id."\">\n");
-                    fwrite($fh, "\t\t<sch:name>".$event->summary."</sch:name>\n");
+                    fwrite($fh, "\t\t<sch:name>".$this->toCdata($event->summary)."</sch:name>\n");
                     if(isset($event->description)){
                         fwrite($fh, "\t\t<sch:description>"
                             .$this->toCdata(strip_tags(preg_replace("/&#?[a-z0-9]{2,8};/i","",html_entity_decode($event->description))))
@@ -107,22 +172,35 @@ class GraphController extends Controller
                         }
                     }
                     if(isset($event->organizer)) {
-                        fwrite($fh, "\t\t<sch:organizer>\n");
-                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"" . $event->organizer['id'] . "\">\n");
-                        fwrite($fh, "\t\t\t\t<foaf:name>" . $event->organizer['displayName'] . "</foaf:name>\n");
-                        fwrite($fh, "\t\t\t</foaf:Person>\n");
-                        fwrite($fh, "\t\t</sch:organizer>\n");
+                        if(!array_has($this->otherPeople,$event->organizer['id'])){
+                            $id = $event->organizer['id'];
+                            $name = $event->organizer['displayName'];
+                            $this->otherPeople[$id]=$name;
+                        }
+
+                        fwrite($fh, "\t\t<sch:organizer rdf:resource=\"#".$event->organizer['id']."\"/>\n");
+//                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"" . $event->organizer['id'] . "\">\n");
+//                        fwrite($fh, "\t\t\t\t<foaf:name>" . $event->organizer['displayName'] . "</foaf:name>\n");
+//                        fwrite($fh, "\t\t\t</foaf:Person>\n");
+//                        fwrite($fh, "\t\t</sch:organizer>\n");
                     }
                     foreach($event->attendees as $attendee){
                         $id = $attendee['id'];
                         if(isset($attendee['self']) && $attendee['self']==true){
                             $id='me';
                         }
-                        fwrite($fh, "\t\t<sch:attendee>\n");
-                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"".$id."\">\n");
-                        fwrite($fh, "\t\t\t\t<foaf:name>".$attendee['displayName']."</foaf:name>\n");
-                        fwrite($fh, "\t\t\t</foaf:Person>\n");
-                        fwrite($fh, "\t\t</sch:attendee>\n");
+                        else{
+                            if(!array_has($this->otherPeople,$attendee['id'])){
+                                $id = $attendee['id'];
+                                $name = $attendee['displayName'];
+                                $this->otherPeople[$id]=$name;
+                            }
+                        }
+                        fwrite($fh, "\t\t<sch:attendee rdf:resource=\"#".$id."\"/>\n");
+//                        fwrite($fh, "\t\t\t<foaf:Person rdf:ID=\"".$id."\">\n");
+//                        fwrite($fh, "\t\t\t\t<foaf:name>".$attendee['displayName']."</foaf:name>\n");
+//                        fwrite($fh, "\t\t\t</foaf:Person>\n");
+//                        fwrite($fh, "\t\t</sch:attendee>\n");
 
                     }
                     fwrite($fh, "\t</sch:Event>\n");
@@ -141,23 +219,40 @@ class GraphController extends Controller
                 foreach($books as $book) {
                     fwrite($fh, "\t<sch:Book rdf:ID=\"" . $book->id . "\">\n");
                     $info = $book['volumeInfo'];
-                    fwrite($fh, "\t\t<sch:name>" . $info['title'] . "</sch:name>\n");
+                    fwrite($fh, "\t\t<sch:name>" . $this->toCdata($info['title']) . "</sch:name>\n");
                     if(isset($info['authors'])) {
                         foreach ($info['authors'] as $author) {
-                            fwrite($fh, "\t\t<sch:author>\n");
-                            fwrite($fh, "\t\t\t<foaf:Person>\n");
-                            fwrite($fh, "\t\t\t\t<foaf:name>" . $author . "</foaf:name>\n");
-                            fwrite($fh, "\t\t\t</foaf:Person>\n");
-                            fwrite($fh, "\t\t</sch:author>\n");
+                            $name = $author;
+                            $key = array_search($name, $this->authors);
+                            if(!$key){
+                                $id="author".$this->authorCount;
+                                $this->authorCount++;
+                                $this->authors[$id]=$name;
+                                $key=$id;
+                            }
+                            fwrite($fh, "\t\t<sch:author rdf:resource=\"#".$key."\"/>\n");
+                            
+//                            fwrite($fh, "\t\t\t<foaf:Person>\n");
+//                            fwrite($fh, "\t\t\t\t<foaf:name>" . $author . "</foaf:name>\n");
+//                            fwrite($fh, "\t\t\t</foaf:Person>\n");
+//                            fwrite($fh, "\t\t</sch:author>\n");
                         }
                     }
 
                     if (isset($info['publisher'])) {
-                        fwrite($fh, "\t\t<sch:publisher>\n");
-                        fwrite($fh, "\t\t\t<foaf:Organization>\n");
-                        fwrite($fh, "\t\t\t\t<foaf:name>" . $info['publisher'] . "</foaf:name>\n");
-                        fwrite($fh, "\t\t\t</foaf:Organization>\n");
-                        fwrite($fh, "\t\t</sch:publisher>\n");
+                        $name = $info['publisher'];
+                        $key = array_search($name, $this->organizations);
+                        if(!$key){
+                            $id="organization".$this->organizationCount;
+                            $this->organizationCount++;
+                            $this->organizations[$id]=$name;
+                            $key=$id;
+                        }
+                        fwrite($fh, "\t\t<sch:publisher rdf:resource=\"#".$key."\"/>\n");
+//                        fwrite($fh, "\t\t\t<foaf:Organization>\n");
+//                        fwrite($fh, "\t\t\t\t<foaf:name>" . $info['publisher'] . "</foaf:name>\n");
+//                        fwrite($fh, "\t\t\t</foaf:Organization>\n");
+//                        fwrite($fh, "\t\t</sch:publisher>\n");
                     }
                     if (isset($info['description'])) {
                         fwrite($fh, "\t\t<sch:description>" .
@@ -186,7 +281,7 @@ class GraphController extends Controller
                     }
                     if(isset($info['categories'])){
                         foreach($info['categories'] as $categ){
-                            fwrite($fh, "\t\t<sch:genre>".$categ."</sch:genre>\n");
+                            fwrite($fh, "\t\t<sch:genre>".$this->toCdata($categ)."</sch:genre>\n");
                         }
                     }
                     fwrite($fh, "\t</sch:Book>\n");
@@ -260,15 +355,15 @@ class GraphController extends Controller
     function addMyData($fh, $me){
         if(isset($me->displayName)){
             // foaf:name
-            fwrite($fh, "\t\t<foaf:name>" . $me->displayName. "</foaf:name>\n");
+            fwrite($fh, "\t\t<foaf:name>" . $this->toCdata($me->displayName). "</foaf:name>\n");
         }
         if(method_exists($me, 'getName') && isset($me->getName()['givenName'])){
             // foaf:givenname
-            fwrite($fh, "\t\t<foaf:givenname>" . $me->getName()['givenName'] ."</foaf:givenname>\n");
+            fwrite($fh, "\t\t<foaf:givenname>" . $this->toCdata($me->getName()['givenName']) ."</foaf:givenname>\n");
         }
         if(method_exists($me, 'getName') && isset($me->getName()['familyName'])){
             // foaf:family_name
-            fwrite($fh, "\t\t<foaf:family_name>" . $me->getName()['familyName'] . "</foaf:family_name>\n");
+            fwrite($fh, "\t\t<foaf:family_name>" . $this->toCdata($me->getName()['familyName']) . "</foaf:family_name>\n");
         }
         //photo
         fwrite($fh, "\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($me->image['url']) . "\"/>\n");
@@ -290,23 +385,37 @@ class GraphController extends Controller
         }
         if(isset($me->gender)){
             //gender
-            fwrite($fh, "\t\t<foaf:gender>" . $me->gender . "</foaf:gender>\n");
+            fwrite($fh, "\t\t<foaf:gender>" . $this->toCdata($me->gender) . "</foaf:gender>\n");
         }
         if(isset($me->occupation)){
             //occupation
-            fwrite($fh, "\t\t<dbo:occupation>" . $me->occupation . "</dbo:occupation>\n");
+            fwrite($fh, "\t\t<dbo:occupation>" . $this->toCdata($me->occupation) . "</dbo:occupation>\n");
         }
 
+        $myschools=[];
         if(isset($me->organizations) && count($me->organizations)>0){
             foreach($me->organizations as $org){
                 if($org['type']=='school'){
-                    fwrite($fh, "\t\t<dbo:school>\n");
-                    fwrite($fh, "\t\t\t<dbo:EducationalInstitution>\n");
-                    fwrite($fh, "\t\t\t\t<dbp:name>");
-                    fwrite($fh, $org['name']);
-                    fwrite($fh, "</dbp:name>\n");
-                    fwrite($fh, "\t\t\t</dbo:EducationalInstitution>\n");
-                    fwrite($fh, "\t\t</dbo:school>\n");
+                    $name = $org['name'];
+                    $key = array_search($name, $this->schools);
+                    if(!$key){
+                        $id="school".$this->schoolCount;
+                        $this->schoolCount++;
+                        $this->schools[$id]=$name;
+                        $key=$id;
+                    }
+                    if(array_search($name,$myschools)==false){
+                        fwrite($fh, "\t\t<dbo:school rdf:resource=\"#".$key."\"/>\n");
+                        $myschools[$key]=$name;
+                    }
+//
+//                    fwrite($fh, "\t\t<dbo:school>\n");
+//                    fwrite($fh, "\t\t\t<dbo:EducationalInstitution>\n");
+//                    fwrite($fh, "\t\t\t\t<dbp:name>");
+//                    fwrite($fh, $org['name']);
+//                    fwrite($fh, "</dbp:name>\n");
+//                    fwrite($fh, "\t\t\t</dbo:EducationalInstitution>\n");
+//                    fwrite($fh, "\t\t</dbo:school>\n");
                 }
             }
         }
@@ -343,20 +452,20 @@ class GraphController extends Controller
 
         if(isset($gperson->displayName)){
             // foaf:name
-            fwrite($fh, "\t\t\t\t<foaf:name>" . $gperson->displayName. "</foaf:name>\n");
+            fwrite($fh, "\t\t\t\t<foaf:name>" . $this->toCdata($gperson->displayName). "</foaf:name>\n");
         }
         if(method_exists($gperson, 'getName') && isset($gperson->getName()['givenName'])){
             // foaf:givenname
-            fwrite($fh, "\t\t\t\t<foaf:givenname>" . $gperson->getName()['givenName'] ."</foaf:givenname>\n");
+            fwrite($fh, "\t\t\t\t<foaf:givenname>" . $this->toCdata($gperson->getName()['givenName']) ."</foaf:givenname>\n");
         }
         if(method_exists($gperson, 'getName') && isset($gperson->getName()['familyName'])){
             // foaf:family_name
-            fwrite($fh, "\t\t\t\t<foaf:family_name>" . $gperson->getName()['familyName'] . "</foaf:family_name>\n");
+            fwrite($fh, "\t\t\t\t<foaf:family_name>" . $this->toCdata($gperson->getName()['familyName']) . "</foaf:family_name>\n");
         }
         //photo
-        fwrite($fh, "\t\t\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($gperson->image['url']) . "\"/>\n");
+        fwrite($fh, "\t\t\t\t<foaf:depiction rdf:resource=\"" . $this->toCdata($this->toCdata($gperson->image['url'])) . "\"/>\n");
         //homepage
-        fwrite($fh, "\t\t\t\t<foaf:homepage rdf:resource=\"" . $this->toCdata($gperson->url) . "\"/>\n");
+        fwrite($fh, "\t\t\t\t<foaf:homepage rdf:resource=\"" . $this->toCdata($this->toCdata($gperson->url)) . "\"/>\n");
         //sites
         if(isset($gperson->urls) && count($gperson->urls)>0){
             foreach($gperson->urls as $url){
@@ -372,23 +481,37 @@ class GraphController extends Controller
         }
         if(isset($gperson->gender)){
             //gender
-            fwrite($fh, "\t\t\t\t<foaf:gender>" . $gperson->gender . "</foaf:gender>\n");
+            fwrite($fh, "\t\t\t\t<foaf:gender>" . $this->toCdata($gperson->gender) . "</foaf:gender>\n");
         }
         if(isset($gperson->occupation)){
             //occupation
-            fwrite($fh, "\t\t\t\t<dbo:occupation>" . $gperson->occupation . "</dbo:occupation>\n");
+            fwrite($fh, "\t\t\t\t<dbo:occupation>" . $this->toCdata($gperson->occupation) . "</dbo:occupation>\n");
         }
 
+        $myschools=[];
         if(isset($gperson->organizations) && count($gperson->organizations)>0){
             foreach($gperson->organizations as $org){
                 if($org['type']=='school'){
-                    fwrite($fh, "\t\t\t\t<dbo:school>\n");
-                    fwrite($fh, "\t\t\t\t\t<dbo:EducationalInstitution>\n");
-                    fwrite($fh, "\t\t\t\t\t\t<dbp:name>");
-                    fwrite($fh, $org['name']);
-                    fwrite($fh, "</dbp:name>\n");
-                    fwrite($fh, "\t\t\t\t\t</dbo:EducationalInstitution>\n");
-                    fwrite($fh, "\t\t\t\t</dbo:school>\n");
+                    $name = $org['name'];
+                    $key = array_search($name, $this->schools);
+                    if(!$key){
+                        $id="school".$this->schoolCount;
+                        $this->schoolCount++;
+                        $this->schools[$id]=$name;
+                        $key=$id;
+                    }
+                    if(array_search($name,$myschools)==false){
+                        fwrite($fh, "\t\t\t\t<dbo:school rdf:resource=\"#".$key."\"/>\n");
+                        $myschools[$key]=$name;
+                    }
+
+//                    fwrite($fh, "\t\t\t\t<dbo:school>\n");
+//                    fwrite($fh, "\t\t\t\t\t<dbo:EducationalInstitution>\n");
+//                    fwrite($fh, "\t\t\t\t\t\t<dbp:name>");
+//                    fwrite($fh, $org['name']);
+//                    fwrite($fh, "<dbp:name>\n");
+//                    fwrite($fh, "\t\t\t\t\t</dbo:EducationalInstitution>\n");
+//                    fwrite($fh, "\t\t\t\t</dbo:school>\n");
                 }
             }
         }
