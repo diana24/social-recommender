@@ -543,4 +543,14 @@ class GraphController extends Controller
         fwrite($fh, "\t\t\t</foaf:Person>\n");
         fwrite($fh, "\t\t</foaf:knows>\n");
     }
+
+    function displayData(){
+        $me = (new RdfController())->getMyData();
+        $people = (new RdfController())->getPeople();
+        $events = (new RdfController())->getEvents();
+        $books = (new RdfController())->getBooks();
+
+        return json_encode(['me' => $me, 'people' => $people, 'events' => $events, 'books' => $books]);
+
+    }
 }

@@ -52,4 +52,17 @@ class User extends Model implements AuthenticatableContract,
     public function getGraphPath(){
         return $this->graphs()->orderBy('id','asc')->first()['filepath'];
     }
+
+    public function lists(){
+        return $this->hasMany('\App\UserList');
+    }
+    public function savedItems(){
+        return $this->hasMany('\App\SavedItem');
+    }
+    public function favorites(){
+        return $this->savedItems()->where('status'=='liked');
+    }
+    public function blocked(){
+        return $this->savedItems()->where('status'=='blocked');
+    }
 }

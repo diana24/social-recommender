@@ -36,4 +36,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
     Route::get('oauth2callback', 'GoogleAuthController@oauth2callback');
     Route::get('buildGraph', 'GraphController@makeGraph');
+
+    Route::get('getLiteraryGenres', 'DataController@getAllLiteraryGenres');
+    Route::get('getCountries', 'DataController@getAllCountries');
+    Route::get('getCities', 'DataController@getAllCities');
+    Route::get('getIllustrators', 'DataController@getIllustrators');
+    Route::get('getAuthors', 'DataController@getAuthors');
+
+    Route::get('search/books', 'BookRdfController@searchBooks');
+
+    Route::get('graph', 'GraphController@displayData');
+    Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
+    Route::get('users/me', 'UserController@show');
+    Route::resource('lists', 'ListController@index');
+    Route::get('saved_items', 'SavedItemsController@index');
+    Route::get('save_item', 'SavedItemsController@store');
+    Route::get('addToList', 'ListController@addToList');
 });
