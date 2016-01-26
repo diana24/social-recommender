@@ -38,13 +38,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('buildGraph', 'GraphController@makeGraph');
 
     Route::get('getLiteraryGenres', 'DataController@getAllLiteraryGenres');
+    Route::get('getMovieGenres', 'DataController@getAllMovieGenres');
     Route::get('getCountries', 'DataController@getAllCountries');
     Route::get('getCities', 'DataController@getAllCities');
     Route::get('getIllustrators', 'DataController@getIllustrators');
     Route::get('getAuthors', 'DataController@getAuthors');
+    Route::get('getDirectors', 'DataController@getDirectors');
+    Route::get('getActors', 'DataController@getActors');
+    Route::get('getMusicalArtists', 'DataController@getMusicalArtists');
+    Route::get('getPlaces', 'DataController@getPlaces');
 
     Route::get('search/books', 'BookRdfController@searchBooks');
+    Route::get('search/films', 'FilmRdfController@searchFilms');
     Route::get('recommendations/books', 'BookRdfController@recommendBooks');
+    Route::get('search/events', 'EventRdfController@searchEvents');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');

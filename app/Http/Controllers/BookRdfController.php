@@ -134,8 +134,9 @@ class BookRdfController extends Controller
     }
 
     function searchBooks(Request $request=null){
+        (new RdfController())->initRdf();
         if(!$request){
-            return [];
+            return json_encode([]);
         }
         $authorUri = $request->get('authorUri');
         $illustratorUri = $request->get('illustratorUri');
@@ -204,6 +205,7 @@ class BookRdfController extends Controller
     }
 
     function getBookUri($resourceName){
+
         $aux = str_replace(" ","_",ucwords(strtolower($resourceName)));
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');

@@ -36,6 +36,30 @@ class DataController extends Controller
         }
        return json_encode($lit);
     }
+    function getAllMovieGenres(Request $request=null){
+        (new RdfController())->initRdf();
+        $name = isset($request) ? $request->get('name') : "" ;
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $result = $sparql->query(
+            'SELECT str(?literary_genre) AS ?gen_literar, count($book) AS $nr_carti, ?label WHERE {'.
+            '  ?book rdf:type dbo:Film .'.
+            '  ?book <http://dbpedia.org/ontology/genre> ?literary_genre .'.
+            '  ?literary_genre rdfs:label ?label .'.
+            '  FILTER ( lang(?label) = "en" )'.
+            '  FILTER regex( str(?label), "'.$name.'", "i" )'.
+//            '} ORDER BY DESC(count($book)) '.
+            '} ORDER BY ($label) '.
+            'LIMIT 100'
+        );
+        $lit = [];
+        foreach($result as $row){
+            $l['uri']=$row->gen_literar->getValue();
+            $l['name']=$row->label->getValue();
+            $l['book_count']=$row->nr_carti->getValue();
+            array_push($lit,$l);
+        }
+       return json_encode($lit);
+    }
     function getAllCountries(Request $request=null){
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -119,6 +143,97 @@ class DataController extends Controller
             $illustrators = [];
             foreach($result as $row){
                 $l['uri']=$row->illustrator->getUri();
+                $l['name']=$row->label->getValue();
+                array_push($illustrators,$l);
+            }
+            return json_encode($illustrators);
+        }
+    }
+    function getDirectors(Request $request=null){
+        $name = $request->get('name');
+        if(isset($name)){
+            (new RdfController())->initRdf();
+            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $result = $sparql->query(
+                'select distinct ?illustrator, ?label, ?val where {
+                        ?illustrator rdf:type foaf:Person.
+                        ?illustrator rdfs:label ?label.
+                        ?film dbo:director ?illustrator.
+                      filter regex(str(?label),"'.$name.'","i")
+                      FILTER ( lang(?label) = "en" )
+                    } limit 30'
+            );
+            $illustrators = [];
+            foreach($result as $row){
+                $l['uri']=$row->illustrator->getUri();
+                $l['name']=$row->label->getValue();
+                array_push($illustrators,$l);
+            }
+            return json_encode($illustrators);
+        }
+    }
+    function getActors(Request $request=null){
+        $name = $request->get('name');
+        if(isset($name)){
+            (new RdfController())->initRdf();
+            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $result = $sparql->query(
+                'select distinct ?illustrator, ?label, ?val where {
+                        ?illustrator rdf:type foaf:Person.
+                        ?illustrator rdfs:label ?label.
+                        ?film dbo:starring ?illustrator.
+                      filter regex(str(?label),"'.$name.'","i")
+                      FILTER ( lang(?label) = "en" )
+                    } limit 30'
+            );
+            $illustrators = [];
+            foreach($result as $row){
+                $l['uri']=$row->illustrator->getUri();
+                $l['name']=$row->label->getValue();
+                array_push($illustrators,$l);
+            }
+            return json_encode($illustrators);
+        }
+    }
+    function getMusicalArtists(Request $request=null){
+        $name = $request->get('name');
+        if(isset($name)){
+            (new RdfController())->initRdf();
+            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $result = $sparql->query(
+                'select distinct ?illustrator, ?label, ?val where {
+                        ?illustrator rdf:type dbo:MusicalArtist.
+                        ?illustrator rdfs:label ?label.
+                        ?film dbo:musicComposer ?illustrator.
+                      filter regex(str(?label),"'.$name.'","i")
+                      FILTER ( lang(?label) = "en" )
+                    } limit 30'
+            );
+            $illustrators = [];
+            foreach($result as $row){
+                $l['uri']=$row->illustrator->getUri();
+                $l['name']=$row->label->getValue();
+                array_push($illustrators,$l);
+            }
+            return json_encode($illustrators);
+        }
+    }
+    function getPlaces(Request $request=null){
+        $name = $request->get('name');
+        if(isset($name)){
+            (new RdfController())->initRdf();
+            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $result = $sparql->query(
+                'select distinct ?place, ?label where {
+                        ?place rdf:type dbo:Place.
+                        ?place rdfs:label ?label.
+                      filter regex(str(?label),"'.$name.'","i")
+                      FILTER ( lang(?label) = "en" )
+                    } limit 30'
+            );
+            $illustrators = [];
+            foreach($result as $row){
+                $l['uri']=$row->place->getUri();
                 $l['name']=$row->label->getValue();
                 array_push($illustrators,$l);
             }
