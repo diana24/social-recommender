@@ -27,6 +27,7 @@ class RdfController extends Controller
         EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
         EasyRdf_Namespace::set('dbr', 'http://dbpedia.org/resource/');
         EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
+        EasyRdf_Namespace::set('dbc', 'http://dbpedia.org/class/');
         EasyRdf_Namespace::set('sch', 'http://schema.org');
 //        EasyRdf_Namespace::set('bif', 'http://www.openlinksw.com/schemas/bif#');
         // http://bnb.data.bl.uk/sparql
@@ -37,6 +38,9 @@ class RdfController extends Controller
         $this->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $uri = 'http://dbpedia.org/resource/'.$resourceName; //dd($uri);
+        $result = $sparql->query(
+            'select ?uri ?id { values ?uri { <'.$uri.'> } ?uri <http://dbpedia.org/ontology/wikiPageID> ?id }'
+        );
         $result = $sparql->query(
             'select ?uri ?id { values ?uri { <'.$uri.'> } ?uri <http://dbpedia.org/ontology/wikiPageID> ?id }'
         );

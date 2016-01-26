@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getAuthors', 'DataController@getAuthors');
 
     Route::get('search/books', 'BookRdfController@searchBooks');
+    Route::get('recommendations/books', 'BookRdfController@recommendBooks');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
