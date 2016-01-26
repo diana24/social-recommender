@@ -4,4 +4,34 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchPlace") Search Places
     .panel-collapse.collapse#searchPlace
         .panel-body
-            p Work in progress...
+            form.search-form(role="form")
+                .row
+                    .col-md-12
+                        label Place Name
+                        .form-group
+                            input.form-control#givenPlaceName(type="text", name="givenPlaceName")
+                    .col-md-12
+                        label Country
+                        .form-group
+                             input.form-control#country(type="text", name="country")
+                        label Ranking
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") from..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") to..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-12.col-sm-12.col-xs-12.text-right
+                        button.btn(type="submit", name="Search", value="Search") Search
