@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class DataController extends Controller
 {
-    function getAllLiteraryGenres(){
+    function getAllLiteraryGenres(Request $request=null){
         (new RdfController())->initRdf();
+        $name = isset($request) ? $request->get('name') : "" ;
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT str(?literary_genre) AS ?gen_literar, count($book) AS $nr_carti, ?label WHERE {'.
@@ -21,6 +22,7 @@ class DataController extends Controller
             '  ?book <http://dbpedia.org/ontology/literaryGenre> ?literary_genre .'.
             '  ?literary_genre rdfs:label ?label .'.
             '  FILTER ( lang(?label) = "en" )'.
+            '  FILTER regex( str(?label), "'.$name.'", "i" )'.
 //            '} ORDER BY DESC(count($book)) '.
             '} ORDER BY ($label) '.
             'LIMIT 100'
@@ -34,14 +36,15 @@ class DataController extends Controller
         }
        return json_encode($lit);
     }
-    function getAllCountries(){
+    function getAllCountries(Request $request=null){
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $name = isset($request) ? $request->get('name') : "" ;
         $result = $sparql->query(
             'select ?country, ?label where {
                 ?country <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Member_states_of_the_United_Nations>;
                 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Country> .
-                ?country rdfs:label ?label . FILTER ( lang(?label) = "en" )
+                ?country rdfs:label ?label . FILTER ( lang(?label) = "en" ) FILTER regex( str(?label), "'.$name.'", "i" )
                 } order by ?country'
         );
         $countries = [];
@@ -62,7 +65,7 @@ class DataController extends Controller
                         ?city rdfs:label ?label.
                         ?city dbo:country ?country.
                         ?city dbo:country <'.$request['countryUri'].'>.
-                      filter contains(?label,"'.$request['city'].'")
+                      filter regex(str(?label),"'.$request['city'].'", "i")
                       filter ( lang(?label) = "en" )
                     } order by (?label) limit 30'
 
@@ -76,7 +79,6 @@ class DataController extends Controller
             return json_encode($cities);
         }
     }
-
     function getIllustrators(Request $request=null){
         $name = $request->get('name');
         if(isset($name)){
@@ -87,7 +89,7 @@ class DataController extends Controller
                         ?illustrator rdf:type foaf:Person.
                         ?illustrator rdfs:label ?label.
                         ?book dbo:illustrator ?illustrator.
-                      filter contains(?label,"'.$name.'")
+                      filter regex(str(?label),"'.$name.'", "i")
                       FILTER ( lang(?label) = "en" )
                     } limit 30'
             );
@@ -110,7 +112,7 @@ class DataController extends Controller
                         ?illustrator rdf:type foaf:Person.
                         ?illustrator rdfs:label ?label.
                         ?book dbo:author ?illustrator.
-                      filter contains(?label,"'.$name.'")
+                      filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
                     } limit 30'
             );
