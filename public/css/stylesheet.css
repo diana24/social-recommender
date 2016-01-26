@@ -31,17 +31,27 @@ body {
   padding-bottom: 0;
   position: relative;
 }
+.top-side .usermenu {
+  margin: 0;
+  padding: 0;
+}
+.top-side .usermenu li:not(:first-of-type)::before {
+  content: "| ";
+}
+.top-side .usermenu li a {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Raleway', sans-serif;
+}
 .top-side .logo {
   font-family: 'Raleway', sans-serif;
   font-weight: 300;
   font-size: 36px;
-  margin: 0;
-}
-.top-side .logo img {
-  width: 180px;
-  height: 80px;
-  display: inline-block;
-  margin-right: 30px;
+  margin: 0 img;
+  margin-width: 180px;
+  margin-height: 80px;
+  margin-display: inline-block;
+  margin-margin-right: 30px;
 }
 .top-side .callAction {
   margin: 15px;
@@ -97,19 +107,25 @@ body {
   float: right;
 }
 
-.searchBar form .form-control {
+form .form-control {
   height: 32px;
+  line-height: 32px;
   font-size: 20px;
   font-family: "Raleway",sans-serif;
   font-weight: 300;
-  padding-left: 20px;
-  padding-bottom: 0;
-  line-height: 32px;
-  padding-top: 0;
+  padding: 0 0 0 20px;
 }
-.searchBar form button[type="submit"] {
-  padding: 0px 10px;
+form button[type="submit"] {
+  font-family: "Raleway",sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: whitesmoke;
+  padding: 0 10px;
+  background: #3299BB;
+  border-radius: 4px;
+  border: none;
 }
+
 .searchBar form .form-group {
   margin-bottom: 7px;
 }
@@ -128,17 +144,18 @@ a:hover {
   background: #3299BB;
 }
 
+.sidebar a {
+  font-size: 15px;
+}
 .sidebar ul {
   padding: 0;
   width: 80%;
   margin: 0 auto;
 }
-
 .sidebar ul li {
   list-style: none;
   margin-bottom: 5px;
 }
-
 .sidebar ul li .glyphicon {
   margin-right: 3px;
 }
@@ -146,65 +163,12 @@ a:hover {
 .search-form {
   padding: 10px 20px;
 }
-
 .search-form label {
   font-weight: 500;
 }
 
-.sidebar a {
-  font-size: 15px;
-}
-
-.nav.nav-tabs {
+.nav .nav-tabs {
   padding: 0 20px;
-}
-
-.main .application .searchbox {
-  padding: 10px 20px;
-  position: relative;
-}
-
-.main .application .searchinput {
-  height: 40px;
-  font-size: 22px;
-  font-family: "Raleway",sans-serif;
-  font-weight: 300;
-  padding-left: 20px;
-  position: relative;
-}
-
-.main .application .searcher {
-  position: absolute;
-  top: 15px;
-  right: 30px;
-  font-size: 27px;
-  height: 30px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-}
-
-.main .application .extra {
-  position: absolute;
-  top: 25px;
-  right: 60px;
-  font-size: 25px;
-  margin: 0;
-  padding: 0;
-  z-index: 1;
-  border: none;
-  background: transparent;
-}
-
-.dropdown-extraoptions {
-  position: absolute;
-  right: 58px;
-  background: rgba(0, 0, 0, 0.2) none repeat scroll 0% 0%;
-  bottom: -25px;
-  padding: 5px;
-  border: 1px solid gray;
-  border-radius: 10px;
 }
 
 .resultWrapper {
@@ -216,24 +180,10 @@ a:hover {
   margin-bottom: 15px;
   border-radius: 4px;
 }
-
 .resultWrapper p {
   margin-bottom: 4px;
   font-weight: 500;
 }
-
-.green {
-  color: green;
-}
-
-.yellow {
-  color: #bc7e0b;
-}
-
-.strong {
-  font-weight: 600;
-}
-
 .resultWrapper .addToList {
   background: #008000 none repeat scroll 0% 0%;
   border: medium none;
@@ -249,7 +199,6 @@ a:hover {
   top: 10px;
   right: -11px;
 }
-
 .resultWrapper .removeResult {
   background: red none repeat scroll 0% 0%;
   border: medium none;
@@ -265,7 +214,6 @@ a:hover {
   top: 35px;
   right: -11px;
 }
-
 .resultWrapper .resultImg {
   float: left;
   height: 100px;
@@ -273,19 +221,16 @@ a:hover {
   margin-right: 8px;
 }
 
-.top-side .usermenu li:not(:first-of-type)::before {
-  content: "| ";
+.green {
+  color: green;
 }
 
-.top-side .usermenu {
-  margin: 0;
-  padding: 0;
+.yellow {
+  color: #bc7e0b;
 }
 
-.top-side .usermenu li a {
-  font-size: 12px;
-  font-weight: 500;
-  font-family: 'Raleway', sans-serif;
+.strong {
+  font-weight: 600;
 }
 
 .specification-side {
@@ -313,24 +258,6 @@ a:hover {
 .specification-side form {
   padding-right: 15px;
   padding-top: 15px;
-}
-
-form .form-control {
-  height: 40px;
-  font-size: 22px;
-  font-family: "Raleway",sans-serif;
-  font-weight: 300;
-  padding-left: 20px;
-}
-form .form-control button[type="submit"] {
-  font-family: "Raleway",sans-serif;
-  font-weight: 500;
-  font-size: 18px;
-  color: whitesmoke;
-  padding: 7px 10px;
-  background: #3299BB;
-  border-radius: 4px;
-  border: none;
 }
 
 .footer-side {
