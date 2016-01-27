@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getLiteraryGenres', 'DataController@getAllLiteraryGenres');
     Route::get('getMovieGenres', 'DataController@getAllMovieGenres');
     Route::get('getCountries', 'DataController@getAllCountries');
+    Route::get('getLanguages', 'DataController@getAllLanguages');
     Route::get('getCities', 'DataController@getAllCities');
     Route::get('getIllustrators', 'DataController@getIllustrators');
     Route::get('getAuthors', 'DataController@getAuthors');
