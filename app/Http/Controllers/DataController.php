@@ -14,7 +14,7 @@ class DataController extends Controller
 {
     function getAllLiteraryGenres(Request $request=null){
         (new RdfController())->initRdf();
-        $name = isset($request) ? $request->get('name') : "" ;
+        $name = isset($request) ? $request->input('name') : "" ;
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
@@ -23,8 +23,8 @@ class DataController extends Controller
             '  ?literary_genre rdfs:label ?label .'.
             '  FILTER ( lang(?label) = "en" )'.
             '  FILTER regex( str(?label), "'.$name.'", "i" )'.
-//            '} ORDER BY DESC(count(?book)) '.
-            '} ORDER BY (?label) '.
+            '} ORDER BY DESC(count(?book)) '.
+//            '} ORDER BY (?label) '.
             'LIMIT 100'
         );
         $lit = [];
@@ -38,7 +38,7 @@ class DataController extends Controller
     }
     function getAllMovieGenres(Request $request=null){
         (new RdfController())->initRdf();
-        $name = isset($request) ? $request->get('name') : "" ;
+        $name = isset($request) ? $request->input('name') : "" ;
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
@@ -63,7 +63,7 @@ class DataController extends Controller
     function getAllCountries(Request $request=null){
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $name = isset($request) ? $request->get('name') : "" ;
+        $name = isset($request) ? $request->input('name') : "" ;
         $result = $sparql->query(
             'select ?country, ?label where {
                 ?country <http://purl.org/dc/terms/subject> <http://dbpedia.org/resource/Category:Member_states_of_the_United_Nations>;
@@ -133,7 +133,7 @@ class DataController extends Controller
     function getAllLanguages(Request $request=null){
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $name = isset($request) ? $request->get('name') : "" ;
+        $name = isset($request) ? $request->input('name') : "" ;
         $result = $sparql->query(
             'select ?language, ?label where {
                 ?language rdf:type dbo:Language.
@@ -175,7 +175,7 @@ class DataController extends Controller
         }
     }
     function getIllustrators(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -198,7 +198,7 @@ class DataController extends Controller
         }
     }
     function getAuthors(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -221,7 +221,7 @@ class DataController extends Controller
         }
     }
     function getPrincipals(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -244,7 +244,7 @@ class DataController extends Controller
         }
     }
     function getRectors(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -268,7 +268,7 @@ class DataController extends Controller
     }
 
     function getDirectors(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -291,7 +291,7 @@ class DataController extends Controller
         }
     }
     function getActors(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -314,7 +314,7 @@ class DataController extends Controller
         }
     }
     function getMusicalArtists(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -338,7 +338,7 @@ class DataController extends Controller
         }
     }
     function getPlaces(Request $request=null){
-        $name = $request->get('name');
+        $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
             $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
