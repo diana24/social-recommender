@@ -11,12 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('home', function () {
-    return view('index');
-});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -31,6 +25,12 @@ Route::get('getFacebookAuthUrl', 'FacebookAuthController@getAuthUrl');
 Route::get('login', 'FacebookAuthController@authenticate');
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        return view('index');
+    });
+    Route::get('home', function () {
+        return view('index');
+    });
     Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
     Route::get('rdf', 'RdfController@getAutoRec');
     Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
