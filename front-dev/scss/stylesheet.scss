@@ -123,6 +123,10 @@ form {
         font-weight: 300;
         padding: 0 0 0 20px;
     }
+    input.invalid {
+        border: 1px solid rgba(202, 27, 27, 0.7);
+        box-shadow: 1px 1px 1px rgba(202, 27, 27, 0.7);
+    }
     input[type="submit"] {
         font-family: "Raleway",sans-serif;
         font-weight: 500;
@@ -274,7 +278,26 @@ a:hover {
     }
     form {
         padding-right: 15px;
-        padding-top: 15px;
+        padding-top: 0;
+    }
+    .errorColumn {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
+    .errorWrapper {
+        border: 1px solid rgba(202, 27, 27, 0.7);
+        border-bottom: none;
+        border-left: none;
+        padding: 0 10px 1px;
+        display: block;
+        margin-left: 15px;
+        background: white;
+        display: none;
+        p {
+            margin-bottom: 0;
+            color: rgb(202, 27, 27);
+        }
     }
 }
 

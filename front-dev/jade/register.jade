@@ -15,10 +15,16 @@ include snippets/guest-header.jade
                     
 .container-fluid.specification-side
     .row
-        .col-md-7
+        .col-md-12
             h2 Start using SoR today!
-            p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
-            p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
+        .col-md-7
+            .row
+                .col-md-12
+                    .textWrapper
+                        p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
+                        p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
+                .col-md-12.errorColumn
+                    .errorWrapper
         .col-md-5
             {!! Form::open(array('url' => 'auth/register', 'class' => 'register-form', 'role' => 'form', 'method'=>'post')) !!}
             .row
@@ -38,4 +44,5 @@ include snippets/guest-header.jade
                     .form-group
                         {!! Form::submit('Register',  ['class' => 'btn']) !!}
             {!! Form::close() !!}
+{!! HTML::script('js/registerFormCheck.js') !!}
 include snippets/footer.jade
