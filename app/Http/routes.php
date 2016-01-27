@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getMovieGenres', 'DataController@getAllMovieGenres');
     Route::get('getCountries', 'DataController@getAllCountries');
     Route::get('getEventTypes', 'DataController@getAllEventTypes');
+    Route::get('getPlaceTypes', 'DataController@getAllPlaceTypes');
     Route::get('getLanguages', 'DataController@getAllLanguages');
     Route::get('getCities', 'DataController@getAllCities');
     Route::get('getIllustrators', 'DataController@getIllustrators');
@@ -54,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('search/films', 'FilmRdfController@searchFilms');
     Route::get('recommendations/books', 'BookRdfController@recommendBooks');
     Route::get('search/events', 'EventRdfController@searchEvents');
+    Route::get('search/places', 'PlaceRdfController@searchPlaces');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
