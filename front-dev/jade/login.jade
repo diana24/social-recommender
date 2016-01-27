@@ -9,9 +9,9 @@ include snippets/guest-header.jade
         .col-md-12
             ul.menu
                 li
-                    {!! HTML::linkRoute('auth/register', 'Register') !!}
+                    <a href=<?php echo url('auth/register') ?>> Register </a>
                 li
-                    a(href="about_us") About us
+                    <a href=<?php echo url('about_us') ?>> About us </a>
                     
 .container-fluid.specification-side
     .row
@@ -34,5 +34,5 @@ include snippets/guest-header.jade
                 .col-md-12.text-right
                     a(href="forgottenPassword.html") Forgotten password? 
                     button.btn(type="submit") Login
-                {!! Form::close() !!}
+            {!! Form::close() !!}
 include snippets/footer.jade
