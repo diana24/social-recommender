@@ -11,12 +11,19 @@ module.exports = function (grunt) {
                     }
                 },
                 files: [{
-                    src: "*.jade",
+                    src: ["register.jade", "login.jade"],
+                    dest: "../resources/views/auth",
+                    ext: ".blade.php",
+                    expand: true,
+                    cwd: "jade/"
+                }, {
+                    src: ["*.jade", "!register.jade", "!login.jade"],
                     dest: "../resources/views",
                     ext: ".blade.php",
                     expand: true,
                     cwd: "jade/"
-                }]
+                }
+                ]
             }
         },
         sass: {
@@ -31,8 +38,8 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['jade/*.jade', 'jade/**/*.jade', 'jade/**/**/*.jade', 'scss/*.scss'],
-                tasks: ['jade','sass'],
+                files: ['jade/*.jade', 'jade/snippets/*.jade', 'jade/snippets/blade/', 'scss/*.scss'],
+                tasks: ['jade', 'sass'],
                 options: {
                     spawn: false
                 }
