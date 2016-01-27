@@ -4,4 +4,65 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
     .panel-collapse.collapse#searchBook
         .panel-body
-            p Work in progress...
+            form.search-form(role="form")
+                .row
+                    .col-md-12
+                        label Book Title
+                        .form-group
+                            input.form-control#BookName(type="text", name="BookName")
+                    .col-md-12
+                        label Author Name
+                        .form-group
+                            input.form-control#author(type="text", name="author")
+                    .col-md-12
+                        label Release Date
+                        .form-group
+                            input.form-control#releaseDate(type="text", name="releaseDate")
+                  
+                    .col-md-12
+                        label Literary Genre
+                        .form-group
+                            select.form-control
+                                option(value="") Comedy
+                                option Drama
+                                option Non-fiction
+                                option Realistic fiction
+                                option Romance Novel
+                                option Satire
+                                option Tragedy
+                                option Tragicomedy
+                       
+                    
+                    .col-md-12
+                        label Number of pages
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            input.form-control#numberOfPagesMin(type="text", placeholder="from..", name="numberOfPagesMin")
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            input.form-control#numberOfPagesMax(type="text", placeholder="to..", name="numberOfPagesMax")
+                    .col-md-12
+                        label Number of Volumes
+                        .form-group
+                            input.form-control#numberOfVolumes(type="text", name="numberOfVolumes")
+                        label Ranking
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") from..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") to..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-12.col-sm-12.col-xs-12.text-right
+                        button.btn(type="submit", name="Search", value="Search") Search

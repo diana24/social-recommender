@@ -4,4 +4,34 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchEvent") Search Events
     .panel-collapse.collapse#searchEvent
         .panel-body
-            p Work in progress...
+            form.search-form(role="form")
+                .row
+                    .col-md-12
+                        label Event Name
+                        .form-group
+                            input.form-control#eventName(type="text", name="eventName")
+                    .col-md-12
+                        label Event Type
+                        .form-group
+                            input.form-control#eventType(type="text", name="eventType")
+                            label Ranking
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") from..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-6.col-sm-6.col-xs-6
+                        .form-group
+                            select.form-control
+                                option(value="") to..
+                                option 1
+                                option 2
+                                option 3
+                                option 4
+                                option 5
+                    .col-md-12.col-sm-12.col-xs-12.text-right
+                        button.btn(type="submit", name="Search", value="Search") Search
