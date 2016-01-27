@@ -62,4 +62,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('saved_items', 'SavedItemsController@index');
     Route::get('save_item', 'SavedItemsController@store');
     Route::get('addToList', 'ListController@addToList');
+
+    Route::get('search/books/show', function () {
+        return view('searchBooks');
+    });
+    Route::get('search/films/show', function () {
+        return view('searchFilms');
+    });
+    Route::get('search/events/show', function () {
+        return view('searchEvents');
+    });
+    Route::get('search/places/show', function () {
+        return view('searchPlaces');
+    });
+    Route::get('search/people/show', function () {
+        return view('searchPeople');
+    });
 });
