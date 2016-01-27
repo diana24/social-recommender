@@ -18,6 +18,7 @@ class EventRdfController extends Controller
             return json_encode([]);
         }
         $name = $request->get('name');
+        $eventTypeUri = $request->get('eventTypeUri');
         $locationUri = $request->get('locationUri');
         $startDateMin = $request->get('startDateMin');
         $startDateMax = $request->get('startDateMax');
@@ -34,6 +35,13 @@ class EventRdfController extends Controller
                 optional { {?event dbp:imageCaption ?image} union {?event dbo:imageCaption ?image} union {?event foaf:depiction ?image} }.';
         if(isset($locationUri)){
             $query .= "\n".' {?event dbo:location <'.$locationUri.'>} union {?event dbp:location <'.$locationUri.'>} .';
+        }
+        if(isset($eventTypeUri)){
+            $query .= "\n".' ?event rdf:type <'.$eventTypeUri.'> .';
+        }
+        $query .= "\n".'filter ( lang(?label) = "en" )';
+        if(isset($name) && strlen($name)){
+            $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
         if(isset($startDateMin)){
             $query .= "\n".'filter (?startDate >= "'.$startDateMin.'"^^xsd:dateTime)';
@@ -88,6 +96,20 @@ class EventRdfController extends Controller
             $location['uri']=$a->location->getUri();
             $location['name']=$a->locationName->getValue();
             array_push($event['locations'],$location);
+        }
+        $query = 'select distinct ?type, ?typeName where{
+                <'.$uri.'> rdf:type ?type.
+                ?type rdfs:label ?typeName.
+                filter(lang(?typeName)="en")
+            } limit 10';
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $r = $sparql->query($query);
+
+        foreach($r as $a){
+            $event['types']=[];
+            $location['uri']=$a->type->getUri();
+            $location['name']=$a->typeName->getValue();
+            array_push($event['types'],$location);
         }
         $query = 'select distinct ?image where{
                 {<'.$uri.'> dbo:imageCaption ?image} union {<'.$uri.'> dbp:imageCaption ?image} union {<'.$uri.'> foaf:depiction ?image}.

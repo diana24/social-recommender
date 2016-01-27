@@ -79,6 +79,22 @@ class DataController extends Controller
         }
         return json_encode($countries);
     }
+    function getAllEventTypes(Request $request=null){
+        (new RdfController())->initRdf();
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $result = $sparql->query(
+            'select distinct ?type, ?label where {
+                $type rdfs:subClassOf dbo:Event.
+                $type rdfs:label ?label
+            } limit 10');
+        $countries = [];
+        foreach($result as $row){
+            $l['uri']=$row->type->getUri();
+            $l['name']=$row->label->getValue();
+            array_push($countries,$l);
+        }
+        return json_encode($countries);
+    }
     function getAllLanguages(Request $request=null){
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
