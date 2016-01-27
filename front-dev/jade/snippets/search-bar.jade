@@ -1,6 +1,12 @@
 .col-md-3.col-sm-6.searchBar
     .panel-group#accordion
-        include searches/person.jade
+        .panel.panel-default
+            .panel-heading
+                h4.panel-title
+                    a(data-toggle="collapse", data-parent="#accordion", href="#searchPerson") Search Persons
+            .panel-collapse.collapse#searchPerson
+                .panel-body
+                    include searches/person.html
         include searches/event.jade
         include searches/book.jade
         include searches/place.jade

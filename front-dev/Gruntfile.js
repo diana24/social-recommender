@@ -12,8 +12,8 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     src: "*.jade",
-                    dest: "../public/",
-                    ext: ".html",
+                    dest: "../resources/views",
+                    ext: ".blade.php",
                     expand: true,
                     cwd: "jade/"
                 }]
