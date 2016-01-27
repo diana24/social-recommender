@@ -37,7 +37,6 @@ class BookRdfController extends Controller
                   union
                 { ?book rdf:type owl:Thing }.
                 ?book rdfs:label ?label.
-
                 optional { {?book dbo:author ?author} union {?book dbp:author ?author} }.
                 optional { {?book dbo:illustrator ?illustrator} union {?book dbp:illustrator ?illustrator}}.
                 optional { {?book dbo:genre ?genre} union {?book dbp:genre ?genre}}.
@@ -45,7 +44,6 @@ class BookRdfController extends Controller
                 optional { {?book dbo:numberOfPages ?numberOfPages} union {?book dbp:numberOfPages ?numberOfPages} }.
                 optional { {?book dbo:numberOfVolumes ?numberOfVolumes} union {?book dbp:numberOfVolumes ?numberOfVolumes} }.
                 optional { {?book dbp:releaseDate ?releaseDate} union {?book dbo:releaseDate ?releaseDate} }.';
-
         if(isset($authorUri)){
             $query .= "\n".' {?book dbo:author <'.$authorUri.'>} union {?book dbp:author <'.$authorUri.'>} .';
         }
@@ -73,7 +71,11 @@ class BookRdfController extends Controller
 //        }
         $query .= '}  limit 50'; //dd($query);
 
-        $result = $sparql->query($query); //dd($result);
+        try{
+            $result = $sparql->query($query);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 
         $books=[];
         foreach($result as $row){
@@ -85,32 +87,34 @@ class BookRdfController extends Controller
             $book['title']=$row->label->getValue();
             if(isset($row->author) && method_exists($row->author, 'getUri')){
                 $authorUri = $row->author->getUri();
-                $query = 'select ?authorName where { <'.$authorUri.'> rdfs:label ?authorName . filter (lang(?authorName)="en")} limit 1';
-                $r = $sparql->query($query);
-                foreach($r as $rw){
-                    if(isset($rw->authorName)){
-                        $authorName = $rw->authorName->getValue();
-                        if(!isset($book['authors'])){
-                            $book['authors']=[];
-                        }
-                        if(!array_has($book['authors'],$authorUri)){
+                if(!isset($book['authors'])){
+                    $book['authors']=[];
+                }
+                if(!array_has($book['authors'],$authorUri)){
+                    $authorUri = $row->author->getUri();
+                    $query = 'select ?authorName where { <'.$authorUri.'> rdfs:label ?authorName . filter (lang(?authorName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->authorName)){
+                            $authorName = $rw->authorName->getValue();
                             $book['authors'][$authorUri]=$authorName;
                         }
                     }
-                }                
-                
+                }
+
             }
             if(isset($row->illustrator) && method_exists($row->illustrator, 'getUri')){
                 $illustratorUri = $row->illustrator->getUri();
-                $query = 'select ?illustratorName where { <'.$illustratorUri.'> rdfs:label ?illustratorName . filter (lang(?illustratorName)="en")} limit 1';
-                $r = $sparql->query($query);
-                foreach($r as $rw){
-                    if(isset($rw->illustratorName)){
-                        $illustratorName = $rw->illustratorName->getValue();
-                        if(!isset($book['illustrators'])){
-                            $book['illustrators']=[];
-                        }
-                        if(!array_has($book['illustrators'],$illustratorUri)){
+                if(!isset($book['illustrators'])){
+                    $book['illustrators']=[];
+                }
+                if(!array_has($book['illustrators'],$illustratorUri)){
+                    $illustratorUri = $row->illustrator->getUri();
+                    $query = 'select ?illustratorName where { <'.$illustratorUri.'> rdfs:label ?illustratorName . filter (lang(?illustratorName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->illustratorName)){
+                            $illustratorName = $rw->illustratorName->getValue();
                             $book['illustrators'][$illustratorUri]=$illustratorName;
                         }
                     }
@@ -119,15 +123,16 @@ class BookRdfController extends Controller
             }
             if(isset($row->genre) && method_exists($row->genre, 'getUri')){
                 $genreUri = $row->genre->getUri();
-                $query = 'select ?genreName where { <'.$genreUri.'> rdfs:label ?genreName . filter (lang(?genreName)="en")} limit 1';
-                $r = $sparql->query($query);
-                foreach($r as $rw){
-                    if(isset($rw->genreName)){
-                        $genreName = $rw->genreName->getValue();
-                        if(!isset($book['genres'])){
-                            $book['genres']=[];
-                        }
-                        if(!array_has($book['genres'],$genreUri)){
+                if(!isset($book['genres'])){
+                    $book['genres']=[];
+                }
+                if(!array_has($book['genres'],$genreUri)){
+                    $genreUri = $row->genre->getUri();
+                    $query = 'select ?genreName where { <'.$genreUri.'> rdfs:label ?genreName . filter (lang(?genreName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->genreName)){
+                            $genreName = $rw->genreName->getValue();
                             $book['genres'][$genreUri]=$genreName;
                         }
                     }
@@ -151,6 +156,7 @@ class BookRdfController extends Controller
             }
             $books[$uri]=$book;
         }
+//        dd($books);
         return json_encode($books);
     }
 
@@ -211,6 +217,6 @@ class BookRdfController extends Controller
             }
 
         }
-        dd($books);
+        return json_encode($books);
     }
 }

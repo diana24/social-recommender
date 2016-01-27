@@ -23,11 +23,10 @@ class PlaceRdfController extends Controller
 //        $closeToPlaceUri = $request->get('closeToPlaceUri');
 
         (new RdfController())->initRdf();
-        $query='select distinct ?place where {
+        $query='select * where {
                 { ?place rdf:type dbo:Place }.
                 ?place rdfs:label ?label.
-                optional { ?place rdf:type ?type }.
-                optional { {?place dbo:country ?startDate} union {?place dbp:country ?startDate} }.';
+                optional { {?place dbo:country ?country} union {?place dbp:country ?country} }.';
         if(isset($countryUri)){
             $query .= "\n".' {?place dbo:country <'.$countryUri.'>} union {?place dbp:country <'.$countryUri.'>} .';
         }
@@ -41,74 +40,69 @@ class PlaceRdfController extends Controller
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
-        $query .= '} limit 10';
+        $query .= '} limit 50';
 
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $result = $sparql->query($query);
-//        dd($result);
+        try{
+            $result = $sparql->query($query); //dd($result);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 //
         $places=[];
         foreach($result as $row){
             $uri = $row->place->getUri();
-            $place = $this->getPlaceData($uri);
-            array_push($places,$place);
-        }dd($places);
+            if(!array_has($places,$uri)){
+                $places[$uri]=[];
+            }
+            $place=$places[$uri];
+            $place['title']=$row->label->getValue();
+//            if(isset($row->type) && method_exists($row->type, 'getUri')){
+//                $typeUri = $row->type->getUri();
+//                if(!isset($place['types'])){
+//                    $place['types']=[];
+//                }
+//                if(!array_has($place['types'],$typeUri)){
+//                    $typeUri = $row->type->getUri();
+//                    $query = 'select ?typeName where { <'.$typeUri.'> rdfs:label ?typeName . filter (lang(?typeName)="en")} limit 1';
+//                    $r = $sparql->query($query);
+//                    foreach($r as $rw){
+//                        if(isset($rw->typeName)){
+//                            $typeName = $rw->typeName->getValue();
+//                            $place['types'][$typeUri]=$typeName;
+//                        }
+//                    }
+//                }
+//
+//            }
+            if(isset($row->country) && method_exists($row->country, 'getUri')){
+                $countryUri = $row->country->getUri();
+                if(!isset($place['countries'])){
+                    $place['countries']=[];
+                }
+                if(!array_has($place['countries'],$countryUri)){
+                    $countryUri = $row->country->getUri();
+                    $query = 'select ?countryName where { <'.$countryUri.'> rdfs:label ?countryName . filter (lang(?countryName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->countryName)){
+                            $countryName = $rw->countryName->getValue();
+                            $place['countries'][$countryUri]=$countryName;
+                        }
+                    }
+                }
+
+            }
+
+
+            if(isset($row->image)){
+                $place['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
+                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
+                );
+            }
+            $places[$uri]=$place;
+        }//dd($places);
         return json_encode($places);
     }
 
-    public function getPlaceData($uri){
-        $place=[];
-        $place['uri']=$uri;
-        $query = 'select ?label where{
-                <'.$uri.'> rdfs:label ?label.
-                filter(lang(?label)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $place['name']=$a->label->getValue();
-        }
-        $query = 'select distinct ?country, ?countryName where{
-                {<'.$uri.'> dbo:country ?country} union {<'.$uri.'> dbp:country ?country}.
-                ?country rdfs:label ?countryName.
-                filter(lang(?countryName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $place['countries']=[];
-            $location['uri']=$a->country->getUri();
-            $location['name']=$a->countryName->getValue();
-            array_push($place['countries'],$location);
-        }
-        $query = 'select distinct ?type, ?typeName where{
-                <'.$uri.'> rdf:type ?type.
-                ?type rdfs:label ?typeName.
-                filter(lang(?typeName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $place['types']=[];
-            $location['uri']=$a->type->getUri();
-            $location['name']=$a->typeName->getValue();
-            array_push($place['types'],$location);
-        }
-        $query = 'select distinct ?image where{
-                {<'.$uri.'> dbo:imageCaption ?image} union {<'.$uri.'> dbp:imageCaption ?image} union {<'.$uri.'> foaf:depiction ?image}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $place['images']=[];
-            $im = (method_exists($a->image,'getUri')) ? $a->image->getUri() : $a->image->getValue();
-            array_push($place['images'],$im);
-        }
-
-
-        return $place;
-    }
 }
