@@ -51,7 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getActors', 'DataController@getActors');
     Route::get('getMusicalArtists', 'DataController@getMusicalArtists');
     Route::get('getPlaces', 'DataController@getPlaces');
-    Route::get('getPeople', 'DataController@getPeople');
+    Route::get('getPrincipals', 'DataController@getPrincipals');
+    Route::get('getRectors', 'DataController@getRectors');
 
     Route::get('search/books', 'BookRdfController@searchBooks');
     Route::get('search/films', 'FilmRdfController@searchFilms');

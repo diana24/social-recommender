@@ -19,7 +19,7 @@ class PlaceRdfController extends Controller
         }
         $name = $request->get('name');
         $placeTypeUri = $request->get('placeTypeUri');
-        $countryUri = $request->get('locationUri');
+        $countryUri = $request->get('$countryUri');
 //        $closeToPlaceUri = $request->get('closeToPlaceUri');
 
         (new RdfController())->initRdf();

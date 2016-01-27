@@ -220,7 +220,7 @@ class DataController extends Controller
             return json_encode($illustrators);
         }
     }
-    function getPeople(Request $request=null){
+    function getPrincipals(Request $request=null){
         $name = $request->get('name');
         if(isset($name)){
             (new RdfController())->initRdf();
@@ -229,6 +229,30 @@ class DataController extends Controller
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
                         ?illustrator rdfs:label ?label.
+                        {?edu dbo:principal ?illustrator.} union {?edu dbp:principal ?illustrator.}
+                      filter regex(str(?label),"'.$name.'","i")
+                      FILTER ( lang(?label) = "en" )
+                    } limit 30'
+            );
+            $illustrators = [];
+            foreach($result as $row){
+                $l['uri']=$row->illustrator->getUri();
+                $l['name']=$row->label->getValue();
+                array_push($illustrators,$l);
+            }
+            return json_encode($illustrators);
+        }
+    }
+    function getRectors(Request $request=null){
+        $name = $request->get('name');
+        if(isset($name)){
+            (new RdfController())->initRdf();
+            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $result = $sparql->query(
+                'select distinct ?illustrator, ?label, ?val where {
+                        ?illustrator rdf:type foaf:Person.
+                        ?illustrator rdfs:label ?label.
+                        {?edu dbo:rector ?illustrator.} union {?edu dbp:rector ?illustrator.}
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
                     } limit 30'

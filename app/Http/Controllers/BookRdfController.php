@@ -151,7 +151,7 @@ class BookRdfController extends Controller
         }
         $authorUri = $request->get('authorUri');
         $illustratorUri = $request->get('illustratorUri');
-        $releaseDate= $request->get('releaseDate');
+//        $releaseDate= $request->get('releaseDate');
         $literaryGenreUri= $request->get('literaryGenreUri');
         $name = $request->get('name');
         $numberOfPagesMin = $request->get('numberOfPagesMin');
