@@ -14,35 +14,36 @@ include snippets/guest-header.jade
                     <a href=<?php echo url('about_us') ?>> About us </a>
                     
 .container-fluid.specification-side
-    .col-md-12
-            h2 Start using SoR today!
-        .col-md-7
-            .row
-                .col-md-12
-                    .textWrapper
-                        p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
-                        p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
-                .col-md-12.errorColumn
-                    .errorWrapper
-                        h4 Form issues 
-                            a(href="javascript:void(0)") 
-                                span.glyphicon.glyphicon-remove-circle.clearErrors
-                        .errors
-        .col-md-5
-            .row
-                {!! Form::open(array('url' => 'auth/login', 'class' => 'form login-form', 'role' => 'form', 'method'=>'post')) !!}
-                .col-md-12
-                    .form-group
-                        {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
-                .col-md-12
-                    {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
-                .col-md-12.text-right
-                    .checkbox
-                        input(type="checkbox", value="") 
-                        | Remember me
-                .col-md-12.text-right
-                    <a href=<?php echo url('forgottenPassword') ?>> Forgotten password?  </a>
-                    {!! Form::submit('Login',  ['class' => 'btn']) !!}
-            {!! Form::close() !!}
+    .row
+        .col-md-12
+                h2 Start using SoR today!
+            .col-md-7
+                .row
+                    .col-md-12
+                        .textWrapper
+                            p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
+                            p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
+                    .col-md-12.errorColumn
+                        .errorWrapper
+                            h4 Form issues 
+                                a(href="javascript:void(0)") 
+                                    span.glyphicon.glyphicon-remove-circle.clearErrors
+                            .errors
+            .col-md-5
+                .row
+                    {!! Form::open(array('url' => 'auth/login', 'class' => 'form login-form', 'role' => 'form', 'method'=>'post')) !!}
+                    .col-md-12
+                        .form-group
+                            {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                    .col-md-12
+                        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
+                    .col-md-12.text-right
+                        .checkbox
+                            input(type="checkbox", value="") 
+                            | Remember me
+                    .col-md-12.text-right
+                        <a href=<?php echo url('forgottenPassword') ?>> Forgotten password?  </a>
+                        {!! Form::submit('Login',  ['class' => 'btn']) !!}
+                {!! Form::close() !!}
 {!! HTML::script('js/loginFormCheck.js') !!}
 include snippets/footer.jade
