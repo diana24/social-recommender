@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getCountries', 'DataController@getAllCountries');
     Route::get('getEventTypes', 'DataController@getAllEventTypes');
     Route::get('getPlaceTypes', 'DataController@getAllPlaceTypes');
+    Route::get('getEduInstitutionTypes', 'DataController@getAllEducationalInstitutionTypes');
     Route::get('getLanguages', 'DataController@getAllLanguages');
     Route::get('getCities', 'DataController@getAllCities');
     Route::get('getIllustrators', 'DataController@getIllustrators');
@@ -50,12 +51,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('getActors', 'DataController@getActors');
     Route::get('getMusicalArtists', 'DataController@getMusicalArtists');
     Route::get('getPlaces', 'DataController@getPlaces');
+    Route::get('getPeople', 'DataController@getPeople');
 
     Route::get('search/books', 'BookRdfController@searchBooks');
     Route::get('search/films', 'FilmRdfController@searchFilms');
     Route::get('recommendations/books', 'BookRdfController@recommendBooks');
     Route::get('search/events', 'EventRdfController@searchEvents');
     Route::get('search/places', 'PlaceRdfController@searchPlaces');
+    Route::get('search/edu', 'EducationalInstitutionController@searchEdu');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
