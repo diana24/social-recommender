@@ -4,7 +4,7 @@ include snippets/guest-header.jade
     .row
         .col-md-12
             h1.logo
-                img(src="images/logo.png", alt="sor")
+                {!! HTML::image('images/logo.png', 'Social Recommender') !!}
                 span Social Recommender
         .col-md-12
             ul.menu
@@ -32,7 +32,7 @@ include snippets/guest-header.jade
                         input(type="checkbox", value="") 
                         | Remember me
                 .col-md-12.text-right
-                    a(href="forgottenPassword.html") Forgotten password? 
-                    button.btn(type="submit") Login
+                    <a href=<?php echo url('forgottenPassword') ?>> Forgotten password?  </a>
+                    {!! Form::submit('Login',  ['class' => 'btn']) !!}
             {!! Form::close() !!}
 include snippets/footer.jade

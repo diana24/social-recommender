@@ -4,7 +4,7 @@ include snippets/guest-header.jade
     .row
         .col-md-12
             h1.logo
-                img(src="images/logo.png", alt="sor")
+                {!! HTML::image('images/logo.png', 'Social Recommender') !!}
                 span Social Recommender
         .col-md-12
             ul.menu
@@ -20,40 +20,22 @@ include snippets/guest-header.jade
             p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
             p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
         .col-md-5
-            form.register-form(role="form")
-                .row
-                    .col-md-6
-                        .form-group
-                            input.form-control#lastName(name="lastName", type="text", placeholder="last name..")
-                    .col-md-6
-                        .form-group
-                            input.form-control#firstName(name="firstName", type="text", placeholder="first name..") 
-                    .col-md-6
-                        .form-group
-                            label.display-inline-block(for="sex") I am a..
-                                .radio.display-inline-block.radiofix
-                                    label
-                                        input#optionsRadios1(type="radio", name="sex", value="male" checked)
-                                        | Male
-                                    label
-                                        input#optionsRadios2(type="radio", name="sex", value="female")
-                                        | Female
-                    .col-md-6
-                        .form-group
-                            select.form-control
-                                option(value="") I am living in..
-                                option(value="Romania") Romania
-                    .col-md-12
-                        .form-group
-                            input.form-control#email(type="email", placeholder="email..")
-                    .col-md-12
-                        .form-group
-                            input.form-control#password(type="password", placeholder="password..")
-                    .col-md-12
-                        .form-group
-                            input.form-control#passwordCheck(type="password", placeholder="repeat password..")
-                    .col-md-12.text-right
-                        .form-group
-                            button.bn(type="submit") Register
-                            
+            {!! Form::open(array('url' => 'auth/register', 'class' => 'register-form', 'role' => 'form', 'method'=>'post')) !!}
+            .row
+                .col-md-12
+                    .form-group
+                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'name..']) !!}
+                .col-md-12
+                    .form-group
+                        {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                .col-md-12
+                    .form-group
+                        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
+                .col-md-12
+                    .form-group
+                        {!! Form::password('password_confirmation', ['class' => 'signin_input_password form-control', 'placeholder' => 'repeat password..']) !!}
+                .col-md-12.text-right
+                    .form-group
+                        {!! Form::submit('Register',  ['class' => 'btn']) !!}
+            {!! Form::close() !!}
 include snippets/footer.jade

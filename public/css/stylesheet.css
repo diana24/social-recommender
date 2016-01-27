@@ -115,7 +115,7 @@ form .form-control {
   font-weight: 300;
   padding: 0 0 0 20px;
 }
-form button[type="submit"] {
+form input[type="submit"] {
   font-family: "Raleway",sans-serif;
   font-weight: 500;
   font-size: 18px;
