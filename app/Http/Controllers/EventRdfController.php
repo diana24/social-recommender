@@ -26,7 +26,7 @@ class EventRdfController extends Controller
         $endDateMax = $request->get('endDateMax');
 
         (new RdfController())->initRdf();
-        $query='select distinct ?event where {
+        $query='select * where {
                 { ?event rdf:type dbo:Event }.
                 ?event rdfs:label ?label.
                 optional { {?event dbo:location ?location} union {?event dbp:location ?location} }.
@@ -55,94 +55,78 @@ class EventRdfController extends Controller
         if(isset($endDateMax)){
             $query .= "\n".'filter (?endDate <= "'.$endDateMax.'"^^xsd:dateTime)';
         }
-        $query .= '} limit 10';
+        $query .= '} limit 50';
 
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $result = $sparql->query($query);
-//        dd($result);
+
+        try{
+            $result = $sparql->query($query);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 //
         $events=[];
         foreach($result as $row){
             $uri = $row->event->getUri();
-            $event = $this->getEventData($uri);
-            array_push($events,$event);
+            if(!array_has($events,$uri)){
+                $events[$uri]=[];
+            }
+            $event=$events[$uri];
+            $event['title']=$row->label->getValue();
+            if(isset($row->type) && method_exists($row->type, 'getUri')){
+                $typeUri = $row->type->getUri();
+                if(!isset($event['types'])){
+                    $event['types']=[];
+                }
+                if(!array_has($event['types'],$typeUri)){
+                    $typeUri = $row->type->getUri();
+                    $query = 'select ?typeName where { <'.$typeUri.'> rdfs:label ?typeName . filter (lang(?typeName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->typeName)){
+                            $typeName = $rw->typeName->getValue();
+                            $event['types'][$typeUri]=$typeName;
+                        }
+                    }
+                }
+
+            }
+            $event['title']=$row->label->getValue();
+            if(isset($row->location) && method_exists($row->location, 'getUri')){
+                $locationUri = $row->location->getUri();
+                if(!isset($event['locations'])){
+                    $event['locations']=[];
+                }
+                if(!array_has($event['locations'],$locationUri)){
+                    $locationUri = $row->location->getUri();
+                    $query = 'select ?locationName where { <'.$locationUri.'> rdfs:label ?locationName . filter (lang(?locationName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->locationName)){
+                            $locationName = $rw->locationName->getValue();
+                            $event['locations'][$locationUri]=$locationName;
+                        }
+                    }
+                }
+
+            }
+            
+
+            if(isset($row->image)){
+                $event['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
+                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
+                );
+            }
+            if(isset($row->startDate)){
+                $event['startDate']= method_exists($row->startDate, 'getValue') ? $row->startDate->getValue() : $row->startDate;
+            }
+            if(isset($row->endDate)){
+                $event['endDate']= method_exists($row->endDate, 'getValue') ? $row->endDate->getValue() : $row->endDate;
+            }
+            $events[$uri]=$event;
         }
+//        dd($events);
         return json_encode($events);
     }
 
-    public function getEventData($uri){
-        $event=[];
-        $event['uri']=$uri;
-        $query = 'select ?label where{
-                <'.$uri.'> rdfs:label ?label.
-                filter(lang(?label)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['name']=$a->label->getValue();
-        }
-        $query = 'select distinct ?location, ?locationName where{
-                {<'.$uri.'> dbo:location ?location} union {<'.$uri.'> dbp:location ?location}.
-                ?location rdfs:label ?locationName.
-                filter(lang(?locationName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['locations']=[];
-            $location['uri']=$a->location->getUri();
-            $location['name']=$a->locationName->getValue();
-            array_push($event['locations'],$location);
-        }
-        $query = 'select distinct ?type, ?typeName where{
-                <'.$uri.'> rdf:type ?type.
-                ?type rdfs:label ?typeName.
-                filter(lang(?typeName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['types']=[];
-            $location['uri']=$a->type->getUri();
-            $location['name']=$a->typeName->getValue();
-            array_push($event['types'],$location);
-        }
-        $query = 'select distinct ?image where{
-                {<'.$uri.'> dbo:imageCaption ?image} union {<'.$uri.'> dbp:imageCaption ?image} union {<'.$uri.'> foaf:depiction ?image}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['images']=[];
-            $im = (method_exists($a->image,'getUri')) ? $a->image->getUri() : $a->image->getValue();
-            array_push($event['images'],$im);
-        }
-        $query = 'select distinct ?startDate where{
-                {<'.$uri.'> dbo:startDate ?startDate} union {<'.$uri.'> dbp:startDate ?startDate}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['startDates']=[];
-            $im = (method_exists($a->startDate,'getValue')) ? $a->startDate->getValue() : $a->startDate;
-            array_push($event['startDates'],$im);
-        }
-        $query = 'select distinct ?endDate where{
-                {<'.$uri.'> dbo:endDate ?endDate} union {<'.$uri.'> dbp:endDate ?endDate}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $event['endDates']=[];
-            $im = (method_exists($a->endDate,'getValue')) ? $a->endDate->getValue() : $a->endDate;
-            array_push($event['endDates'],$im);
-        }
-
-
-        return $event;
-    }
 }

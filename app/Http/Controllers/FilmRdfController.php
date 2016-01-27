@@ -30,7 +30,7 @@ class FilmRdfController extends Controller
 
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 
-        $query='select distinct ?film where {
+        $query='select * where {
                 { ?film rdf:type dbo:Film }
                  union
                 { ?film rdf:type <http://dbpedia.org/ontology/Wikidata:Q11424> }
@@ -39,31 +39,29 @@ class FilmRdfController extends Controller
                   union
                 { ?film rdf:type sch:Movie }.
                 ?film rdfs:label ?label.
-                optional { {?film dbo:director ?director} union {?film dbp:director ?director} }.
-                optional { {?film dbo:starring ?actor} union {?film dbp:starring ?actor} }.
-                optional { {?film dbo:musicComposer ?music} union {?film dbp:musicComposer ?music}
-                union {?film dbo:music ?music} union {?film dbp:music ?music}}.
-                optional { {?film dbo:genre ?genre} union {?film dbp:genre ?genre} }.
-                optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image} union {?film foaf:depiction ?image} }.';
+                optional { ?film dbp:director ?director }.
+                optional { ?film dbp:starring ?actor }.
+                optional { {?film dbp:musicComposer ?musicComposer} union {?film dbp:music ?musicComposer}}.
+                optional { ?film dbp:genre ?genre }.
+                optional { {?film dbp:imageCaption ?image} union {?film foaf:depiction ?image} }.';
 
         if(isset($directorUri)){
-            $query .= "\n".' {?film dbo:director <'.$directorUri.'>} union {?film dbp:director <'.$directorUri.'>} .';
+            $query .= "\n".' ?film dbp:director <'.$directorUri.'> .';
         }
         if(isset($actorUri)){
-            $query .= "\n".'{?film dbo:starring <'.$actorUri.'>} union {?film dbp:starring <'.$actorUri.'>} .';
+            $query .= "\n".'?film dbp:starring <'.$actorUri.'> .';
         }
         if(isset($musicalArtistUri)){
-            $query .= "\n".'{?film dbo:musicComposer <'.$musicalArtistUri.'>} union {?film dbp:musicComposer <'.$musicalArtistUri.'>}
-            union {?film dbo:music <'.$musicalArtistUri.'>} union {?film dbp:music <'.$musicalArtistUri.'>}.';
+            $query .= "\n".'{?film dbp:musicComposer <'.$musicalArtistUri.'>} union {?film dbp:music <'.$musicalArtistUri.'>}.';
         }
         if(isset($movieGenreUri)){
-            $query .= "\n".'{?film dbo:genre <'.$movieGenreUri.'>} union {?film dbp:genre <'.$movieGenreUri.'>}.';
+            $query .= "\n".'?film dbp:genre <'.$movieGenreUri.'>.';
         }
         if(isset($countryUri)){
-            $query .= "\n".'{?film dbo:country <'.$countryUri.'>} union {?film dbp:country <'.$countryUri.'>}.';
+            $query .= "\n".'?film dbp:country <'.$countryUri.'>.';
         }
         if(isset($originalLanguageUri)){
-            $query .= "\n".'{?film dbo:language <'.$originalLanguageUri.'>} union {?film dbp:language <'.$originalLanguageUri.'>}.';
+            $query .= "\n".'?film dbp:language <'.$originalLanguageUri.'>.';
         }
         $query .= "\n".'filter ( lang(?label) = "en" )';
         if(isset($name) && strlen($name)){
@@ -72,127 +70,144 @@ class FilmRdfController extends Controller
 ////        if(isset($releaseDate)){
 ////            $query .= "\n".'filter (?releaseDate = '.$releaseDate.')';
 ////        }
-        $query .= '}  limit 10';
-//
-        $result = $sparql->query($query);
-//        dd($result);
+        $query .= '}  limit 50';
+
+        try{
+            $result = $sparql->query($query);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 
         $films=[];
         foreach($result as $row){
             $uri = $row->film->getUri();
-            $film = $this->getFilmData($uri);
-            array_push($films,$film);
+            if(!array_has($films,$uri)){
+                $films[$uri]=[];
+            }
+            $film=$films[$uri];
+            $film['title']=$row->label->getValue();
+            if(isset($row->director) && method_exists($row->director, 'getUri')){
+                $directorUri = $row->director->getUri();
+                if(!isset($film['directors'])){
+                    $film['directors']=[];
+                }
+                if(!array_has($film['directors'],$directorUri)){
+                    $directorUri = $row->director->getUri();
+                    $query = 'select ?directorName where { <'.$directorUri.'> rdfs:label ?directorName . filter (lang(?directorName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->directorName)){
+                            $directorName = $rw->directorName->getValue();                        
+                            $film['directors'][$directorUri]=$directorName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->actor) && method_exists($row->actor, 'getUri')){
+                $actorUri = $row->actor->getUri();
+                if(!isset($film['actors'])){
+                    $film['actors']=[];
+                }
+                if(!array_has($film['actors'],$actorUri)){
+                    $actorUri = $row->actor->getUri();
+                    $query = 'select ?actorName where { <'.$actorUri.'> rdfs:label ?actorName . filter (lang(?actorName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->actorName)){
+                            $actorName = $rw->actorName->getValue();
+                            $film['actors'][$actorUri]=$actorName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->musicComposer) && method_exists($row->musicComposer, 'getUri')){
+                $musicComposerUri = $row->musicComposer->getUri();
+                if(!isset($film['musicComposers'])){
+                    $film['musicComposers']=[];
+                }
+                if(!array_has($film['musicComposers'],$musicComposerUri)){
+                    $musicComposerUri = $row->musicComposer->getUri();
+                    $query = 'select ?musicComposerName where { <'.$musicComposerUri.'> rdfs:label ?musicComposerName . filter (lang(?musicComposerName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->musicComposerName)){
+                            $musicComposerName = $rw->musicComposerName->getValue();
+                            $film['musicComposers'][$musicComposerUri]=$musicComposerName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->language) && method_exists($row->language, 'getUri')){
+                $languageUri = $row->language->getUri();
+                if(!isset($film['languages'])){
+                    $film['languages']=[];
+                }
+                if(!array_has($film['languages'],$languageUri)){
+                    $languageUri = $row->language->getUri();
+                    $query = 'select ?languageName where { <'.$languageUri.'> rdfs:label ?languageName . filter (lang(?languageName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->languageName)){
+                            $languageName = $rw->languageName->getValue();
+                            $film['languages'][$languageUri]=$languageName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->country) && method_exists($row->country, 'getUri')){
+                $countryUri = $row->country->getUri();
+                if(!isset($film['countrys'])){
+                    $film['countrys']=[];
+                }
+                if(!array_has($film['countrys'],$countryUri)){
+                    $countryUri = $row->country->getUri();
+                    $query = 'select ?countryName where { <'.$countryUri.'> rdfs:label ?countryName . filter (lang(?countryName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->countryName)){
+                            $countryName = $rw->countryName->getValue();
+                            $film['countrys'][$countryUri]=$countryName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->genre) && method_exists($row->genre, 'getUri')){
+                $genreUri = $row->genre->getUri();
+                if(!isset($film['genres'])){
+                    $film['genres']=[];
+                }
+                if(!array_has($film['genres'],$genreUri)){
+                    $genreUri = $row->genre->getUri();
+                    $query = 'select ?genreName where { <'.$genreUri.'> rdfs:label ?genreName . filter (lang(?genreName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->genreName)){
+                            $genreName = $rw->genreName->getValue();
+                            $film['genres'][$genreUri]=$genreName;
+                        }
+                    }
+                }
+
+            }
+
+            if(isset($row->image)){
+                $film['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
+                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
+                );
+            }
+            if(isset($row->releaseDate)){
+                $film['releaseDate']= method_exists($row->releaseDate, 'getValue') ? $row->releaseDate->getValue() : $row->releaseDate;
+            }
+            $films[$uri]=$film;
+
         }
+//        dd($films);
         return json_encode($films);
     }
 
-    function getFilmData($uri){
-        $film=[];
-        $film['uri']=$uri;
-        $query = 'select ?label where{
-                <'.$uri.'> rdfs:label ?label.
-                filter(lang(?label)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['name']=$a->label->getValue();
-        }
-        $query = 'select distinct ?director, ?directorName where{
-                {<'.$uri.'> dbo:director ?director} union {<'.$uri.'> dbp:director ?director}.
-                ?director rdfs:label ?directorName.
-                filter(lang(?directorName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['directors']=[];
-            $author['uri']=$a->director->getUri();
-            $author['name']=$a->directorName->getValue();
-            array_push($film['directors'],$author);
-        }
-        $query = 'select distinct ?image where{
-                {<'.$uri.'> dbo:imageCaption ?image} union {<'.$uri.'> dbp:imageCaption ?image} union {<'.$uri.'> foaf:depiction ?image}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['images']=[];
-            $im = (method_exists($a->image,'getUri')) ? $a->image->getUri() : $a->image->getValue();
-            array_push($film['images'],$im);
-        }
-
-        $query = 'select distinct ?actor, ?actorName where{
-                {<'.$uri.'> dbo:starring ?actor} union {<'.$uri.'> dbp:starring ?actor}.
-                ?actor rdfs:label ?actorName.
-                filter(lang(?actorName)="en")
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['actors']=[];
-            $illustrator['uri']=$a->actor->getUri();
-            $illustrator['name']=$a->actorName->getValue();
-            array_push($film['actors'],$illustrator);
-        }
-
-        $query = 'select distinct ?language, ?languageName where{
-                {<'.$uri.'> dbo:language ?language} union {<'.$uri.'> dbp:language ?language}.
-                ?language rdfs:label ?languageName.
-                filter(lang(?languageName)="en")
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['languages']=[];
-            $illustrator['uri']=$a->language->getUri();
-            $illustrator['name']=$a->languageName->getValue();
-            array_push($film['languages'],$illustrator);
-        }
-
-        $query = 'select distinct ?country, ?countryName where{
-                {<'.$uri.'> dbo:country ?country} union {<'.$uri.'> dbp:country ?country}.
-                ?country rdfs:label ?countryName.
-                filter(lang(?countryName)="en")
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['countries']=[];
-            $illustrator['uri']=$a->country->getUri();
-            $illustrator['name']=$a->countryName->getValue();
-            array_push($film['countries'],$illustrator);
-        }
-
-        $query = 'select distinct ?musicComposer, ?musicComposerName where{
-                {<'.$uri.'> dbo:musicComposer ?musicComposer} union {<'.$uri.'> dbp:musicComposer ?musicComposer}
-                 union {<'.$uri.'> dbo:music ?musicComposer} union {<'.$uri.'> dbp:music ?musicComposer}.
-                ?musicComposer rdfs:label ?musicComposerName.
-                filter(lang(?musicComposerName)="en")
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['musicComposers']=[];
-            $illustrator['uri']=$a->musicComposer->getUri();
-            $illustrator['name']=$a->musicComposerName->getValue();
-            array_push($film['musicComposers'],$illustrator);
-        }
-        $query = 'select distinct ?genre, ?genreName where{
-                {<'.$uri.'> dbo:genre ?genre} union {<'.$uri.'> dbp:genre ?genre}.
-                ?genre rdfs:label ?genreName.
-                filter(lang(?genreName)="en")
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $film['genres']=[];
-            $genre['uri']=$a->genre->getUri();
-            $genre['name']=$a->genreName->getValue();
-            array_push($film['genres'],$genre);
-        }
-        return $film;
-    }
 }
