@@ -14,10 +14,12 @@ $(document).on('ready', function () {
             password = $(".login-form input[name='password']").val();
         if (email.length === 0) {
             e.preventDefault();
+            $(".login-form input[name='email']").addClass("invalid");
             errors.push('You have to enter your email');
         }
         if (password.length === 0) {
             e.preventDefault();
+            $(".login-form input[name='password']").addClass("invalid");
             errors.push('You have to enter your password'); 
         }
         $(".errorWrapper .errors").html("");
