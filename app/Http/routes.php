@@ -12,10 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 Route::get('home', function () {
-    return view('welcome');
+    return view('index');
 });
 
 // Authentication routes...
@@ -56,10 +56,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('search/books', 'BookRdfController@searchBooks');
     Route::get('search/films', 'FilmRdfController@searchFilms');
-    Route::get('recommendations/books', 'BookRdfController@recommendBooks');
     Route::get('search/events', 'EventRdfController@searchEvents');
     Route::get('search/places', 'PlaceRdfController@searchPlaces');
     Route::get('search/edu', 'EducationalInstitutionController@searchEdu');
+
+    Route::get('recommendations/books', 'BookRdfController@recommendBooks');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
