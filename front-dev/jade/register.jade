@@ -25,6 +25,10 @@ include snippets/guest-header.jade
                         p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
                 .col-md-12.errorColumn
                     .errorWrapper
+                        h4 Form issues 
+                            a(href="javascript:void(0)") 
+                                span.glyphicon.glyphicon-remove-circle.clearErrors
+                        .errors
         .col-md-5
             {!! Form::open(array('url' => 'auth/register', 'class' => 'register-form', 'role' => 'form', 'method'=>'post')) !!}
             .row

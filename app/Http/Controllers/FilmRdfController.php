@@ -46,23 +46,22 @@ class FilmRdfController extends Controller
                 optional { {?film dbp:imageCaption ?image} union {?film foaf:depiction ?image} }.';
 
         if(isset($directorUri)){
-            $query .= "\n".' {?film dbo:director <'.$directorUri.'>} union {?film dbp:director <'.$directorUri.'>} .';
+            $query .= "\n".' ?film dbp:director <'.$directorUri.'> .';
         }
         if(isset($actorUri)){
-            $query .= "\n".'{?film dbo:starring <'.$actorUri.'>} union {?film dbp:starring <'.$actorUri.'>} .';
+            $query .= "\n".'?film dbp:starring <'.$actorUri.'> .';
         }
         if(isset($musicalArtistUri)){
-            $query .= "\n".'{?film dbo:musicComposer <'.$musicalArtistUri.'>} union {?film dbp:musicComposer <'.$musicalArtistUri.'>}
-            union {?film dbo:music <'.$musicalArtistUri.'>} union {?film dbp:music <'.$musicalArtistUri.'>}.';
+            $query .= "\n".'{?film dbp:musicComposer <'.$musicalArtistUri.'>} union {?film dbp:music <'.$musicalArtistUri.'>}.';
         }
         if(isset($movieGenreUri)){
-            $query .= "\n".'{?film dbo:genre <'.$movieGenreUri.'>} union {?film dbp:genre <'.$movieGenreUri.'>}.';
+            $query .= "\n".'?film dbp:genre <'.$movieGenreUri.'>.';
         }
         if(isset($countryUri)){
-            $query .= "\n".'{?film dbo:country <'.$countryUri.'>} union {?film dbp:country <'.$countryUri.'>}.';
+            $query .= "\n".'?film dbp:country <'.$countryUri.'>.';
         }
         if(isset($originalLanguageUri)){
-            $query .= "\n".'{?film dbo:language <'.$originalLanguageUri.'>} union {?film dbp:language <'.$originalLanguageUri.'>}.';
+            $query .= "\n".'?film dbp:language <'.$originalLanguageUri.'>.';
         }
         $query .= "\n".'filter ( lang(?label) = "en" )';
         if(isset($name) && strlen($name)){
@@ -72,9 +71,12 @@ class FilmRdfController extends Controller
 ////            $query .= "\n".'filter (?releaseDate = '.$releaseDate.')';
 ////        }
         $query .= '}  limit 50';
-//
-        $result = $sparql->query($query);
-//        dd($result);
+
+        try{
+            $result = $sparql->query($query);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 
         $films=[];
         foreach($result as $row){
@@ -204,6 +206,7 @@ class FilmRdfController extends Controller
             $films[$uri]=$film;
 
         }
+//        dd($films);
         return json_encode($films);
     }
 

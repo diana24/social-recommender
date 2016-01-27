@@ -240,10 +240,10 @@ a:hover {
 .specification-side {
   background: white;
   padding-top: 0;
-  padding-bottom: 0;
+  padding-bottom: 10px;
+  font-family: 'Raleway', sans-serif;
 }
 .specification-side h2 {
-  font-family: 'Raleway', sans-serif;
   font-weight: 300;
   font-size: 28px;
   margin: 15px;
@@ -257,7 +257,6 @@ a:hover {
   font-size: 16px;
   font-weight: 500;
   text-align: right;
-  font-family: "Raleway",sans-serif;
 }
 .specification-side form {
   padding-right: 15px;
@@ -276,7 +275,16 @@ a:hover {
   display: block;
   margin-left: 15px;
   background: white;
+  color: #ca1b1b;
   display: none;
+}
+.specification-side .errorWrapper .glyphicon {
+  top: 3.5px;
+}
+.specification-side .errorWrapper h4 {
+  padding-bottom: 10px;
+  text-align: right;
+  border-bottom: 2px solid #3299BB;
 }
 .specification-side .errorWrapper p {
   margin-bottom: 0;

@@ -29,14 +29,15 @@ class EducationalInstitutionController extends Controller
         $numberOfStudentsMax = $request->get('nrOfStudentsMax');
 
         (new RdfController())->initRdf();
-        $query='select distinct ?edu where {
+        $query='select * where {
                 { ?edu rdf:type dbo:EducationalInstitution }.
                 ?edu rdfs:label ?label.
                 optional { {?edu dbo:location ?location} union {?edu dbp:location ?location} }.
-                optional { {?edu dbo:location ?location} union {?edu dbp:location ?location} }.
+                optional { {?edu dbo:country ?country} union {?edu dbp:country ?country} }.
+                optional { {?edu dbo:numberOfAcademicStaff ?numberOfAcademicStaff} union {?edu dbp:numberOfAcademicStaff ?numberOfAcademicStaff} }.
                 optional { {?edu dbo:principal ?principal} union {?edu dbp:principal ?principal} }.
                 optional { {?edu dbo:rector ?rector} union {?edu dbp:rector ?rector} }.
-                optional { {?edu dbo:numberOfStudents ?endDate} union {?edu dbp:numberOfStudents ?numberOfStudents} }.
+                optional { {?edu dbo:numberOfStudents ?numberOfStudents} union {?edu dbp:numberOfStudents ?numberOfStudents} }.
                 optional { {?edu dbp:imageCaption ?image} union {?edu dbo:imageCaption ?image} union {?edu foaf:depiction ?image} }.';
         if(isset($locationUri)){
             $query .= "\n".' {?edu dbo:location <'.$locationUri.'>} union {?edu dbp:location <'.$locationUri.'>} .';
@@ -69,122 +70,130 @@ class EducationalInstitutionController extends Controller
         if(isset($numberOfStudentsMax)){
             $query .= "\n".'filter (?numberOfStudents <= '.$numberOfStudentsMax.')';
         }
-        $query .= '} limit 10';
+        $query .= '} limit 100';
 
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $result = $sparql->query($query);
-//        dd($result);
+        try{
+            $result = $sparql->query($query);
+        } catch(\Exception $e){
+            return json_encode([]);
+        }
 //
-        $eds=[];
+        $edus=[];
         foreach($result as $row){
             $uri = $row->edu->getUri();
-            $edu = $this->getEduData($uri);
-            array_push($eds,$edu);
+            if(!array_has($edus,$uri)){
+                $edus[$uri]=[];
+            }
+            $edu=$edus[$uri];
+            $edu['title']=$row->label->getValue();
+//            if(isset($row->type) && method_exists($row->type, 'getUri')){
+//                $typeUri = $row->type->getUri();
+//                if(!isset($edu['types'])){
+//                    $edu['types']=[];
+//                }
+//                if(!array_has($edu['types'],$typeUri)){
+//                    $typeUri = $row->type->getUri();
+//                    $query = 'select ?typeName where { <'.$typeUri.'> rdfs:label ?typeName . filter (lang(?typeName)="en")} limit 1';
+//                    $r = $sparql->query($query);
+//                    foreach($r as $rw){
+//                        if(isset($rw->typeName)){
+//                            $typeName = $rw->typeName->getValue();
+//                            $edu['types'][$typeUri]=$typeName;
+//                        }
+//                    }
+//                }
+//
+//            }
+            if(isset($row->country) && method_exists($row->country, 'getUri')){
+                $countryUri = $row->country->getUri();
+                if(!isset($edu['countries'])){
+                    $edu['countries']=[];
+                }
+                if(!array_has($edu['countries'],$countryUri)){
+                    $countryUri = $row->country->getUri();
+                    $query = 'select ?countryName where { <'.$countryUri.'> rdfs:label ?countryName . filter (lang(?countryName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->countryName)){
+                            $countryName = $rw->countryName->getValue();
+                            $edu['countries'][$countryUri]=$countryName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->rector) && method_exists($row->rector, 'getUri')){
+                $rectorUri = $row->rector->getUri();
+                if(!isset($edu['countries'])){
+                    $edu['countries']=[];
+                }
+                if(!array_has($edu['countries'],$rectorUri)){
+                    $rectorUri = $row->rector->getUri();
+                    $query = 'select ?rectorName where { <'.$rectorUri.'> rdfs:label ?rectorName . filter (lang(?rectorName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->rectorName)){
+                            $rectorName = $rw->rectorName->getValue();
+                            $edu['countries'][$rectorUri]=$rectorName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->principal) && method_exists($row->principal, 'getUri')){
+                $principalUri = $row->principal->getUri();
+                if(!isset($edu['countries'])){
+                    $edu['countries']=[];
+                }
+                if(!array_has($edu['countries'],$principalUri)){
+                    $principalUri = $row->principal->getUri();
+                    $query = 'select ?principalName where { <'.$principalUri.'> rdfs:label ?principalName . filter (lang(?principalName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->principalName)){
+                            $principalName = $rw->principalName->getValue();
+                            $edu['countries'][$principalUri]=$principalName;
+                        }
+                    }
+                }
+
+            }
+            if(isset($row->location) && method_exists($row->location, 'getUri')){
+                $locationUri = $row->location->getUri();
+                if(!isset($edu['countries'])){
+                    $edu['countries']=[];
+                }
+                if(!array_has($edu['countries'],$locationUri)){
+                    $locationUri = $row->location->getUri();
+                    $query = 'select ?locationName where { <'.$locationUri.'> rdfs:label ?locationName . filter (lang(?locationName)="en")} limit 1';
+                    $r = $sparql->query($query);
+                    foreach($r as $rw){
+                        if(isset($rw->locationName)){
+                            $locationName = $rw->locationName->getValue();
+                            $edu['countries'][$locationUri]=$locationName;
+                        }
+                    }
+                }
+
+            }
+
+
+            if(isset($row->image)){
+                $edu['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
+                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
+                );
+            }
+            if(isset($row->numberOfAcademicStaff)){
+                $edu['numberOfAcademicStaff']= method_exists($row->numberOfAcademicStaff, 'getValue') ? $row->numberOfAcademicStaff->getValue() : $row->numberOfAcademicStaff;
+            }
+            if(isset($row->numberOfStudents)){
+                $edu['numberOfStudents']= method_exists($row->numberOfStudents, 'getValue') ? $row->numberOfStudents->getValue() : $row->numberOfStudents;
+            }
+            $edus[$uri]=$edu;
         }
-        return json_encode($eds);
+//        dd($edus);
+        return json_encode($edus);
     }
-    
-    function getEduData($uri){
-        $edu=[];
-        $edu['uri']=$uri;
-        $query = 'select ?label where{
-                <'.$uri.'> rdfs:label ?label.
-                filter(lang(?label)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
 
-        foreach($r as $a){
-            $edu['name']=$a->label->getValue();
-        }
-        $query = 'select distinct ?principal, ?principalName where{
-                {<'.$uri.'> dbo:principal ?principal} union {<'.$uri.'> dbp:principal ?principal}.
-                ?principal rdfs:label ?principalName.
-                filter(lang(?principalName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['principals']=[];
-            $principal['uri']=$a->principal->getUri();
-            $principal['name']=$a->principalName->getValue();
-            array_push($edu['principals'],$principal);
-        }
-        $query = 'select distinct ?rector, ?rectorName where{
-                {<'.$uri.'> dbo:rector ?rector} union {<'.$uri.'> dbp:rector ?rector}.
-                ?rector rdfs:label ?rectorName.
-                filter(lang(?rectorName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['rectors']=[];
-            $rector['uri']=$a->rector->getUri();
-            $rector['name']=$a->rectorName->getValue();
-            array_push($edu['rectors'],$rector);
-        }
-        $query = 'select distinct ?country, ?countryName where{
-                {<'.$uri.'> dbo:country ?country} union {<'.$uri.'> dbp:country ?country}.
-                ?country rdfs:label ?countryName.
-                filter(lang(?countryName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['countries']=[];
-            $location['uri']=$a->country->getUri();
-            $location['name']=$a->countryName->getValue();
-            array_push($edu['countries'],$location);
-        }
-        $query = 'select distinct ?type, ?typeName where{
-                <'.$uri.'> rdf:type ?type.
-                ?type rdfs:label ?typeName.
-                filter(lang(?typeName)="en")
-            } limit 10';
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['types']=[];
-            $location['uri']=$a->type->getUri();
-            $location['name']=$a->typeName->getValue();
-            array_push($edu['types'],$location);
-        }
-        $query = 'select distinct ?image where{
-                {<'.$uri.'> dbo:imageCaption ?image} union {<'.$uri.'> dbp:imageCaption ?image} union {<'.$uri.'> foaf:depiction ?image}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['images']=[];
-            $im = (method_exists($a->image,'getUri')) ? $a->image->getUri() : $a->image->getValue();
-            array_push($edu['images'],$im);
-        }
-        $query = 'select distinct ?numberOfAcademicStaff where{
-                {<'.$uri.'> dbo:numberOfAcademicStaff ?numberOfAcademicStaff} union {<'.$uri.'> dbp:numberOfAcademicStaff ?numberOfAcademicStaff}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['numberOfAcademicStaff']=0;
-            $im = (method_exists($a->numberOfAcademicStaff,'getValue')) ? $a->numberOfAcademicStaff->getValue() : $a->numberOfAcademicStaff;
-            $edu['numberOfAcademicStaff']=$im;
-        }
-        $query = 'select distinct ?endDate where{
-                {<'.$uri.'> dbo:endDate ?endDate} union {<'.$uri.'> dbp:endDate ?endDate}.
-            } limit 10';
-        $r = $sparql->query($query);
-
-        foreach($r as $a){
-            $edu['numberOfStudents']=0;
-            $im = (method_exists($a->numberOfStudents,'getValue')) ? $a->numberOfStudents->getValue() : $a->numberOfStudents;
-            $edu['numberOfStudents']=$im;
-        }
-
-
-        return $edu;
-    }
 }
