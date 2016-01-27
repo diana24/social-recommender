@@ -15,6 +15,17 @@ class BookRdfController extends Controller
 {
     function getBookData($uri){
         $book=[];
+        $book['uri']=$uri;
+        $query = 'select ?label where{
+                <'.$uri.'> rdfs:label ?label.
+                filter(lang(?label)="en")
+            } limit 10';
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $r = $sparql->query($query);
+
+        foreach($r as $a){
+            $book['name']=$a->label->getValue();
+        }
         $query = 'select distinct ?author, ?authorName where{
                 {<'.$uri.'> dbo:author ?author} union {<'.$uri.'> dbp:author ?author}.
                 ?author rdfs:label ?authorName.
@@ -134,8 +145,9 @@ class BookRdfController extends Controller
     }
 
     function searchBooks(Request $request=null){
+        (new RdfController())->initRdf();
         if(!$request){
-            return [];
+            return json_encode([]);
         }
         $authorUri = $request->get('authorUri');
         $illustratorUri = $request->get('illustratorUri');
@@ -194,8 +206,6 @@ class BookRdfController extends Controller
 
         $books=[];
         foreach($result as $row){
-            $book['uri']=$row->book->getUri();
-
             $uri = $row->book->getUri();
             $book = $this->getBookData($uri);
             array_push($books,$book);
@@ -204,6 +214,7 @@ class BookRdfController extends Controller
     }
 
     function getBookUri($resourceName){
+
         $aux = str_replace(" ","_",ucwords(strtolower($resourceName)));
         (new RdfController())->initRdf();
         $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
