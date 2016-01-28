@@ -10,6 +10,7 @@ use EasyRdf_Graph;
 use EasyRdf_Namespace;
 use EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
+ini_set('max_execution_time', 300);
 
 class EventRdfController extends Controller
 {
