@@ -97,7 +97,7 @@ class FilmRdfController extends Controller
                     $r = $sparql->query($query);
                     foreach($r as $rw){
                         if(isset($rw->directorName)){
-                            $directorName = $rw->directorName->getValue();                        
+                            $directorName = $rw->directorName->getValue();
                             $film['directors'][$directorUri]=$directorName;
                         }
                     }
@@ -210,4 +210,134 @@ class FilmRdfController extends Controller
         return json_encode($films);
     }
 
+    public function recommendFilms(){
+        $mybooks =  (new RdfController())->getBooks(); //dd($mybooks);
+        $books=[];
+        $i=0;
+
+        shuffle($mybooks);
+
+        $n=5;
+        while($n>count($mybooks)){
+            $n--;
+        }
+        $results=[];
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $mybooks = array_slice($mybooks, 0, $n);
+        foreach($mybooks as $mb){
+            $au = $mb['authors'][0];
+            try{
+                $query = 'select distinct ?book where {
+
+                { ?book rdf:type dbo:WrittenWork }
+                 union
+                { ?book rdf:type <http://dbpedia.org/class/Book> }
+                union
+                { ?book rdf:type owl:Thing }.
+
+                ?book rdfs:label ?label.
+                {?book dbo:author ?author} union {?book dbp:author ?author}.
+                ?author rdfs:label ?a
+
+                filter ( lang(?label) = "en") filter regex(str(?label), "'.$mb['name'].'", "i")
+                filter regex(str(?a), "'.$au.'", "i") } limit 10';
+
+                $result = $sparql->query($query);
+                array_push($results,$result);
+
+
+            }catch (\Exception $e){
+                dd($e);
+            }
+        }
+//        dd($results);
+
+        $filmResults=[];
+
+        foreach($results as $result){
+            foreach($result as $row){
+                $uri = $row->book->getUri();
+
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img where{
+                    { optional{
+                    ?x dbo:wikiPageDisambiguates <'.$uri.'>.
+                    ?x dbo:wikiPageDisambiguates ?film.
+                    } } union
+                    { optional {
+                    { ?film dbo:basedOn <'.$uri.'> } union {?film dbp:basedOn <'.$uri.'>}
+                    } }.
+
+                    ?film rdf:type dbo:Film.
+                    ?film rdfs:label ?label.
+                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image} union {?film foaf:depiction ?image} }.
+                    filter(lang(?label)="en")
+                } limit 6';
+                try{
+                    $x = $sparql->query($query);
+                    array_push($filmResults,$x);
+                }catch(\Exception $e){
+
+                }
+            }
+        }
+//        dd($filmResults);
+
+        $films=[];
+
+        foreach($filmResults as $filmResult){
+            foreach($filmResult as $row){
+                $uri = $row->film->getUri();
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img where{
+                    ?film rdf:type dbo:Film.
+                    ?film rdfs:label ?label.
+
+                    {optional{
+                    {?film dbo:director ?x} union {?film dbo:director ?x}.
+                    {<'.$uri.'> dbo:director ?x} union {<'.$uri.'> dbp:director ?x}.
+                    }}
+
+                    union
+
+                    {optional{
+                    {?film dbo:starring ?x} union {?film dbo:starring ?x}.
+                    {<'.$uri.'> dbo:starring ?x} union {<'.$uri.'> dbp:starring ?x}.
+                    }}
+
+                    union
+
+                    {optional{
+                    {?film dbo:genre ?x} union {?film dbo:genre ?x}.
+                    {<'.$uri.'> dbo:genre ?x} union {<'.$uri.'> dbp:genre ?x}.
+                    }}.
+                    filter(lang(?label)="en")
+                } limit 5';
+                try{
+                    $x = $sparql->query($query);
+                    array_push($films,$x);
+                }catch(\Exception $e){
+
+                }
+            }
+        }
+        $filmResults=array_merge($filmResults,$films);
+        $films=[];
+        foreach($filmResults as $filmResult){
+            foreach($filmResult as $row){
+                $uri = $row->film->getUri();
+                if(!array_has($films,$uri)){
+                    $films[$uri]=[];
+                }
+                $film=$films[$uri];
+                $film['title']=$row->label->getValue();
+
+                if(isset($row->img)){
+                    $film['image']=(method_exists($row->img, 'getUri')) ? $row->img->getUri() : (
+                    (method_exists($row->img, 'getValue')) ? $row->img->getValue() : $row->img
+                    );
+                }
+                $films[$uri]=$film;
+            }
+        }
+        dd($films);
+    }
 }
