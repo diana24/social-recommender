@@ -6,19 +6,7 @@ include snippets/user-header.jade
         .col-md-10.col-sm-12.application
             h2 Profile Settings
             .row
-                .col-md-6
-                    .row
-                        .col-md-12
-                            .textWrapper
-                                p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
-                                p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
-                        .col-md-12.errorColumn
-                            .errorWrapper
-                                h4 Form issues 
-                                    a(href="javascript:void(0)") 
-                                        span.glyphicon.glyphicon-remove-circle.clearErrors
-                                .errors
-                .col-md-6
+                .col-md-7
                     .row
                         {!! Form::open(array('url' => 'update', 'class' => 'profile-form', 'role' => 'form', 'method'=>'put')) !!}
                         .col-md-12
@@ -46,3 +34,5 @@ include snippets/user-header.jade
                                 .form-group
                                     {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
                         {!! Form::close() !!}
+                .col-md-5
+                    p social media connect here
