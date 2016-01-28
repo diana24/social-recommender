@@ -35,5 +35,6 @@ include snippets/user-header.jade
                                     {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
                         {!! Form::close() !!}
                 .col-md-5
-                    p social media connect here
+                    a(href="{{url('/createAuthUrl')}}") Authenticate
+                    
 {!! HTML::script('js/profileFormCheck.js') !!}

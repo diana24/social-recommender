@@ -25,6 +25,10 @@ html(lang="en")
                         p.name Fermuș V. Vasile-Octavian
                         ul.usermenu
                             li
-                                <a href=<?php echo url('profile') ?>> <span class="glyphicon glyphicon-user"></span> Profile</a>
+                                a(href="{{url('profile')}}") 
+                                    span.glyphicon.glyphicon-user 
+                                    | Profile
                             li
-                                 <a href=<?php echo url('auth/logout') ?>> <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                                a(href="{{url('auth/logout')}}") 
+                                    span.glyphicon.glyphicon-log-out 
+                                    | Logout
