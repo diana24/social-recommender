@@ -4,35 +4,34 @@ include snippets/user-header.jade
     .row.row-eq-height
         include snippets/app-sidebar.jade
         .col-md-10.col-sm-12.application
-            form.profile-form
-                h2 Profile Settings
-                .form-group
-                    label(for="email") E-mail
-                    input.form-control(name="email",id="email",type="email",value="octavian.fermus@gmail.com")
-                .form-group
-                    .row
-                        .col-md-6
-                            label(for="lastName") Last Name
-                            input.form-control(name="lastName",id="lastName",type="text",value="Fermus")              
-                        .col-md-6
-                            label(for="firstName") First Name
-                            input.form-control(name="firstName",id="firstName",type="text",value="V. Vasile Octavian")
-                .form-group
-                    .row
-                        .col-md-6
-                            label(for="sex") Sex
-                                .radio
-                                    label
-                                        input(type="radio",name="sex",id="optionSexM",value="male",checked)
-                                        | Male
-                                    label
-                                        input(type="radio",name="sex",id="optionSexF",value="female")
-                                        | Female     
-                        .col-md-6
-                            labe(for="nationality") Country
-                            select.form-control
-                                option(value="Romania") Romania
+            {!! Form::open(array('url' => 'profile', 'class' => 'profile-form', 'role' => 'form', 'method'=>'post')) !!}
+            h2 Profile Settings
+            .form-group
+                {!! Form::Label('email','E-mail') !!}
+                input.form-control(name="email",id="email",type="email",value="octavian.fermus@gmail.com")
+            .form-group
+                .row
+                    .col-md-6
+                        {!! Form::Label('lastName','Last Name') !!}
+                        input.form-control(name="lastName",id="lastName",type="text",value="Fermus")              
+                    .col-md-6
+                        {!! Form::Label('firstName','First Name') !!}
+                        input.form-control(name="firstName",id="firstName",type="text",value="V. Vasile Octavian")
+            .form-group
+                .row
+                    .col-md-6
+                        label(for="sex") Sex
+                            .radio
+                                label
+                                    input(type="radio",name="sex",id="optionSexM",value="male",checked)
+                                    | Male
+                                label
+                                    input(type="radio",name="sex",id="optionSexF",value="female")
+                                    | Female     
+                    .col-md-6
+                        {!! Form::Label('nationality','Country') !!}
+                        {!! Form::text('country', null, ['class' => 'form-control', 'placeholder' => ' e.g.Romania..']) !!}
 
-                .from-group.text-right
-                    button.btn(type="submit") Submit Changes
-                
+            .from-group.text-right
+                {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
+            {!! Form::close() !!}
