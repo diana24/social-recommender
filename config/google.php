@@ -20,7 +20,7 @@ return [
         'https://www.google.com/calendar/feeds/',
 //        'https://www.google.com/m8/feeds/',
     ],
-    "redirectUri" => "http://localhost:8080/oauth2callback",
+    "redirectUri" => "http://social-recommender.ro/oauth2callback",
     "appName" => "SoR",
-    "refreshToken" => '1/1V7imjMZBaNZO6jgivfph5MJhCUcH0fJT3ls-pe7fVQ',
+    "refreshToken" => '1/ewyRiRwFzUuNfGz90FsBVD-FumS63-Vo_XZykE3eNLtIgOrJDtdun6zK6XiATCKT',
 ];

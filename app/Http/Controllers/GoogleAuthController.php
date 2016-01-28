@@ -29,8 +29,8 @@ class GoogleAuthController extends Controller
         $client = $this->getGoogleClient(); //dd(Auth::user()->googleAccounts()->first());
         $acc = Auth::user()->googleAccounts()->first()->access_token;
         $acc = unserialize($acc);
-        $client->setAccessToken($acc['access_token']);
-        $client->refreshToken($acc['refresh_token']);
+        $client->setAccessToken($acc);
+//        $client->refreshToken(config('google.refreshToken'));
 
         return $client;
     }
@@ -49,13 +49,10 @@ class GoogleAuthController extends Controller
 
         $user = Auth::user();
         $googleAccount = new GoogleAccount();
-        $tokens = [];
-        $tokens['access_token'] = $token;
-        $tokens['refresh_token'] = $client->getRefreshToken();
-        $googleAccount->access_token = serialize($tokens);
+        $googleAccount->access_token = serialize($token);
         $user->googleAccounts()->save($googleAccount);
 
-//        dd($client->getRefreshToken());
-        return redirect('/buildGraph');
+        dd($client->getRefreshToken());
+//        return redirect('/buildGraph');
     }
 }
