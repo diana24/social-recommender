@@ -1,5 +1,9 @@
 $(document).on('ready', function () {
     var errors = [];
+    if($(".errors").html().length > 0) {
+        $(".textWrapper").slideUp('fast');
+        $(".errorWrapper").slideDown('fast');
+    }
     $(".clearErrors").click(function () {
         $(".textWrapper").slideDown('fast');
         $(".errorWrapper").slideUp('fast');
