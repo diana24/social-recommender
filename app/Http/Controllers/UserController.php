@@ -46,6 +46,29 @@ class UserController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
 
+            $oldPassword = $request->input('old_password');
+            $newPassword = $request->input('new_password');
+            $rPassword = $request->input('password_confirmation');
+
+            if(isset($newPassword) && isset($oldPassword) && isset($rPassword)){
+                if (Hash::check($request->input('oldPassword'), $user->password)){
+                    if ($newPassword==$rPassword){
+                        $user->password = Hash::make($newPassword);
+                        $user->save();
+                        $error = "Password changed succesfully!";
+                    }
+                    else{
+                        $error = "Passwords don't match!";
+                    }
+                }
+                else{
+                    $error = "Old password is incorrect!";
+                }
+                if(isset($error)){
+                    return Redirect::back()->withErrors($error);
+                }
+            }
+
             $user->save();
             return Redirect::back();
         }
