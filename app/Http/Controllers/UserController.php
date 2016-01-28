@@ -46,6 +46,7 @@ class UserController extends Controller
 
             $user->name = $request->input('name');
             $user->email = $request->input('email');
+            $user->save();
 
             $oldPassword = $request->input('old_password');
             $newPassword = $request->input('new_password');
@@ -70,7 +71,6 @@ class UserController extends Controller
                 }
             }
 
-            $user->save();
             return Redirect::back();
         }
     }
