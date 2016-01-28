@@ -93,5 +93,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
 
         Route::get('graph', 'GraphController@displayData');
+        Route::get('graph/me', 'GraphController@displayPersonalData');
+        Route::get('graph/people', 'GraphController@displayPeopleData');
+        Route::get('graph/events', 'GraphController@displayEventData');
+        Route::get('graph/books', 'GraphController@displayBookData');
     });
 });
