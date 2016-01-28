@@ -2,84 +2,41 @@
     .panel-heading
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
-    .panel-collapse.collapse#searchPerson
+    .panel-collapse.collapse#searchBook
         .panel-body
             {!! Form::open(array('url' => 'book', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
-<<<<<<< HEAD
-                    .col-md-12
-                        {!! Form::Label('bookTitle','Book title') !!}
-                        .form-group
-                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Book name..']) !!}
-                        
-                    .col-md-12
-                        {!! Form::Label('author','Author') !!}
-                        .form-group
-                        {!! Form::text('authorUri', null, ['class' => 'input form-control', 'placeholder' => ' Author name..']) !!}
-                        
-                     .col-md-12
-                        {!! Form::Label('illustrator','Illustrator') !!}
-                        .form-group 
-                        {!! Form::text('illustratorUri', null, ['class' => 'input form-control', 'placeholder' => ' Illustrator name..']) !!}
-                        
-                     .col-md-12 
-                        {!! Form::Label('literaryGenres','Literary Genres') !!}
-                        .form-group 
-                        {{ Form::select('literaryGenreUri', array(
-                             '',
-                            '2'=>'Comedy',
-                            '3'=>'Drama',
-                            '4'=>'Non-fiction',
-                            '5'=>'Realistic fiction',
-                            '6'=>'Romance Novel',
-                            '7'=>'Satire',
-                            '8'=>'Tragedy',
-                            '9'=>'Tragicomedy'
-                            ),'8') }}
-                            
-                      .col-md-12
-                      {!! Form::Label('Number of Pages') !!}
-                      
-                      .col-md-6.col-sm-6.col-xs-6
-                     
-                        .form-group
-                        {!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'Number of minimum pages...']) !!}
-                         
-                         
-                      .col-md-6.col-sm-6.col-xs-6
-                         
-                        .form-group
-                        {!! Form::text('numberOfPagesMax', null, ['class' => 'input form-control', 'placeholder' => 'Number of maximum pages...']) !!}
-                         
-                      .col-md-12
-                        {!! Form::label('numberOfVolumes',Number of Volumes') !!}
-                            .form-group 
-                            {!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'Number of Volumes...']) !!}    
-                      
-                      .col-md-12
-=======
                 .col-md-12
                     {!! Form::Label('bookTitle','Book title') !!}
                     .form-group
                         {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Book name..']) !!}
-
                 .col-md-12
                     {!! Form::Label('author','Author') !!}
                     .form-group
-                        {!! Form::text('getAuthors', null, ['class' => 'input form-control', 'placeholder' => ' Author name..']) !!}
+                        {!! Form::text('authorUri', null, ['class' => 'input form-control', 'placeholder' => ' Author name..']) !!}
+
                 .col-md-12
                     {!! Form::Label('illustrator','Illustrator') !!}
                     .form-group 
-                        {!! Form::text('getIllustrators', null, ['class' => 'input form-control', 'placeholder' => ' Illustrator name..']) !!}
+                        {!! Form::text('illustratorUri', null, ['class' => 'input form-control', 'placeholder' => ' Illustrator name..']) !!}
                 .col-md-12 
                     {!! Form::Label('literaryGenres','Literary Genres') !!}
                     .form-group 
-                        {!! Form::select('getLiteraryGenres ', array('', '2'=>'Comedy', '3'=>'Drama','4'=>'Non-fiction', '5'=>'Realistic fiction', '6'=>'Romance Novel', '7'=>'Satire', '8'=>'Tragedy', '9'=>'Tragicomedy'),'8') !!}
+                        {!! Form::select('literaryGenreUri', array(
+                        '2'=>'Comedy',
+                        '3'=>'Drama',
+                        '4'=>'Non-fiction',
+                        '5'=>'Realistic fiction',
+                        '6'=>'Romance Novel',
+                        '7'=>'Satire',
+                        '8'=>'Tragedy',
+                        '9'=>'Tragicomedy'
+                        ),'8', ['class'=>'form-control']) !!}
                 .col-md-12
                     {!! Form::Label('Number of Pages') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'Number of minimum pages..']) !!}
+                        {!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'Number of minimum pages...']) !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
                         {!! Form::text('numberOfPagesMax', null, ['class' => 'input form-control', 'placeholder' => 'Number of maximum pages...']) !!}
@@ -88,7 +45,6 @@
                     .form-group
                         {!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'Number of Volumes...']) !!}	
                 .col-md-12
->>>>>>> d4ae2ae83ed761acc895e5476e84277ba871bfba
                     {!! Form::Label('ranking_id','Ranking:') !!}
                 .col-md-12    
                     .form-group
