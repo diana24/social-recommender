@@ -2,67 +2,64 @@
     .panel-heading
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
-    .panel-collapse.collapse#searchBook
+    .panel-collapse.collapse#searchPerson
         .panel-body
-            form.search-form(role="form")
-                .row
-                    .col-md-12
-                        label Book Title
-                        .form-group
-                            input.form-control#BookName(type="text", name="BookName")
-                    .col-md-12
-                        label Author Name
-                        .form-group
-                            input.form-control#author(type="text", name="author")
-                    .col-md-12
-                        label Release Date
-                        .form-group
-                            input.form-control#releaseDate(type="text", name="releaseDate")
-                  
-                    .col-md-12
-                        label Literary Genre
-                        .form-group
-                            select.form-control
-                                option(value="") Comedy
-                                option Drama
-                                option Non-fiction
-                                option Realistic fiction
-                                option Romance Novel
-                                option Satire
-                                option Tragedy
-                                option Tragicomedy
-                       
-                    
-                    .col-md-12
-                        label Number of pages
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#numberOfPagesMin(type="text", placeholder="from..", name="numberOfPagesMin")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#numberOfPagesMax(type="text", placeholder="to..", name="numberOfPagesMax")
-                    .col-md-12
-                        label Number of Volumes
-                        .form-group
-                            input.form-control#numberOfVolumes(type="text", name="numberOfVolumes")
-                        label Ranking
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            select.form-control
-                                option(value="") from..
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            select.form-control
-                                option(value="") to..
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                    .col-md-12.col-sm-12.col-xs-12.text-right
-                        button.btn(type="submit", name="Search", value="Search") Search
+            {!! Form::open(array('url' => 'book', 'class' => 'search-form', 'role' => 'form')) !!}
+            .row
+					.col-md-12
+						{!! Form::Label('bookTitle','Book title') !!}
+						.form-group
+						{!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Book name..']) !!}
+						
+					.col-md-12
+						{!! Form::Label('author','Author') !!}
+						.form-group
+						{!! Form::text('getAuthors', null, ['class' => 'input form-control', 'placeholder' => ' Author name..']) !!}
+						
+					 .col-md-12
+						{!! Form::Label('illustrator','Illustrator') !!}
+						.form-group 
+						{!! Form::text('getIllustrators', null, ['class' => 'input form-control', 'placeholder' => ' Illustrator name..']) !!}
+						
+					 .col-md-12 
+						{!! Form::Label('literaryGenres','Literary Genres') !!}
+						.form-group 
+						{{ Form::select('getLiteraryGenres ', array(
+                             '',
+                            '2'=>'Comedy',
+                            '3'=>'Drama',
+                            '4'=>'Non-fiction',
+                            '5'=>'Realistic fiction',
+                            '6'=>'Romance Novel',
+                            '7'=>'Satire',
+                            '8'=>'Tragedy',
+                            '9'=>'Tragicomedy'
+                            ),'8') }}
+							
+					  .col-md-12
+					  {!! Form::Label('Number of Pages') !!}
+					  
+					  .col-md-6.col-sm-6.col-xs-6
+					 
+						.form-group
+						{!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'Number of minimum pages...']) !!}
+						 
+						 
+					  .col-md-6.col-sm-6.col-xs-6
+						 
+						.form-group
+						{!! Form::text('numberOfPagesMax', null, ['class' => 'input form-control', 'placeholder' => 'Number of maximum pages...']) !!}
+						 
+					  .col-md-12
+						{!! Form::label('numberOfVolumes',Number of Volumes') !!}
+							.form-group 
+							{!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'Number of Volumes...']) !!}	
+					  
+					  .col-md-12
+                    {!! Form::Label('ranking_id','Ranking:') !!}
+                .col-md-12    
+                    .form-group
+                        {!! Form::select('ranking_id', array('','2'=>'1','3'=>'2','4'=>'3','5'=>'4','6'=>'5'),'5', ['class' => 'form-control']) !!}
+                .col-md-12.text-right
+                    {!! Form::submit('Search',  ['class' => 'btn']) !!}
+            {!! Form::close() !!}

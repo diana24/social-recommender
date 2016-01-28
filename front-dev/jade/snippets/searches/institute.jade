@@ -2,86 +2,67 @@
     .panel-heading
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchInstitute") Search Institutes
-    .panel-collapse.collapse.in#searchInstitute
+    .panel-collapse.collapse#searchInstitute
         .panel-body
-            form.search-form(role="form")
-                .row
-                    .col-md-12
-                        label Institute Name
-                        .form-group
-                            input.form-control#givenInstituteName(type="text", name="givenInstituteName")
-                    .col-md-12
-                        label Number of Classes
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumInstituteClasses(type="text", placeholder="from..", name="minimumInstituteClasses")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumInstituteClasses(type="text", placeholder="to..", name="maximumInstituteClasses")
-                    .col-md-12
-                        label Campus Size
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumCampusSize(type="text", placeholder="from..", name="minimumCampusSize")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumCampusSize(type="text", placeholder="to..", name="maximumCampusSize")
-                    .col-md-12
-                        label Nobel Laureates
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumCampusLaureates(type="text", placeholder="from..", name="minimumCampusLaureates")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumCampusLaureates(type="text", placeholder="to..", name="maximumCampusLaureates")
-                    .col-md-12
-                        label Academic Staff
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumAcademicStaff(type="text", placeholder="from..", name="minimumAcademicStaff")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumAcademicStaff(type="text", placeholder="to..", name="maximumAcademicStaff")
-                    .col-md-12
-                        label Locations
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumLocations(type="text", placeholder="from..", name="minimumLocations")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumLocations(type="text", placeholder="to..", name="maximumLocations")
-                    .col-md-12
-                        label Students
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#minimumStudents(type="text", placeholder="from..", name="minimumStudents")
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            input.form-control#maximumStudents(type="text", placeholder="to..", name="maximumStudents")
-                    .col-md-12
-                        label Offered Classes
-                    .col-md-12.col-sm-12.col-xs-12
-                        .form-group
-                            input.form-control#offeredClasses(type="text", placeholder="separate by coma..", name="offeredClasses")
-                    .col-md-12
-                        label Ranking
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            select.form-control
-                                option(value="") from..
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                    .col-md-6.col-sm-6.col-xs-6
-                        .form-group
-                            select.form-control
-                                option(value="") to..
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                    .col-md-12.col-sm-12.col-xs-12.text-right
-                        button.btn(type="submit", name="Search", value="Search") Search
+            {!! Form::open(array('url' => 'institute', 'class' => 'search-form', 'role' => 'form')) !!}
+            .row
+					.col-md-12
+						{!! Form::Label('instituteName','Institute name') !!}
+						.form-group 
+						{!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Institute name..']) !!}
+					
+					.col-md-12
+						{!! Form::Label('educationalInstituteType','Educational Institute Type') !!}
+							.form-group">
+							{!! Form::text('getEduInstitutionTypes', null, ['class' => 'input form-control', 'placeholder' => ' Educational Institute type..']) !!}
+					  
+					.col-md-12
+						{!! Form::Label('location','Location') !!}
+						.form-group
+						{!! Form::text('getLocations', null, ['class' => 'input form-control', 'placeholder' => ' Location..']) !!}
+						
+					.col-md-12
+						{!! Form::Label('country','Country') !!}
+						.form-group
+						{!! Form::text('getCountries', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
+						
+					.col-md-12
+						{!! Form::Label('principal','Principal') !!}
+						 .form-group
+						 {!! Form::text('getPrincipals', null, ['class' => 'input form-control', 'placeholder' => ' Principal name..']) !!}
+						
+					.col-md-12
+						{!! Form::Label('rector','Rector') !!}
+						.form-group
+						{!! Form::text('getRectors', null, ['class' => 'input form-control', 'placeholder' => ' Rector..']) !!}
+						
+					
+					.col-md-12				 
+						{!! Form::Label('numberOFAcademicStaff','Number of Academic staff:') !!}
+				    .col-md-6.col-sm-6.col-xs-6
+							  
+						.form-group
+								{!! Form::text('nrOfAcademicStaffMin', null, ['class' => 'input form-control', 'placeholder' => ' Min number of academic staff..']) !!}
+							  
+						.col-md-6.col-sm-6.col-xs-6
+							 
+							.form-group
+							 {!! Form::text('nrOfAcademicStaffMax', null, ['class' => 'input form-control', 'placeholder' => ' Max number of academic staff..']) !!}
+							 
+					  .col-md-12			 
+							{!! Form::label('numberOFStudents','Number of Students:') !!}
+							.col-md-6.col-sm-6.col-xs-6
+							 
+							.form-group 
+								{!! Form::text('nrOfStudentsMin', null, ['class' => 'input form-control', 'placeholder' => ' Min number of students..']) !!}
+							 
+							.col-md-6.col-sm-6.col-xs-6
+							 
+							 .form-group
+							 {!! Form::text('nrOfStudentsMax', null, ['class' => 'input form-control', 'placeholder' => ' Max number of students..']) !!}
+						.col-md-12    
+							.form-group
+								{!! Form::select('ranking_id', array('','2'=>'1','3'=>'2','4'=>'3','5'=>'4','6'=>'5'),'5', ['class' => 'form-control']) !!}	
+						.col-md-12.text-right
+						{!! Form::submit('Search',  ['class' => 'btn']) !!}
+				{!! Form::close() !!}
