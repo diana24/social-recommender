@@ -4,24 +4,45 @@ include snippets/user-header.jade
     .row.row-eq-height
         include snippets/app-sidebar.jade
         .col-md-10.col-sm-12.application
-            {!! Form::open(array('url' => 'update', 'class' => 'profile-form', 'role' => 'form', 'method'=>'put')) !!}
             h2 Profile Settings
             .row
-                .col-md-12
-                    .form-group
-                        {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
-                .col-md-12
-                    .form-group
-                        {!! Form::email('email', Auth::user()->email, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
-                .col-md-12
-                    label Change Password
                 .col-md-6
-                    .form-group
-                        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'new password..']) !!}
+                    .row
+                        .col-md-12
+                            .textWrapper
+                                p SoR is an application able to recommend certain people/events/things of interest according to a given FOAF graph built for a specific user based on its social media profile(s).
+                                p For example, suggesting the members of an IT team based on desired skills (excellent knowledge of Web technologies + software engineering + open hardware), geolocation (i.e. from Romania and UK only), preferences, hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, football, politics) and so on.
+                        .col-md-12.errorColumn
+                            .errorWrapper
+                                h4 Form issues 
+                                    a(href="javascript:void(0)") 
+                                        span.glyphicon.glyphicon-remove-circle.clearErrors
+                                .errors
                 .col-md-6
-                    .form-group
-                        {!! Form::password('password_confirmation', ['class' => 'signin_input_password form-control', 'placeholder' => 'repeat password..']) !!}
-                .col-md-12.text-right
-                    .form-group
-                        {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
-            {!! Form::close() !!}
+                    .row
+                        {!! Form::open(array('url' => 'update', 'class' => 'profile-form', 'role' => 'form', 'method'=>'put')) !!}
+                        .col-md-12
+                            label Change username
+                        .col-md-12
+                            .form-group
+                                {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
+                        .col-md-12
+                            label Change email
+                        .col-md-12
+                            .form-group
+                                {!! Form::email('email', Auth::user()->email, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                        .col-md-12
+                            label Change Password
+                        .col-md-12
+                            .form-group
+                                {!! Form::password('old_password', ['class' => 'form-control', 'placeholder' => 'old password..']) !!}
+                        .col-md-6
+                            .form-group
+                                {!! Form::password('new_password', ['class' => 'form-control', 'placeholder' => 'new password..']) !!}
+                        .col-md-6
+                            .form-group
+                                {!! Form::password('password_confirmation', ['class' => 'signin_input_password form-control', 'placeholder' => 'repeat password..']) !!}
+                        .col-md-12.text-right
+                                .form-group
+                                    {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
+                        {!! Form::close() !!}
