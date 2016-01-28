@@ -5,6 +5,10 @@ $(document).on('ready', function () {
         $(".errorWrapper").slideUp('fast');
         $(".invalid").removeClass("invalid");
     });
+    if($(".errors").html().length > 0) {
+        $(".textWrapper").slideUp('fast');
+        $(".errorWrapper").slideDown('fast');
+    }
     $(".login-form .btn").click(function (e) {
         errors = [];
         $(".textWrapper").slideDown('fast');
