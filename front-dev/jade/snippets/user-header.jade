@@ -6,10 +6,11 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible" content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1")
         title SoR
-        link(href="css/bootstrap.min.css", rel="stylesheet")
-        link(href="css/stylesheet.css", rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css?family=Raleway:400,300,500,700", rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css?family=Roboto", rel="stylesheet")
+        {!! HTML::style('css/bootstrap.min.css') !!}
+        {!! HTML::style('css/stylesheet.css') !!}
+        {!! HTML::style('https://fonts.googleapis.com/css?family=Raleway:400,300,500,700') !!}
+        {!! HTML::style('https://fonts.googleapis.com/css?family=Roboto') !!}  
+        {!! HTML::script("https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js") !!}
     body
         .container-fluid.top-side
             .row
