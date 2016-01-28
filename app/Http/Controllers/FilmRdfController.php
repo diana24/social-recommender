@@ -240,14 +240,18 @@ class FilmRdfController extends Controller
                 ?author rdfs:label ?a
 
                 filter ( lang(?label) = "en") filter regex(str(?label), "'.$mb['name'].'", "i")
-                filter regex(str(?a), "'.$au.'", "i") } limit 10';
+                filter regex(str(?a), "'.$au.'", "i") } limit 3';
 
-                $result = $sparql->query($query);
-                array_push($results,$result);
+                try{
+                    $result = $sparql->query($query);
+                    array_push($results,$result);
+                }catch (\Exception $e){
+//                dd($e);
+                }
 
 
             }catch (\Exception $e){
-                dd($e);
+//                dd($e);
             }
         }
 //        dd($results);
@@ -258,7 +262,7 @@ class FilmRdfController extends Controller
             foreach($result as $row){
                 $uri = $row->book->getUri();
 
-                $query = 'select distinct ?film, ?label, MIN(?image) as ?img where{
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
                     { optional{
                     ?x dbo:wikiPageDisambiguates <'.$uri.'>.
                     ?x dbo:wikiPageDisambiguates ?film.
@@ -269,9 +273,11 @@ class FilmRdfController extends Controller
 
                     ?film rdf:type dbo:Film.
                     ?film rdfs:label ?label.
-                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image} union {?film foaf:depiction ?image} }.
+                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image}
+                    union {?film foaf:depiction ?image} union {?film dbo:thumbnail ?image} union {?film dbp:thumbnail ?image} }.
+                    optional{{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                     filter(lang(?label)="en")
-                } limit 6';
+                } limit 3';
                 try{
                     $x = $sparql->query($query);
                     array_push($filmResults,$x);
@@ -287,7 +293,7 @@ class FilmRdfController extends Controller
         foreach($filmResults as $filmResult){
             foreach($filmResult as $row){
                 $uri = $row->film->getUri();
-                $query = 'select distinct ?film, ?label, MIN(?image) as ?img where{
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
                     ?film rdf:type dbo:Film.
                     ?film rdfs:label ?label.
 
@@ -309,8 +315,11 @@ class FilmRdfController extends Controller
                     {?film dbo:genre ?x} union {?film dbo:genre ?x}.
                     {<'.$uri.'> dbo:genre ?x} union {<'.$uri.'> dbp:genre ?x}.
                     }}.
+                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image}
+                    union {?film foaf:depiction ?image} union {?film dbo:thumbnail ?image} union {?film dbp:thumbnail ?image} }.
+                    optional{{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                     filter(lang(?label)="en")
-                } limit 5';
+                } limit 3';
                 try{
                     $x = $sparql->query($query);
                     array_push($films,$x);
@@ -333,6 +342,11 @@ class FilmRdfController extends Controller
                 if(isset($row->img)){
                     $film['image']=(method_exists($row->img, 'getUri')) ? $row->img->getUri() : (
                     (method_exists($row->img, 'getValue')) ? $row->img->getValue() : $row->img
+                    );
+                }
+                if(isset($row->site)){
+                    $film['link']=(method_exists($row->site, 'getUri')) ? $row->site->getUri() : (
+                    (method_exists($row->site, 'getValue')) ? $row->site->getValue() : $row->site
                     );
                 }
                 $films[$uri]=$film;

@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('recommendations/books', 'BookRdfController@recommendBooks');
     Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
+    Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
