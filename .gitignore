@@ -11,3 +11,4 @@ storage/*
 artisan
 readme (2).md
 front-dev/node_modules
+public/graphs/
