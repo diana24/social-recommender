@@ -53,6 +53,6 @@ class GoogleAuthController extends Controller
         $user->googleAccounts()->save($googleAccount);
 
 //        dd($client->getRefreshToken());
-        return redirect('/profile');
+        return redirect('/buildGraph');
     }
 }

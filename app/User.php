@@ -65,4 +65,11 @@ class User extends Model implements AuthenticatableContract,
     public function blocked(){
         return $this->savedItems()->where('status'=='blocked');
     }
+    public function hasSocialAccount(){
+        if(count($this->googleAccounts()->get())){
+            return true;
+        }
+        return false;
+    }
+
 }
