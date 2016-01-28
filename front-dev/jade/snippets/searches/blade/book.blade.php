@@ -27,4 +27,5 @@
                             '6'=>'5'
                             ),'5') }}
                             {!! Form::submit('Search',  ['class' => 'Search']) !!}
+                            {!! Form::submit('Search',  ['class' => 'btn']) !!}
                         {!! Form::close() !!}

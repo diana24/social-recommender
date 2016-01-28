@@ -38,7 +38,7 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['jade/*.jade', 'jade/snippets/*.jade', 'jade/snippets/blade/', 'scss/*.scss'],
+                files: ['jade/*.jade', 'jade/snippets/*.jade', 'jade/snippets/searches/*.jade', 'scss/*.scss'],
                 tasks: ['jade', 'sass'],
                 options: {
                     spawn: false
