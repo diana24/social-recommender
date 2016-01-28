@@ -315,11 +315,14 @@ a:hover {
 }
 .profile-form {
   padding: 0 30px;
+  font-family: "Raleway",sans-serif;
 }
 .profile-form h2 {
-  font-family: 'Raleway', sans-serif;
   font-weight: 300;
   font-size: 30px;
+}
+.profile-form label {
+  font-weight: 500;
 }
 
 .from-group {

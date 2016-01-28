@@ -6,32 +6,22 @@ include snippets/user-header.jade
         .col-md-10.col-sm-12.application
             {!! Form::open(array('url' => 'profile', 'class' => 'profile-form', 'role' => 'form', 'method'=>'post')) !!}
             h2 Profile Settings
-            .form-group
-                {!! Form::Label('email','E-mail') !!}
-                input.form-control(name="email",id="email",type="email",value="octavian.fermus@gmail.com")
-            .form-group
-                .row
-                    .col-md-6
-                        {!! Form::Label('lastName','Last Name') !!}
-                        input.form-control(name="lastName",id="lastName",type="text",value="Fermus")              
-                    .col-md-6
-                        {!! Form::Label('firstName','First Name') !!}
-                        input.form-control(name="firstName",id="firstName",type="text",value="V. Vasile Octavian")
-            .form-group
-                .row
-                    .col-md-6
-                        label(for="sex") Sex
-                            .radio
-                                label
-                                    input(type="radio",name="sex",id="optionSexM",value="male",checked)
-                                    | Male
-                                label
-                                    input(type="radio",name="sex",id="optionSexF",value="female")
-                                    | Female     
-                    .col-md-6
-                        {!! Form::Label('nationality','Country') !!}
-                        {!! Form::text('country', null, ['class' => 'form-control', 'placeholder' => ' e.g.Romania..']) !!}
-
-            .from-group.text-right
-                {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
+            .row
+                .col-md-12
+                    .form-group
+                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
+                .col-md-12
+                    .form-group
+                        {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                .col-md-12
+                    label Change Password
+                .col-md-6
+                    .form-group
+                        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'new password..']) !!}
+                .col-md-6
+                    .form-group
+                        {!! Form::password('password_confirmation', ['class' => 'signin_input_password form-control', 'placeholder' => 'repeat password..']) !!}
+                .col-md-12.text-right
+                    .form-group
+                        {!! Form::submit('Submit Changes',  ['class' => 'btn']) !!}
             {!! Form::close() !!}
