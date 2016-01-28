@@ -77,7 +77,8 @@ class GraphController extends Controller
 //        $g->upload(Auth::user()->id);
         $g = new Graph(url("/")."/".$filepath);
         Auth::user()->graphs()->save($g);
-        return ("Done! Get your graph at ".url("/")."/".$filepath);
+//        return ("Done! Get your graph at ".url("/")."/".$filepath);
+        return redirect('profile');
     }
 	
     function addSchools($fh){

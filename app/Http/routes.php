@@ -63,11 +63,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('search/places', 'PlaceRdfController@searchPlaces');
     Route::get('search/edu', 'EducationalInstitutionController@searchEdu');
 
-    Route::get('recommendations/books', 'BookRdfController@recommendBooks');
-    Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
-    Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
-
-    Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
     Route::get('users/me', 'UserController@show');
     Route::resource('lists', 'ListController@index');
@@ -91,4 +86,12 @@ Route::group(['middleware' => 'auth'], function () {
         return view('searchPeople');
     });
     Route::put('/update','UserController@update');
+
+    Route::group(['middleware' => 'graph'], function () {
+        Route::get('recommendations/books', 'BookRdfController@recommendBooks');
+        Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
+        Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
+
+        Route::get('graph', 'GraphController@displayData');
+    });
 });
