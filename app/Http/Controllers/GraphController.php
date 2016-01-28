@@ -313,7 +313,7 @@ class GraphController extends Controller
                 $gperson = $person;
                 $gperson = $plus->people->get($gperson->id)->toSimpleObject();
 
-                if(true /*$gperson->objectType == 'person'*/){
+                if($gperson->objectType == 'person'){
                     $this->addPersonData($fh,$gperson);
                 }
 
