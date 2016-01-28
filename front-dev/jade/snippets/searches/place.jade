@@ -6,22 +6,19 @@
         .panel-body
             {!! Form::open(array('url' => 'place', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
-					.col-md-12
-						{!! Form::Label('placeName','Place name') !!}
-						.form-group
-						{!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Place name..']) !!}
-					
-					.col-md-12 
-						{!! Form::Label('placeType','Place Type') !!}
-						.form-group 
-						{!! Form::text('getPlaceTypes', null, ['class' => 'input form-control', 'placeholder' => ' Place type..']) !!}
-					
-					.col-md-12
-						{!! Form::Label('country','Country') !!}
-						.form-group
-						{!! Form::text('getCountries', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
-					 
-				 	.col-md-12
+                .col-md-12
+                    {!! Form::Label('placeName','Place name') !!}
+                    .form-group
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Place name..']) !!}	
+                .col-md-12 
+                    {!! Form::Label('placeType','Place Type') !!}
+                    .form-group 
+                        {!! Form::text('getPlaceTypes', null, ['class' => 'input form-control', 'placeholder' => ' Place type..']) !!}	
+                .col-md-12
+                    {!! Form::Label('country','Country') !!}
+                    .form-group
+                        {!! Form::text('getCountries', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!} 
+                .col-md-12
                     {!! Form::Label('ranking_id','Ranking:') !!}
                 .col-md-12    
                     .form-group
