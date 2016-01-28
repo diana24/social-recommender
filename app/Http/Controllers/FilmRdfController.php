@@ -338,6 +338,7 @@ class FilmRdfController extends Controller
                 $films[$uri]=$film;
             }
         }
-        dd($films);
+//        dd($films);
+        return json_encode($films);
     }
 }

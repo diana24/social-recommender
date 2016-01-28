@@ -35,7 +35,7 @@ class UserController extends Controller
                 ),
                 array(
                     'name' => 'required',
-                    'email' => 'required|email|unique:users,email'.$id
+                    'email' => 'required|email|unique:users,email,'.$id
                 )
             );
             if ($validator->fails())
