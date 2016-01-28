@@ -1,7 +1,8 @@
 $(document).on('ready', function () {
     jQuery.ajax({
         method: 'get',
-        url: "/graph",
+        url: "graph/me",
+        datatype: "json",
         success: function(data) {
             console.log("success");
             console.log(data);
