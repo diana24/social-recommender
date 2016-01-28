@@ -182,6 +182,22 @@ class RdfController extends Controller
         }
         return $books;
     }
+    public function getSchools(){
+        $path = Auth::user()->getGraphPath();
+        $this->initRdf();
+        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $books=[];
+        foreach($graph->resources() as $resource){
+            if($resource->type() == 'dbo:EducationalInstitution'){
+                $book=[];
+                if($resource->get('dbp:name')){
+                    $book['name'] = $resource->get('dbp:name')->getValue();
+                }
+                array_push($books,$book);
+            }
+        }
+        return $books;
+    }
 
     public function getPeople(){
         $path = Auth::user()->getGraphPath();

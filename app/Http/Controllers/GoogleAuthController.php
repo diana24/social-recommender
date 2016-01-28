@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Google_Client;
 use Illuminate\Support\Facades\Auth;
 use App\GoogleAccount;
+use Illuminate\Support\Facades\Redirect;
 
 class GoogleAuthController extends Controller
 {
@@ -37,7 +38,7 @@ class GoogleAuthController extends Controller
     function createAuthUrl(){
         $client = $this->getGoogleClient();
         $url = $authUrl = $client->createAuthUrl();
-        return $url;
+        return Redirect::to($url);
     }
 
     function oauth2callback(Request $request){
@@ -51,6 +52,7 @@ class GoogleAuthController extends Controller
         $googleAccount->access_token = serialize($token);
         $user->googleAccounts()->save($googleAccount);
 
-        dd($client->getRefreshToken());
+//        dd($client->getRefreshToken());
+        return redirect('/profile');
     }
 }

@@ -196,4 +196,118 @@ class EducationalInstitutionController extends Controller
         return json_encode($edus);
     }
 
+    public function recommendSchools(){
+        $myschools = (new RdfController())->getSchools();
+//        dd($myschools);
+        #schools=[];
+        $i=0;
+
+        shuffle($myschools);
+
+        $n=5;
+        while($n>count($myschools)){
+            $n--;
+        }
+        $results=[];
+        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $myschools = array_slice($myschools, 0, $n);
+        foreach($myschools as $mb){
+            try{
+                $query = 'select distinct ?edu, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where {
+
+                ?edu rdf:type dbo:EducationalInstitution .
+
+                ?edu rdfs:label ?label.
+                    optional{{?edu dbo:wikiPageExternalLink ?wiki} union {?edu dbp:wikiPageExternalLink ?wiki}}.
+                    optional { {?edu dbp:imageCaption ?image}
+                    union {?edu dbo:imageCaption ?image}
+                    union {?edu dbo:thumbnail ?image}
+                    union {?edu dbp:thumbnail ?image}
+                    union {?edu foaf:depiction ?image} }.
+                filter ( lang(?label) = "en") filter regex(str(?label), "'.$mb['name'].'", "i")
+                 } limit 5';
+
+                $result = $sparql->query($query);
+                array_push($results,$result);
+
+
+            }catch (\Exception $e){
+//                dd($e);
+            }
+        }
+//        dd($results);
+
+        $eduResults=[];
+
+        foreach($results as $result){
+            foreach($result as $row){
+                $uri = $row->edu->getUri();
+                $query = 'select distinct ?edu, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
+                    ?edu rdf:type dbo:EducationalInstitution.
+                    ?edu rdfs:label ?label.
+                    optional{{?edu dbo:wikiPageExternalLink ?wiki} union {?edu dbp:wikiPageExternalLink ?wiki}}.
+                    {optional{
+                    {?edu dbo:country ?x} union {?edu dbo:country ?x}.
+                    {<'.$uri.'> dbo:country ?x} union {<'.$uri.'> dbp:country ?x}.
+                    }}
+
+                    union
+
+                    {optional{
+                    {?edu dbo:alumni ?x} union {?edu dbo:alumni ?x}.
+                    {<'.$uri.'> dbo:alumni ?x} union {<'.$uri.'> dbp:alumni ?x}.
+                    }}
+
+                    union
+
+                    {optional{
+                    {?edu dbo:educationSystem ?x} union {?edu dbo:educationSystem ?x}.
+                    {<'.$uri.'> dbo:educationSystem ?x} union {<'.$uri.'> dbp:educationSystem ?x}.
+                    }}.
+
+                    optional { {?edu dbp:imageCaption ?image}
+                    union {?edu dbo:imageCaption ?image}
+                    union {?edu dbo:thumbnail ?image}
+                    union {?edu dbp:thumbnail ?image}
+                    union {?edu foaf:depiction ?image} }.
+                    filter(lang(?label)="en")                               
+                } limit 10';
+                try{
+                    $x = $sparql->query($query); //dd($x);
+                    array_push($eduResults,$x);
+                }catch(\Exception $e){
+
+                }
+            }
+        }
+        //
+        $results=array_merge($results,$eduResults);
+//        dd($results);
+        $edus=[];
+        foreach($results as $eduResult){
+            foreach($eduResult as $row){
+                $uri = $row->edu->getUri();
+                if(!array_has($edus,$uri)){
+                    $edus[$uri]=[];
+                }
+                $edu=$edus[$uri];
+                $edu['name']=$row->label->getValue();
+
+                if(isset($row->img)){
+                    $edu['image']=(method_exists($row->img, 'getUri')) ? $row->img->getUri() : (
+                    (method_exists($row->img, 'getValue')) ? $row->img->getValue() : $row->img
+                    );
+                }
+                if(isset($row->site)){
+                    $edu['link']=(method_exists($row->site, 'getUri')) ? $row->site->getUri() : (
+                    (method_exists($row->site, 'getValue')) ? $row->site->getValue() : $row->site
+                    );
+                }
+                $edus[$uri]=$edu;
+            }
+        }
+//        dd($edus);
+        return json_encode($edus);
+    }
+
 }
