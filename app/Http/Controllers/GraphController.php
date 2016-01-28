@@ -125,6 +125,7 @@ class GraphController extends Controller
                     fwrite($fh, $tabs."<foaf:based_near geo:lat=\""
                         . $address->getLatitude() . "\" geo:long=\""
                         . $address->getLongitude() ."\"/>\n");
+                    fwrite($fh, $tabs."<dbo:country dbo:name=\"".$address->getCountry()."\"/>\n");
                 }
             }
         }
@@ -553,5 +554,25 @@ class GraphController extends Controller
 
         return json_encode(['me' => $me, 'people' => $people, 'events' => $events, 'books' => $books]);
 
+    }
+
+    function displayPersonalData(){
+        $me = (new RdfController())->getMyData();
+        return json_encode($me);
+    }
+
+    function displayPeopleData(){
+        $me = (new RdfController())->getPeople();
+        return json_encode($me);
+    }
+
+    function displayEventData(){
+        $me = (new RdfController())->getEvents();
+        return json_encode($me);
+    }
+
+    function displayBookData(){
+        $me = (new RdfController())->getBooks();
+        return json_encode($me);
     }
 }
