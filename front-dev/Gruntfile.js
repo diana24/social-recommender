@@ -3,6 +3,19 @@ module.exports = function (grunt) {
   // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: [{
+                    expand: true,
+                    cwd: "js/",
+                    src: '*.js',
+                    dest: "../public/js"
+                }]
+            }
+        },
         jade: {
             compile: {
                 options: {
@@ -22,8 +35,7 @@ module.exports = function (grunt) {
                     ext: ".blade.php",
                     expand: true,
                     cwd: "jade/"
-                }
-                ]
+                }]
             }
         },
         sass: {
@@ -38,8 +50,8 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['jade/*.jade', 'jade/snippets/*.jade', 'jade/snippets/searches/*.jade', 'scss/*.scss'],
-                tasks: ['jade', 'sass'],
+                files: ['js/*.js', 'jade/*.jade', 'jade/snippets/*.jade', 'jade/snippets/searches/*.jade', 'scss/*.scss'],
+                tasks: ['jade', 'sass', 'uglify'],
                 options: {
                     spawn: false
                 }
@@ -49,7 +61,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jade');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
-
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     // Default task(s).
-    grunt.registerTask('default', ['jade', 'sass', 'watch']);
+    grunt.registerTask('default', ['jade', 'sass', 'watch', 'uglify']);
 };
