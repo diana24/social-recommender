@@ -46,10 +46,13 @@ include snippets/user-header.jade
                                     |  Google+
                         .panel-collapse.collapse.in#googlePlus
                             .panel-body
-                                <?php if(null === Auth::user()->getGraphPath()) {  ?>
+                                <?php if(false === Auth::user()->hasSocialAccount()) {  ?>
                                 a.authenticateLink(href="{{url('/createAuthUrl')}}") 
                                     i.fa.fa-google-plus 
                                     | Authenticate with Google+
-                                <?php } else { echo Auth::user()->getGraphPath(); }?>
+                                <?php } 
+                                if(Auth::user()->getGraphPath() !==null) {?>
+                                <a href="<?php echo Auth::user()->getGraphPath() ?>"> Graph </a>
+                                <?php } ?>
 {!! HTML::script('js/profileFormCheck.js') !!}
 include snippets/footer.jade
