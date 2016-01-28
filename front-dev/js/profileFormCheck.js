@@ -55,40 +55,7 @@ $(document).on('ready', function () {
                 errors.push('Passwords don\'t match.');
             }
         } 
-        e.preventDefault();
         console.log(errors);
-        /*
-        if (password.length > 7 && password_confirmation.length < 1) {
-            e.preventDefault();
-            $(".register-form input[name='password_confirmation']").addClass("invalid");
-            errors.push('You have to confirm your password');
-        }
-        if (password.length > 7 && password === password_confirmation) {
-            if (/^[a-zA-Z0-9- ]*$/.test(name) === false) {
-                e.preventDefault();
-                errors.push('Your name contains illegal characters.');
-            }
-        }
-        if (!$(".register-form input[name='password_confirmation']").hasClass("invalid") && !$(".register-form input[name='password']").hasClass("invalid")) {
-            if (password !== password_confirmation) {
-                e.preventDefault();
-                $(".register-form input[name='password']").addClass("invalid");
-                $(".register-form input[name='password_confirmation']").addClass("invalid");
-                errors.push('Given passwords don\'t match');
-            }
-        }
-        if (/^[a-zA-Z0-9- ]*$/.test(password) === false) {
-            e.preventDefault();
-            errors.push('Your password contains illegal characters.');
-        }
-        $(".errorWrapper .errors").html("");
-        if (errors.length > 0) {
-            $(errors).each(function (index, val) {
-                $(".errorWrapper .errors").append("<p>" + val + "</p>");
-            });
-            $(".textWrapper").slideUp('fast');
-            $(".errorWrapper").slideDown('fast');
-        }*/
     });
 
 });
