@@ -25,6 +25,20 @@ body {
     }
 }
 
+.socialMediaWrapper {
+    .authenticateLink {
+        font-size: 18px;
+        font-family: 'Raleway', sans-serif;
+        background: #337ab7;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        display: block;
+        &:hover {
+            color: wheat;
+        }
+    }
+}
 .top-side {
     background: #E9E9E9;
     padding-top: 30px;
