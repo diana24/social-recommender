@@ -50,8 +50,7 @@ include snippets/user-header.jade
                                 a.authenticateLink(href="{{url('/createAuthUrl')}}") 
                                     i.fa.fa-google-plus 
                                     | Authenticate with Google+
-                                <?php } 
-                                if(Auth::user()->getGraphPath() !==null) {?>
+                                <?php } if(Auth::user()->getGraphPath() !==null) {?>
                                 <a href="<?php echo Auth::user()->getGraphPath() ?>"> Graph </a>
                                 <?php } ?>
 {!! HTML::script('js/profileFormCheck.js') !!}
