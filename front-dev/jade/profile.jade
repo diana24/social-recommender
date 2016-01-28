@@ -4,15 +4,15 @@ include snippets/user-header.jade
     .row.row-eq-height
         include snippets/app-sidebar.jade
         .col-md-10.col-sm-12.application
-            {!! Form::open(array('url' => 'profile', 'class' => 'profile-form', 'role' => 'form', 'method'=>'post')) !!}
+            {!! Form::open(array('url' => 'update', 'class' => 'profile-form', 'role' => 'form', 'method'=>'put')) !!}
             h2 Profile Settings
             .row
                 .col-md-12
                     .form-group
-                        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
+                        {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
                 .col-md-12
                     .form-group
-                        {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                        {!! Form::email('email', Auth::user()->email, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
                 .col-md-12
                     label Change Password
                 .col-md-6
