@@ -31,6 +31,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', function () {
         return view('index');
     });
+    Route::get('profile', function () {
+        return view('profile');
+    });
     Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
     Route::get('rdf', 'RdfController@getAutoRec');
     Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
@@ -61,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('search/edu', 'EducationalInstitutionController@searchEdu');
 
     Route::get('recommendations/books', 'BookRdfController@recommendBooks');
+    Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
 
     Route::get('graph', 'GraphController@displayData');
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
