@@ -86,6 +86,9 @@ class RdfController extends Controller
         if($person->get('foaf:depiction')){
             $me['depiction']=$person->get('foaf:depiction')->getUri();
         }
+        if($person->get('sch:description')){
+            $me['description']=$person->get('sch:description')->getValue();
+        }
         if($person->get('foaf:homepage')){
             $me['homepage']=$person->get('foaf:homepage')->getUri();
         }
@@ -96,8 +99,28 @@ class RdfController extends Controller
             $me['occupation']=$person->get('dbo:occupation')->getValue();
         }
         $me['schools']=[];
-        foreach($person->get('dbo:school') as $school){
-            array_push($me['schools'],$school->get('dbp:name')->getValue());
+        if( $person->all('dbo:school') ){
+            foreach($person->all('dbo:school') as $school){
+                array_push($me['schools'],$school->get('dbp:name')->getValue());
+            }
+        }
+        $me['pages']=[];
+        if( $person->all('foaf:page') ){
+            foreach($person->all('foaf:page') as $school){
+                array_push($me['pages'],$school->getUri());
+            }
+        }
+        $me['websites']=[];
+        if( $person->all('foaf:websites') ){
+            foreach($person->all('foaf:websites') as $school){
+                array_push($me['websites'],$school->getUri());
+            }
+        }
+        $me['countries']=[];
+        if( $person->all('dbo:country') ){
+            foreach($person->all('dbo:country') as $school){
+                array_push($me['countries'],$school->get('dbo:name')->getValue());
+            }
         }
         return $me;
     }
@@ -203,48 +226,69 @@ class RdfController extends Controller
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
         $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
-        $books=[];
-        foreach($graph->resources() as $resource){
-            if($resource->type() == 'sch:Book'){
-                $book=[];
-                if($resource->get('sch:name')){
-                    $book['name'] = $resource->get('sch:name')->getValue();
-                }
-                $book['authors']=[];
-                foreach($resource->all('sch:author') as $author){
-                    array_push($book['authors'], $author->get('foaf:name')->getValue());
-                }
-                if($resource->get('sch:description')){
-                    $book['description'] = $resource->get('sch:description')->getValue();
-                }
-                $book['isbn']=[];
-                foreach($resource->all('sch:isbn') as $isbn){
-                    array_push($book['isbn'], $isbn->getValue());
-                }
-                $book['publishers']=[];
-                foreach($resource->all('sch:publisher') as $publisher){
-                    array_push($book['publishers'], $publisher->get('foaf:name')->getValue());
-                }
-                if($resource->get('sch:numberOfPages')){
-                    $book['numberOfPages'] = $resource->get('sch:numberOfPages')->getValue();
-                }
-
-                if($resource->get('sch:genre')){
-                    $book['genre'] = $resource->get('sch:genre')->getValue();
-                }
-
-                if($resource->get('sch:aggregateRating')){
-                    $agr = $resource->get('sch:aggregateRating');
-                    $count = $agr->get('sch:ratingCount')->getValue();
-                    $value = $agr->get('sch:ratingValue')->getValue();
-                    $book['ratingCount']=$count;
-                    $book['ratingValue']=$value;
-                }
-
-                array_push($books,$book);
-            }
+        $pp=[];
+        if ($graph->type() == 'foaf:PersonalProfileDocument') {
+            $person = $graph->primaryTopic();
+        } elseif ($graph->type() == 'foaf:Person') {
+            $person = $graph->resource();
         }
-        return $books;
+        foreach($person->all('foaf:knows') as $resource){ //dd($resource);
+            
+            
+            $me=[];
+            if($resource->get('foaf:name')){
+                $me['name']=$resource->get('foaf:name')->getValue();
+            }
+            if($resource->get('foaf:givenname')){
+                $me['givenname']=$resource->get('foaf:givenname')->getValue();
+            }
+            if($resource->get('foaf:family_name')){
+                $me['family_name']=$resource->get('foaf:family_name')->getValue();
+            }
+            if($resource->get('sch:description')){
+                $me['description']=$resource->get('sch:description')->getValue();
+            }
+            if($resource->get('foaf:depiction')){
+                $me['depiction']=$resource->get('foaf:depiction')->getUri();
+            }
+            if($resource->get('foaf:homepage')){
+                $me['homepage']=$resource->get('foaf:homepage')->getUri();
+            }
+            if($resource->get('foaf:gender')){
+                $me['gender']=$resource->get('foaf:gender')->getValue();
+            }
+            if($resource->get('dbo:occupation')){
+                $me['occupation']=$resource->get('dbo:occupation')->getValue();
+            }
+            $me['schools']=[];
+            if( $resource->all('dbo:school') ){
+                foreach($resource->all('dbo:school') as $school){
+                    array_push($me['schools'],$school->get('dbp:name')->getValue());
+                }
+            }
+            $me['pages']=[];
+            if( $resource->all('foaf:page') ){
+                foreach($resource->all('foaf:page') as $school){
+                    array_push($me['pages'],$school->getUri());
+                }
+            }
+            $me['websites']=[];
+            if( $resource->all('foaf:websites') ){
+                foreach($resource->all('foaf:websites') as $school){
+                    array_push($me['websites'],$school->getUri());
+                }
+            }
+            $me['countries']=[];
+            if( $resource->all('dbo:country') ){
+                foreach($resource->all('dbo:country') as $school){
+                    array_push($me['countries'],$school->get('dbo:name')->getValue());
+                }
+            }
+
+                array_push($pp,$me);
+            }
+    
+        return $pp;
     }
 
 
