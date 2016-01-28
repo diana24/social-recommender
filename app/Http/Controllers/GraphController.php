@@ -20,9 +20,10 @@ use Google_Service_MapsEngine;
 use Ivory\HttpAdapter\CurlHttpAdapter;
 use Geocoder\Provider\GoogleMaps;
 use Google_Service_Calendar;
+ini_set('max_execution_time', 300);
 
 class GraphController extends Controller
-{    
+{
 	private $schools;
     private $schoolCount;
 

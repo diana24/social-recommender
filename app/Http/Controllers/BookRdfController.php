@@ -11,6 +11,7 @@ use EasyRdf_Namespace;
 use EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 use Mockery\CountValidator\Exception;
+ini_set('max_execution_time', 300);
 
 class BookRdfController extends Controller
 {
