@@ -52,7 +52,7 @@ class GoogleAuthController extends Controller
         $googleAccount->access_token = serialize($token);
         $user->googleAccounts()->save($googleAccount);
 
-        dd($client->getRefreshToken());
-//        return redirect('/buildGraph');
+//        dd($client->getRefreshToken());
+        return redirect('/buildGraph');
     }
 }
