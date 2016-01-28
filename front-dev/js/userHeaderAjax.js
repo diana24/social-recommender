@@ -8,7 +8,7 @@ $(document).on('ready', function () {
             console.log(data);
         },
         error: function(data) {
-            console.log("error");
+            //$(".user-box p.name").html($(".profile-form input[name='name'").val());
         }
     });
     
