@@ -89,4 +89,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('search/people/show', function () {
         return view('searchPeople');
     });
+    Route::put('/update','UserController@update');
 });
