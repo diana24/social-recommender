@@ -14,16 +14,19 @@ include snippets/user-header.jade
                         .col-md-12
                             .form-group
                                 {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'placeholder' => 'username..']) !!}
+                                p.error.hidden#nameError
                         .col-md-12
                             label Change email
                         .col-md-12
                             .form-group
                                 {!! Form::email('email', Auth::user()->email, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
+                                p.error.hidden#emailError
                         .col-md-12
                             label Change Password
                         .col-md-12
                             .form-group
                                 {!! Form::password('old_password', ['class' => 'form-control', 'placeholder' => 'old password..']) !!}
+                                p.error.hidden#old_passwordError
                         .col-md-6
                             .form-group
                                 {!! Form::password('new_password', ['class' => 'form-control', 'placeholder' => 'new password..']) !!}

@@ -1,12 +1,12 @@
 $(document).on('ready', function () {
-    var errors = [];
     $(".clearErrors").click(function () {
         $(".textWrapper").slideDown('fast');
         $(".errorWrapper").slideUp('fast');
         $(".invalid").removeClass("invalid");
     });
     $(".profile-form .btn").click(function (e) {
-        errors = [];
+        $("p.error").addClass('hidden');
+        $("p.error").html("");
         $(".invalid").removeClass("invalid");
         var username = $(".profile-form input[name='name']").val(),
             email = $(".profile-form input[name='email']").val(),
@@ -17,45 +17,52 @@ $(document).on('ready', function () {
             e.preventDefault();
             $(".profile-form input[name='name']").addClass("invalid");
             if (username.length === 0) {
-                errors.push('You have to enter your name');
+                $("p.error#nameError").html('You have to enter your name');
+                $("p.error#nameError").removeClass('hidden');
             } else {
-                errors.push('Your name must contain more than 8 letters');
+                $("p.error#nameError").html('Your name must contain more than 8 letters.');
+                $("p.error#nameError").removeClass('hidden');
             }
         } else {
             if (/^[a-zA-Z0-9- ]*$/.test(name) === false) {
                 e.preventDefault();
-                errors.push('Your new name can\'t illegal characters.');
+                $("p.error#nameError").html('Your new name can\'t illegal characters.');
+                $("p.error#nameError").removeClass('hidden');
             }
         }
         if (email.length < 1) {
             e.preventDefault();
             $(".profile-form input[name='email']").addClass("invalid");
-            errors.push('You have to enter an email');
+            $("p.error#emailError").html('You can\'t delete your email');
+            $("p.error#emailError").removeClass('hidden');
         }
         if (old_password.length !== 0) {
-            if(password === password_confirmation) {
-                if(password.length === 0) {
+            if (password === password_confirmation) {
+                if (password.length === 0) {
                     e.preventDefault();
-                    errors.push('You can\'t delete your password.');
+                    $("p.error#old_passwordError").html('You can\'t delete your password');
+                    $("p.error#old_passwordError").removeClass('hidden');
                     $(".profile-form input[name='new_password']").addClass("invalid");
                     $(".profile-form input[name='password_confirmation']").addClass("invalid");
-                } else if(password.length < 8) {
+                } else if (password.length < 8) {
                     e.preventDefault();
-                    errors.push('Your password must contain at least eight letters.');
+                    $("p.error#old_passwordError").html('Your password must contain at least eight letters.');
+                    $("p.error#old_passwordError").removeClass('hidden');
                     $(".profile-form input[name='new_password']").addClass("invalid");
                     $(".profile-form input[name='password_confirmation']").addClass("invalid");
                 } else if (/^[a-zA-Z0-9- ]*$/.test(name) === false) {
                     e.preventDefault();
-                    errors.push('Your new password contains illegal characters.');
+                    $("p.error#old_passwordError").html('Your new password contains illegal characters.');
+                    $("p.error#old_passwordError").removeClass('hidden');
                 }
             } else {
                 e.preventDefault();
                 $(".profile-form input[name='new_password']").addClass("invalid");
                 $(".profile-form input[name='password_confirmation']").addClass("invalid");
-                errors.push('Passwords don\'t match.');
+                $("p.error#old_passwordError").html('Passwords don\'t match.');
+                $("p.error#old_passwordError").removeClass('hidden');
             }
-        } 
-        console.log(errors);
+        }
     });
 
 });
