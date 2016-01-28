@@ -24,7 +24,8 @@ html(lang="en")
                 .col-md-4
                     .user-box
                         img(src="images/avatar.jpg" alt="avatar")
-                        p.name User
+                        p.name 
+                            <?php echo Auth::user()->name ?>
                         ul.usermenu
                             li
                                 a(href="{{url('profile')}}") 

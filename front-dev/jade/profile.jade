@@ -51,9 +51,9 @@ include snippets/user-header.jade
                                     i.fa.fa-google-plus 
                                     | Authenticate with Google+
                                 <?php } if(Auth::user()->getGraphPath() !==null) {?>
-                                <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>">View XML Graph</a>
+                                <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>">View XML Graph</a> |
                                 <?php } if(true === Auth::user()->hasSocialAccount()) {?>
-                                a(href="{{url('/buildGraph')}}") Remake XML Graph
+                                a(href="{{url('/buildGraph')}}") Rebuild XML Graph
                                 <?php }?>
 {!! HTML::script('js/profileFormCheck.js') !!}
 include snippets/footer.jade
