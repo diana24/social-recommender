@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('search/events', 'EventRdfController@searchEvents');
     Route::get('search/places', 'PlaceRdfController@searchPlaces');
     Route::get('search/edu', 'EducationalInstitutionController@searchEdu');
+    Route::get('search/people', 'PeopleRdfController@searchPeople');
 
     Route::get('users/me/connected-accounts', 'UserController@getConnectedAccounts');
     Route::get('users/me', 'UserController@show');

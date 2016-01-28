@@ -137,7 +137,7 @@ class GraphController extends Controller
     }
 
     function toCdata($text){
-        return str_replace("&","&amp;", $text);
+        return str_replace("&","\&", $text);
     }
 
     function addEvents($fh, $client){
