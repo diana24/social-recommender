@@ -6,6 +6,24 @@
         .panel-body
             {!! Form::open(array('url' => 'place', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
+<<<<<<< HEAD
+                    .col-md-12
+                        {!! Form::Label('placeName','Place name') !!}
+                        .form-group
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Place name..']) !!}
+                    
+                    .col-md-12 
+                        {!! Form::Label('placeType','Place Type') !!}
+                        .form-group 
+                        {!! Form::text('placeTypeUri', null, ['class' => 'input form-control', 'placeholder' => ' Place type..']) !!}
+                    
+                    .col-md-12
+                        {!! Form::Label('country','Country') !!}
+                        .form-group
+                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
+                     
+                     .col-md-12
+=======
                 .col-md-12
                     {!! Form::Label('placeName','Place name') !!}
                     .form-group
@@ -19,6 +37,7 @@
                     .form-group
                         {!! Form::text('getCountries', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!} 
                 .col-md-12
+>>>>>>> d4ae2ae83ed761acc895e5476e84277ba871bfba
                     {!! Form::Label('ranking_id','Ranking:') !!}
                 .col-md-12    
                     .form-group
