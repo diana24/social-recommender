@@ -88,4 +88,11 @@ class ListController extends Controller
             }
         }
     }
+
+    public function addItem(Request $request){
+        $uri = $request->input('uri');
+        $type = $request->input('type');
+        $body = $request->input('body');
+        $status = $request->input('status');
+    }
 }

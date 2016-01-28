@@ -70,6 +70,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('save_item', 'SavedItemsController@store');
     Route::get('addToList', 'ListController@addToList');
 
+    Route::get('getResourceInfo', 'RdfController@getResourceInfo');
+
     Route::get('search/books/show', function () {
         return view('searchBooks');
     });
