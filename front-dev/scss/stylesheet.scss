@@ -25,6 +25,17 @@ body {
     }
 }
 
+.loader {
+    width: 100%;
+}
+.googlePlusData {
+    position: relative;
+    .tabAvatar {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+    }
+}
 .socialMediaWrapper {
     .authenticateLink {
         font-size: 18px;
