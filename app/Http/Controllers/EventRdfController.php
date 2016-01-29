@@ -45,16 +45,16 @@ class EventRdfController extends Controller
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
-        if(isset($startDateMin)){
+        if(isset($startDateMin) && strlen($startDateMin)){
             $query .= "\n".'filter (?startDate >= "'.$startDateMin.'"^^xsd:dateTime)';
         }
-        if(isset($startDateMax)){
+        if(isset($startDateMax) && strlen($startDateMax)){
             $query .= "\n".'filter (?startDate <= "'.$startDateMax.'"^^xsd:dateTime)';
         }
-        if(isset($endDateMin)){
+        if(isset($endDateMin) && strlen($endDateMin)){
             $query .= "\n".'filter (?endDate >= "'.$endDateMin.'"^^xsd:dateTime)';
         }
-        if(isset($endDateMax)){
+        if(isset($endDateMax) && strlen($endDateMax)){
             $query .= "\n".'filter (?endDate <= "'.$endDateMax.'"^^xsd:dateTime)';
         }
         $query .= '} limit 50';

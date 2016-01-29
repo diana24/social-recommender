@@ -60,16 +60,16 @@ class EducationalInstitutionController extends Controller
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
-        if(isset($numberOfAcademicStaffMin)){
+        if(isset($numberOfAcademicStaffMin) && $numberOfAcademicStaffMin > 0){
             $query .= "\n".'filter (?numberOfAcademicStaff >= '.$numberOfAcademicStaffMin.')';
         }
-        if(isset($numberOfAcademicStaffMax)){
+        if(isset($numberOfAcademicStaffMax) && $numberOfAcademicStaffMax > 0){
             $query .= "\n".'filter (?numberOfAcademicStaff <= '.$numberOfAcademicStaffMax.')';
         }
-        if(isset($numberOfStudentsMin)){
+        if(isset($numberOfStudentsMin) && $numberOfStudentsMin > 0){
             $query .= "\n".'filter (?numberOfStudents >= '.$numberOfStudentsMin.')';
         }
-        if(isset($numberOfStudentsMax)){
+        if(isset($numberOfStudentsMax) && $numberOfStudentsMax > 0){
             $query .= "\n".'filter (?numberOfStudents <= '.$numberOfStudentsMax.')';
         }
         $query .= '} limit 100';

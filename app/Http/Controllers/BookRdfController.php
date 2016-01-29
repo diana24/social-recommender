@@ -168,7 +168,7 @@ class BookRdfController extends Controller
 
         try{
             $result = $sparql->query($query);
-        } catch(\Exception $e){dd($e);
+        } catch(\Exception $e){
             return json_encode([]);
         }
 
