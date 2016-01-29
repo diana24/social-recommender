@@ -211,6 +211,7 @@ class BookRdfController extends Controller
                 {?book dbo:genre ?genre} union {?book dbp:genre ?genre}.
                 ?genre rdfs:label ?genLabel.
                 optional { {?book dbp:imageCaption ?image} union {?book dbo:imageCaption ?image} union {?book foaf:depiction ?image} }.
+                optional{{?book dbo:wikiPageExternalLink ?wiki} union {?book dbp:wikiPageExternalLink ?wiki}}.
 
                 filter ( lang(?label) = "en" && lang(?authorName) = "en" && lang(?publisherName) = "en" && lang(?genLabel) = "en")';
                 if(isset($mb['genre'])){
@@ -240,6 +241,14 @@ class BookRdfController extends Controller
                     $books[$uri]=[];
                 }
                 $book=$books[$uri];
+                if(isset($row->wiki)){
+                    $book['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                    (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                    );
+                }
+                else{
+                    $book['link']=$uri;
+                }
                 $book['title']=$row->label->getValue();
                 if(isset($row->author) && method_exists($row->author, 'getUri')){
                     $authorUri = $row->author->getUri();
