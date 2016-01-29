@@ -301,7 +301,85 @@ $(document).on('ready', function () {
             }
         }
     });
-
+    
+    $("#bookSearchForm .btn").click(function (e) {
+        e.preventDefault();
+        $("#bookSearchForm input").removeClass("invalid");
+        var illustratorUri = illustrators[$("#bookSearchForm input[name='illustratorUri']").val().split(" ").join("_")],
+            authorUri = authors[$("#bookSearchForm input[name='authorUri']").val().split(" ").join("_")],
+            titleName = $("#bookSearchForm input[name='name']").val(),
+            literaryGenreUri = literaryGenres[$("#bookSearchForm input[name='literaryGenreUri']").val().split(" ").join("_")],
+            numberOfPagesMin = $("#bookSearchForm input[name='numberOfPagesMin']").val(),
+            numberOfPagesMax = $("#bookSearchForm input[name='numberOfPagesMax']").val(),
+            numberOfVolumes = $("#bookSearchForm input[name='numberOfVolumes']").val(),
+            sendingData = {
+                name: titleName,
+                illustratorUri: illustratorUri,
+                authorUri: authorUri,
+                literaryGenreUri: literaryGenreUri,
+                numberOfPagesMin: numberOfPagesMin,
+                numberOfPagesMax: numberOfPagesMax,
+                numberOfVolumes: numberOfVolumes
+            },
+            result;
+        if (authorUri === undefined && titleName.trim().length === 0 || literaryGenreUri === undefined || illustratorUri === undefined || numberOfPagesMin.trim().length === 0 || numberOfPagesMax.trim().length === 0 || numberOfVolumes.trim().length === 0) {
+            
+            if (illustratorUri === undefined && $("#bookSearchForm input[name='illustratorUri']").val().length > 0) {
+                $("#bookSearchForm input[name='illustratorUri']").addClass("invalid");
+            }
+            
+            if (literaryGenreUri === undefined && $("#bookSearchForm input[name='literaryGenreUri']").val().length > 0) {
+                $("#bookSearchForm input[name='literaryGenreUri']").addClass("invalid");
+            }
+            
+            if (authorUri === undefined && $("#bookSearchForm input[name='authorUri']").val().length > 0) {
+                $("#bookSearchForm input[name='authorUri']").addClass("invalid");
+            }
+            
+            $("p.resultHeader").html("Fetching data.. please wait");
+            $(".allResults").html("");
+            jQuery.ajax({
+                method: 'get',
+                url: "search/books",
+                dataType: "json",
+                data: sendingData,
+                success: function (data) {
+                    var count = 0,
+                        title,
+                        result,
+                        prop;
+                    for (prop in data) {
+                        if (data.hasOwnProperty(prop)) {
+                            count += 1;
+                        }
+                    }
+                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
+                    $.each(data, function (key, val) {
+                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                            '<div class="resultWrapper">' +
+                            '<p>Type: <span class="type">Place</span></p>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>';
+                            if(val.releaseDate) {
+                                if(typeof val.releaseDate === 'object') {
+                                    result += '<p>Name: <span class="releaseDate">' + val.releaseDate.date.split(" ")[0] + '</span></p>';
+                                }
+                                if(typeof val.releaseDate !== 'object') {
+                                    result += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
+                                }
+                            }
+                            result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        $(".allResults").append(result);
+                    });
+                },
+                error: function (data) {
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
+                }
+            });
+        }
+    });
+    
     $("#placeSearchForm .btn").click(function (e) {
         e.preventDefault();
         $("#placeSearchForm input").removeClass("invalid");
@@ -314,9 +392,7 @@ $(document).on('ready', function () {
                 countryUri: countryURI
             },
             result;
-        if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === 0) {
-            $("#placeSearchForm input").addClass("invalid");
-        } else if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
+        if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
             if (placeTypeURI === undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
                 $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
             }
@@ -358,7 +434,7 @@ $(document).on('ready', function () {
                     });
                 },
                 error: function (data) {
-                    console.log("error");
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
                 }
             });
         }

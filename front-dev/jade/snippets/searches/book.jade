@@ -4,7 +4,7 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
     .panel-collapse.collapse#searchBook
         .panel-body
-            {!! Form::open(array('url' => 'book', 'class' => 'search-form', 'role' => 'form')) !!}
+            {!! Form::open(array('url' => 'book', 'id' => 'bookSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('bookTitle','Book title') !!}
@@ -20,7 +20,7 @@
                     .form-group 
                         {!! Form::text('illustratorUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12 
-                    {!! Form::Label('literaryGenres','Literary Genres') !!}
+                    {!! Form::Label('literaryGenre','Literary Genre') !!}
                     .form-group 
                         {!! Form::text('literaryGenreUri', null, ['class' => 'input form-control', 'placeholder' => 'genre..']) !!}
                 .col-md-12
@@ -34,7 +34,7 @@
                 .col-md-12
                     {!! Form::label('numberOfVolumes','Number of Volumes') !!}
                     .form-group
-                        {!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'number of volumes..']) !!}	
+                        {!! Form::text('numberOfVolumes', null, ['class' => 'input form-control', 'placeholder' => 'number of volumes..']) !!}	
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
             {!! Form::close() !!}
