@@ -360,20 +360,22 @@ $(document).on('ready', function () {
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Place</span></p>' +
                             '<p>Name: <span class="name">' + val.title + '</span></p>';
-                        /*
-                        if (val.countries) {
-                            $.each(val.countries, function (key2, val2) {
-                                result += '<p>Country: ' + val2 + '</p>';
-                            });
-                        }*/
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                            if(val.releaseDate) {
+                                if(typeof val.releaseDate === 'object') {
+                                    result += '<p>Name: <span class="releaseDate">' + val.releaseDate.date.split(" ")[0] + '</span></p>';
+                                }
+                                if(typeof val.releaseDate !== 'object') {
+                                    result += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
+                                }
+                            }
+                            result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
                             '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                             '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
                 },
                 error: function (data) {
-                    console.log("error");
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
                 }
             });
         }
@@ -433,7 +435,7 @@ $(document).on('ready', function () {
                     });
                 },
                 error: function (data) {
-                    console.log("error");
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
                 }
             });
         }
