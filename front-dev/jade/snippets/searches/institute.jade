@@ -4,7 +4,7 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchInstitute") Search Educational Institutions
     .panel-collapse.collapse#searchInstitute
         .panel-body
-            {!! Form::open(array('url' => 'institute', 'class' => 'search-form', 'role' => 'form')) !!}
+            {!! Form::open(array('url' => 'institute', 'id' => 'instituteSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('instituteName','Name') !!}

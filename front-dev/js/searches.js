@@ -8,10 +8,53 @@ $(document).on('ready', function () {
         authors = {},
         institutionTypes = {},
         professions = {},
+        principals = {},
+        rectors = {},
         readyCheck = 0,
-        readyCount = 10;
+        readyCount = 12,
+        getData= function(url, containerObject, fields, description, data) {
+            jQuery.ajax({
+                method: 'get',
+                url: url,
+                data: (data ? {name:""} :{}),
+                dataType: "json",
+                success: function (data) {
+                    var autocompleteValues = [],
+                        key;
+                    for (key in data) {
+                        autocompleteValues.push(data[key].name);
+                        containerObject[data[key].name.split(" ").join("_")] = data[key].uri;
+                    }
+                    $.each(fields, function(index,value) {
+                        $("input[name='" + value + "']").autocomplete({
+                            source: autocompleteValues
+                        });
+                    });
+                    readyCheck += 1;
+                    $(".allResults").append("<p class='log info'>Added autocomplete " + description + "</p>");
+                    if (readyCheck === readyCount) {
+                        $(".loader").remove();
+                        $("#accordion").removeClass("hidden");
+                        $("p.resultHeader").html("Initial fetch complete!");
+                        $(".allResults").append("You may now use the search bar!");
+                    }
+                },
+                error: function () {
+                    readyCheck += 1;
+                    $(".allResults").append("<p class='log err'>Error: Autocomplete " + description + " failed.. disabling field..</p>");
+                    $("input[name='" + field + "']").attr("disabled", "disabled");
+                    if (readyCheck === readyCount) {
+                        $(".loader").remove();
+                        $("#accordion").removeClass("hidden");
+                        $("p.resultHeader").html("Initial fetch complete!");
+                        $(".allResults").append("You may now use the search bar!");
+                    }
+                }
+            })
+        };
     $("p.resultHeader").html("Fetching initial data..");
     $(".allResults").html("");
+
     $(function() {
         $( "#eventStartDateMin" ).datepicker({
             defaultDate: "+1w",
@@ -52,336 +95,103 @@ $(document).on('ready', function () {
         readyCheck += 1;
             $(".allResults").append("<p class='log info'>Added event datepickers..</p>");
         });
+    getData("/getRectors", rectors, ["rectorUri"], "rectors", true);
+    getData("/getPrincipals", principals, ["principalUri"], "principals", true);
+    getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false);
+    getData("/getPlaces", locations, ["locationUri"], "locations", true);
+    getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true);
+    getData("/getLiteraryGenres", literaryGenres, ["literaryGenreUri"], "literary genres", false);
+    getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true);
+    getData("/getAuthors", authors, ["authorUri"], "authors", true);
+    getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false);
+    getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false);
+    getData("/getProfessions", professions, ["personProfession"], "professions", false);
     
-    jQuery.ajax({
-        method: 'get',
-        url: "/getEduInstitutionTypes",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                institutionTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+    
+    $("#instituteSearchForm .btn").click(function (e) {
+        e.preventDefault();
+        $("#instituteSearchForm input").removeClass("invalid");
+        var eduTypeUri = institutionTypes[$("#instituteSearchForm input[name='eduTypeUri']").val().split(" ").join("_")],
+            locationUri = locations[$("#instituteSearchForm input[name='locationUri']").val().split(" ").join("_")],
+            rectorUri = locations[$("#instituteSearchForm input[name='rectorUri']").val().split(" ").join("_")],
+            principalUri = locations[$("#instituteSearchForm input[name='principalUri']").val().split(" ").join("_")],
+            name = $("#instituteSearchForm input[name='name']").val(),
+            nrOfAcademicStaffMin = $("#instituteSearchForm input[name='nrOfAcademicStaffMin']").val(),
+            nrOfAcademicStaffMax = $("#instituteSearchForm input[name='nrOfAcademicStaffMax']").val(),
+            nrOfStudentsMin = $("#instituteSearchForm input[name='nrOfStudentsMin']").val(),
+            nrOfStudentsMax = $("#instituteSearchForm input[name='nrOfStudentsMax']").val(),
+            sendingData = {
+                name: name,
+                eduTypeUri: eduTypeUri,
+                locationUri: locationUri,
+                rectorUri: rectorUri,
+                principalUri: principalUri,
+                nrOfAcademicStaffMin: nrOfAcademicStaffMin,
+                nrOfAcademicStaffMax: nrOfAcademicStaffMax,
+                nrOfStudentsMin: nrOfStudentsMin,
+                nrOfStudentsMax: nrOfStudentsMax
+            },
+            comaCheck,
+            result;
+        if (rectorUri !== undefined || principalUri !== undefined || eduTypeUri !== undefined || name.trim().length > 0 || locationUri !== undefined || nrOfAcademicStaffMin.trim().length > 0 || nrOfAcademicStaffMax.trim().length > 0 || nrOfStudentsMin.trim().length > 0 || nrOfStudentsMax.trim().length > 0) {
+            
+            if (rectorUri === undefined && $("#instituteSearchForm input[name='rectorUri']").val().length > 0) {
+                $("#instituteSearchForm input[name='rectorUri']").addClass("invalid");
             }
-            $("input[name='eduTypeUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete educational institution types</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
+            if (locationUri === undefined && $("#instituteSearchForm input[name='locationUri']").val().length > 0) {
+                $("#instituteSearchForm input[name='locationUri']").addClass("invalid");
             }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete educational institution types failed.. disabling field..</p>");
-            $("input[name='eduTypeUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
+            if (principalUri === undefined && $("#instituteSearchForm input[name='principalUri']").val().length > 0) {
+                $("#instituteSearchForm input[name='principalUri']").addClass("invalid");
             }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getPlaces",
-        data: {
-            name: ""
-        },
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                if(data[key].name !== "List of countries and capitals with currency and language") {
-                    autocompleteValues.push(data[key].name);
-                    locations[data[key].name.split(" ").join("_")] = data[key].uri;
+            if (eduTypeUri === undefined && $("#instituteSearchForm input[name='eduTypeUri']").val().length > 0) {
+                $("#instituteSearchForm input[name='eduTypeUri']").addClass("invalid");
+            }
+            $("p.resultHeader").html("Fetching data.. please wait");
+            $(".allResults").html("");
+            jQuery.ajax({
+                method: 'get',
+                url: "search/edu",
+                dataType: "json",
+                data: sendingData,
+                success: function (data) {
+                    console.log(data);
+                    var count = 0,
+                        title,
+                        result,
+                        comaCheck,
+                        prop;
+                    for (prop in data) {
+                        if (data.hasOwnProperty(prop)) {
+                            count += 1;
+                        }
+                    }
+                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
+                    $.each(data, function (key, val) {
+                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                            '<div class="resultWrapper">' +
+                            '<p>Type: <span class="type">Institution</span></p>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>';
+                        if(val.numberOfStudents) {
+                            result += '<p>Students: <span>' + val.numberOfStudents + '</span></p>';
+                        }
+                        if(val.countries) {
+                            result += '<p>Country: <span>';
+                            $.each(val.countries, function (key2, val2) {
+                                result += val2;
+                            });
+                            result += '</span></p>';
+                        }
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        $(".allResults").append(result);
+                    });
+                },
+                error: function (data) {
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
                 }
-            }
-            $("input[name='locationUri']").autocomplete({
-                source: autocompleteValues
             });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete locations</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete locations failed.. disabling field..</p>");
-            $("input[name='locationUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getEventTypes",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                eventTypes[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='eventTypeUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete event types</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete event types failed.. disabling field..</p>");
-            $("input[name='eventTypeUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getLiteraryGenres",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                literaryGenres[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='literaryGenreUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete literary genres</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete literary genres failed.. disabling field..</p>");
-            $("input[name='literaryGenreUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getIllustrators",
-        dataType: "json",
-        data: {
-            name: ""
-        },
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                illustrators[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='illustratorUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete illustrators</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete illustrators fetch failed.. disabling field..</p>");
-            $("input[name='illustratorUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getAuthors",
-        dataType: "json",
-        data: {
-            name: ""
-        },
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                authors[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='authorUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete authors</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete authors fetch failed.. disabling field..</p>");
-            $("input[name='authorUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getPlaceTypes",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='placeTypeUri']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete place types</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete place types fetch failed.. disabling field..</p>");
-            $("input[name='placeTypeUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getCountries",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                countries[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='countryUri']").autocomplete({
-                source: autocompleteValues
-            });
-            $("input[name='personCountry']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete countries</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-            
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete countries fetch failed.. disabling field..</p>");
-            $("input[name='countryUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-        }
-    });
-    jQuery.ajax({
-        method: 'get',
-        url: "/getProfessions",
-        dataType: "json",
-        success: function (data) {
-            var autocompleteValues = [],
-                key;
-            for (key in data) {
-                autocompleteValues.push(data[key].name);
-                professions[data[key].name.split(" ").join("_")] = data[key].uri;
-            }
-            $("input[name='personProfession']").autocomplete({
-                source: autocompleteValues
-            });
-            readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added autocomplete professions</p>");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
-            
-        },
-        error: function () {
-            readyCheck += 1;
-            $(".allResults").append("<p class='log err'>Error: Autocomplete professions fetch failed.. disabling field..</p>");
-            $("input[name='countryUri']").attr("disabled", "disabled");
-            if (readyCheck === readyCount) {
-                $(".loader").remove();
-                $("#accordion").removeClass("hidden");
-                $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").append("You may now use the search bar!");
-            }
         }
     });
     $("#eventSearchForm .btn").click(function (e) {
