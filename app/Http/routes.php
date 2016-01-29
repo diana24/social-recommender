@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('buildGraph', 'GraphController@makeGraph');
 
     Route::get('getLiteraryGenres', 'DataController@getAllLiteraryGenres');
+    Route::get('getProfessions', 'DataController@getAllProfessions');
     Route::get('getMovieGenres', 'DataController@getAllMovieGenres');
     Route::get('getCountries', 'DataController@getAllCountries');
     Route::get('getEventTypes', 'DataController@getAllEventTypes');

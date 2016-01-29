@@ -37,6 +37,30 @@ class DataController extends Controller
         }
        return json_encode($lit);
     }
+    function getAllProfessions(Request $request=null){
+        (new RdfController())->initRdf();
+        $name = isset($request) ? $request->input('name') : "" ;
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $result = $sparql->query(
+            'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
+            '  ?book rdf:type foaf:Person .'.
+            '  {?book dbo:profession ?literary_genre} union {?book dbp:profession ?literary_genre}.'.
+            '  ?literary_genre rdfs:label ?label .'.
+            '  FILTER ( lang(?label) = "en" )'.
+            '  FILTER regex( str(?label), "'.$name.'", "i" )'.
+            '} ORDER BY DESC(count(?book)) '.
+//            '} ORDER BY (?label) '.
+            'LIMIT 300'
+        );
+        $lit = [];
+        foreach($result as $row){
+            $l['uri']=$row->gen_literar->getValue();
+            $l['name']=$row->label->getValue();
+            $l['book_count']=$row->nr_carti->getValue();
+            array_push($lit,$l);
+        }
+       return json_encode($lit);
+    }
     function getAllMovieGenres(Request $request=null){
         (new RdfController())->initRdf();
         $name = isset($request) ? $request->input('name') : "" ;
@@ -231,13 +255,14 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val where {
+                'select ?illustrator, ?label, ?val, count(?nr) where {
                         ?illustrator rdf:type foaf:Person.
                         ?illustrator rdfs:label ?label.
-                        {?edu dbo:principal ?illustrator.} union {?edu dbp:principal ?illustrator.}
+                        {?edu dbo:principal ?illustrator.} union {?edu dbp:principal ?illustrator.}.
+                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } limit 30'
+                    } order by desc (?nr) limit 500'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -254,13 +279,14 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val where {
+                'select distinct ?illustrator, ?label, ?val, count(?nr)  where {
                         ?illustrator rdf:type foaf:Person.
                         ?illustrator rdfs:label ?label.
-                        {?edu dbo:rector ?illustrator.} union {?edu dbp:rector ?illustrator.}
+                        {?edu dbo:rector ?illustrator.} union {?edu dbp:rector ?illustrator.}.
+                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } limit 30'
+                    } order by desc (?nr) limit 500'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -348,12 +374,13 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?place, ?label where {
+                'select ?place, ?label, count(?population) where {
                         ?place rdf:type dbo:Place.
                         ?place rdfs:label ?label.
+                        ?place dbo:populationTotal ?population
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } limit 30'
+                    } order by desc(?population) limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){

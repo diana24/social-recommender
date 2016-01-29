@@ -19,8 +19,7 @@ class PeopleRdfController extends Controller
             return json_encode([]);
         }
         $name = $request->get('personName');
-        $birthplaceUri= $request->get('personBirthPlace');
-        $profession= $request->get('personProfession');
+        $professionUri= $request->get('personProfession');
         $countryUri = $request->get('personCountry');
 
         $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
@@ -30,12 +29,14 @@ class PeopleRdfController extends Controller
                 { ?person rdf:type dbo:Person }
                   union
                 { ?person rdf:type foaf:Person }.
+
                 ?person rdfs:label ?label.
                 optional{{?person dbo:wikiPageExternalLink ?wiki} union {?person dbp:wikiPageExternalLink ?wiki}}.
                 {?person dbo:name ?name} union {?person dbp:name ?name}.
-                {?person dbo:birthPlace ?birthPlace} union {?person dbp:birthPlace ?birthPlace}.
-                ?birthPlace rdfs:label ?bpLabel
                 {?person dbo:profession ?profession} union {?person dbp:profession ?profession}.
+
+                ?profession rdfs:label ?professionLabel
+
                 optional { {?person dbo:country ?country} union {?person dbp:country ?country} }.
                 ?country rdfs:label ?countryLabel
                 optional { {?person dbp:imageCaption ?image} union {?person dbo:imageCaption ?image} union {?person foaf:depiction ?image} }.
@@ -43,15 +44,12 @@ class PeopleRdfController extends Controller
         if(isset($countryUri)){
             $query .= "\n".' {?person dbo:country <'.$countryUri.'>} union {?person dbp:country <'.$countryUri.'>} .';
         }
-        if(isset($birthplaceUri)){
-            $query .= "\n".'{?person dbo:birthPlace <'.$birthplaceUri.'>} union {?person dbp:birthPlace <'.$birthplaceUri.'>} .';
+        if(isset($professionUri)){
+            $query .= "\n".'{?person dbo:profession <'.$professionUri.'>} union {?person dbp:profession <'.$professionUri.'>} .';
         }
-        $query .= "\n".'filter ( lang(?label) = "en" && lang(?bpLabel) = "en" && lang(?countryLabel) = "en")';
+        $query .= "\n".'filter ( lang(?label) = "en" && lang(?professionLabel) = "en" && lang(?countryLabel) = "en")';
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?name), "'.$name.'"^^xsd:string, "i")';
-        }
-        if(isset($profession) && strlen($profession)){
-            $query .= "\n".'filter regex(str(?profession), "'.$profession.'"^^xsd:string, "i")';
         }
 
         $query .= '}  limit 50'; //dd($query);
@@ -86,9 +84,8 @@ class PeopleRdfController extends Controller
             }
             $person['name']=$row->label->getValue();
             $person['name']= (isset($row->name) && method_exists($row->name,'getValue')) ? $row->name->getValue() : "";
-            $person['profession']= (isset($row->profession) && method_exists($row->profession,'getValue')) ? $row->profession->getValue() : "";
-            $person['birthPlace']['uri']= (isset($row->birthPlace) && method_exists($row->birthPlace,'getUri')) ? $row->birthPlace->getUri() : "";
-            $person['birthPlace']['name']= (isset($row->bpLabel) && method_exists($row->bpLabel,'getValue')) ? $row->bpLabel->getValue() : "";
+            $person['profession']['uri']= (isset($row->profession) && method_exists($row->profession,'getUri')) ? $row->profession->getUri() : "";
+            $person['profession']['name']= (isset($row->professionLabel) && method_exists($row->professionLabel,'getValue')) ? $row->professionLabel->getValue() : "";
 
             $person['country']['uri']= (isset($row->country) && method_exists($row->country,'getUri')) ? $row->country->getUri() : "";
             $person['country']['name']= (isset($row->countryLabel) && method_exists($row->countryLabel,'getValue')) ? $row->countryLabel->getValue() : "";
