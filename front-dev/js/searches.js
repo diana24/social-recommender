@@ -1,7 +1,118 @@
 $(document).on('ready', function () {
     var placeTypes = {},
         countries = {},
-        readyCheck = 0;
+        readyCheck = 0,
+        readyCount = 5;
+    $("p.resultHeader").html("Fetching initial data..");
+    $(".allResults").html("");
+    jQuery.ajax({
+        method: 'get',
+        url: "/getLiteraryGenres",
+        dataType: "json",
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='literaryGenreUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete literary genres</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete literary genres failed</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        }
+    });
+    jQuery.ajax({
+        method: 'get',
+        url: "/getIllustrators",
+        dataType: "json",
+        data: {
+            name: ""
+        },
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='illustratorUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete illustrators</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete illustrators fetch failed</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        }
+    });
+    jQuery.ajax({
+        method: 'get',
+        url: "/getAuthors",
+        dataType: "json",
+        data: {
+            name: ""
+        },
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='authorUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete authors</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete authors fetch failed</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }
+        }
+    });
     jQuery.ajax({
         method: 'get',
         url: "/getPlaceTypes",
@@ -17,16 +128,22 @@ $(document).on('ready', function () {
                 source: autocompleteValues
             });
             readyCheck += 1;
-            if (readyCheck === 2) {
+            $(".allResults").append("<p>Added autocomplete place types</p>");
+            if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
             }
         },
         error: function () {
             readyCheck += 1;
-            if (readyCheck === 2) {
+            $(".allResults").append("<p>Error: Autocomplete place types fetch failed</p>");
+            if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
             }
         }
     });
@@ -45,17 +162,24 @@ $(document).on('ready', function () {
                 source: autocompleteValues
             });
             readyCheck += 1;
-            if (readyCheck === 2) {
+            $(".allResults").append("<p>Added autocomplete countries</p>");
+            if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
             }
+            
         },
         error: function () {
             readyCheck += 1;
-            if (readyCheck === 2) {
+            $(".allResults").append("<p>Error: Autocomplete countries fetch failed</p>");
+            if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
-            }
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").html("You may now use the search bar!");
+            }    
         }
     });
 
