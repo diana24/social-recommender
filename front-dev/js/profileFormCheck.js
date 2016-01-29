@@ -14,19 +14,15 @@ $(document).on('ready', function () {
         url: "graph/me",
         dataType: "json",
         success: function(data) {
-            console.log(data);
             $(".loader").remove();
             $(".googlePlusData").append("<p>Name: " + data.name + "</a>");
-            $(".googlePlusData").append("<p>Gender: " + MockData.gender + "</a>");
+            $(".googlePlusData").append("<p>Gender: " + data.gender + "</a>");
             $(".googlePlusData").append("<p><a href='" + data.homepage + "'>Homepage</p>");
             $(".googlePlusData").append("<img src='"+ data.depiction + "' alt='avatar' class='tabAvatar'>");
         },
         error: function(data) {
             $(".loader").remove();
-            $(".googlePlusData").append("<p>Name: " + MockData.name + "</a>");
-            $(".googlePlusData").append("<p>Gender: " + MockData.gender + "</a>");
-            $(".googlePlusData").append("<p><a href='" + MockData.homepage + "'>Homepage</p>");
-            $(".googlePlusData").append("<img src='"+ MockData.depiction + "' alt='avatar' class='tabAvatar'>");
+            $(".googlePlusData").append("<p>Failed to retrieve user data..</p>
         }
     });
     $(".clearErrors").click(function () {
