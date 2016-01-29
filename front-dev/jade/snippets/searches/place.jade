@@ -9,15 +9,15 @@
                 .col-md-12
                     {!! Form::Label('placeName','Place name') !!}
                     .form-group
-                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Place name..']) !!}
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' name..']) !!}
                 .col-md-12 
                     {!! Form::Label('placeType','Place Type') !!}
                     .form-group 
-                        {!! Form::text('placeTypeUri', null, ['class' => 'input form-control', 'placeholder' => ' Place type..']) !!}
+                        {!! Form::text('placeTypeUri', null, ['class' => 'input form-control', 'placeholder' => 'type..']) !!}
                 .col-md-12
                     {!! Form::Label('country','Country') !!}
                     .form-group
-                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
+                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => 'country..']) !!}
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
             {!! Form::close() !!}

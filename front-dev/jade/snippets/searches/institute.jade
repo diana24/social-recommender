@@ -9,45 +9,43 @@
                 .col-md-12
                     {!! Form::Label('instituteName','Institute name') !!}
                     .form-group 
-                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Institute name..']) !!}
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12
                     {!! Form::Label('educationalInstituteType','Educational Institute Type') !!}
                     .form-group
-                        {!! Form::text('eduTypeUri', null, ['class' => 'input form-control', 'placeholder' => ' Educational Institute type..']) !!}
+                        {!! Form::text('eduTypeUri', null, ['class' => 'input form-control', 'placeholder' => 'type..']) !!}
                 .col-md-12
                     {!! Form::Label('location','Location') !!}
                     .form-group
-                        {!! Form::text('locationUri', null, ['class' => 'input form-control', 'placeholder' => ' Location..']) !!}
+                        {!! Form::text('locationUri', null, ['class' => 'input form-control', 'placeholder' => 'location..']) !!}
                 .col-md-12
                     {!! Form::Label('country','Country') !!}
                     .form-group
-                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
-
+                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => 'country..']) !!}
                 .col-md-12
                     {!! Form::Label('principal','Principal') !!}
                     .form-group
-                        {!! Form::text('principalUri', null, ['class' => 'input form-control', 'placeholder' => ' Principal name..']) !!}
+                        {!! Form::text('principalUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12
                     {!! Form::Label('rector','Rector') !!}
                     .form-group
-                        {!! Form::text('rectorUri', null, ['class' => 'input form-control', 'placeholder' => ' Rector..']) !!}
+                        {!! Form::text('rectorUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12                 
                     {!! Form::Label('numberOFAcademicStaff','Number of Academic staff:') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('nrOfAcademicStaffMin', null, ['class' => 'input form-control', 'placeholder' => ' Min number of academic staff..']) !!}
+                        {!! Form::text('nrOfAcademicStaffMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                         {!! Form::text('nrOfAcademicStaffMax', null, ['class' => 'input form-control', 'placeholder' => ' Max number of academic staff..']) !!}
-
+                        {!! Form::text('nrOfAcademicStaffMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
                 .col-md-12             
                     {!! Form::label('numberOFStudents','Number of Students:') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group 
-                        {!! Form::text('nrOfStudentsMin', null, ['class' => 'input form-control', 'placeholder' => ' Min number of students..']) !!}
+                        {!! Form::text('nrOfStudentsMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('nrOfStudentsMax', null, ['class' => 'input form-control', 'placeholder' => ' Max number of students..']) !!}
+                        {!! Form::text('nrOfStudentsMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
             {!! Form::close() !!}

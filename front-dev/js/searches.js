@@ -1,10 +1,124 @@
 $(document).on('ready', function () {
     var placeTypes = {},
         countries = {},
+        locations = {},
+        eventTypes = {},
+        literaryGenres = {},
+        illustrators = {},
+        authors = {},
+        institutionTypes = {},
         readyCheck = 0,
-        readyCount = 5;
+        readyCount = 8;
     $("p.resultHeader").html("Fetching initial data..");
     $(".allResults").html("");
+    jQuery.ajax({
+        method: 'get',
+        url: "/getEduInstitutionTypes",
+        dataType: "json",
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                institutionTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='eduTypeUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete educational institution types</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete educational institution types failed.. disabling field..</p>");
+            $("input[name='eduTypeUri']").attr("disabled", "disabled");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        }
+    });
+    jQuery.ajax({
+        method: 'get',
+        url: "/getPlaces",
+        data: {
+            name: ""
+        },
+        dataType: "json",
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                locations[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='locationUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete locations</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete locations failed.. disabling field..</p>");
+            $("input[name='locationUri']").attr("disabled", "disabled");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        }
+    });
+    jQuery.ajax({
+        method: 'get',
+        url: "/getEventTypes",
+        dataType: "json",
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
+                autocompleteValues.push(data[key].name);
+                eventTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+            }
+            $("input[name='eventTypeUri']").autocomplete({
+                source: autocompleteValues
+            });
+            readyCheck += 1;
+            $(".allResults").append("<p>Added autocomplete event types</p>");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        },
+        error: function () {
+            readyCheck += 1;
+            $(".allResults").append("<p>Error: Autocomplete event types failed.. disabling field..</p>");
+            $("input[name='eventTypeUri']").attr("disabled", "disabled");
+            if (readyCheck === readyCount) {
+                $(".loader").remove();
+                $("#accordion").removeClass("hidden");
+                $("p.resultHeader").html("Initial fetch complete!");
+                $(".allResults").append("You may now use the search bar!");
+            }
+        }
+    });
     jQuery.ajax({
         method: 'get',
         url: "/getLiteraryGenres",
@@ -14,7 +128,7 @@ $(document).on('ready', function () {
                 key;
             for (key in data) {
                 autocompleteValues.push(data[key].name);
-                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+                literaryGenres[data[key].name.split(" ").join("_")] = data[key].uri;
             }
             $("input[name='literaryGenreUri']").autocomplete({
                 source: autocompleteValues
@@ -31,7 +145,7 @@ $(document).on('ready', function () {
         error: function () {
             readyCheck += 1;
             $(".allResults").append("<p>Error: Autocomplete literary genres failed.. disabling field..</p>");
-            $("input[name='literaryGenreUri']").attr("disabled","disabled");
+            $("input[name='literaryGenreUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
@@ -52,7 +166,7 @@ $(document).on('ready', function () {
                 key;
             for (key in data) {
                 autocompleteValues.push(data[key].name);
-                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+                illustrators[data[key].name.split(" ").join("_")] = data[key].uri;
             }
             $("input[name='illustratorUri']").autocomplete({
                 source: autocompleteValues
@@ -69,7 +183,7 @@ $(document).on('ready', function () {
         error: function () {
             readyCheck += 1;
             $(".allResults").append("<p>Error: Autocomplete illustrators fetch failed.. disabling field..</p>");
-            $("input[name='illustratorUri']").attr("disabled","disabled");
+            $("input[name='illustratorUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
@@ -90,7 +204,7 @@ $(document).on('ready', function () {
                 key;
             for (key in data) {
                 autocompleteValues.push(data[key].name);
-                placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
+                authors[data[key].name.split(" ").join("_")] = data[key].uri;
             }
             $("input[name='authorUri']").autocomplete({
                 source: autocompleteValues
@@ -107,7 +221,7 @@ $(document).on('ready', function () {
         error: function () {
             readyCheck += 1;
             $(".allResults").append("<p>Error: Autocomplete authors fetch failed.. disabling field..</p>");
-            $("input[name='authorUri']").attr("disabled","disabled");
+            $("input[name='authorUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
@@ -142,7 +256,7 @@ $(document).on('ready', function () {
         error: function () {
             readyCheck += 1;
             $(".allResults").append("<p>Error: Autocomplete place types fetch failed.. disabling field..</p>");
-            $("input[name='placeTypeUri']").attr("disabled","disabled");
+            $("input[name='placeTypeUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
@@ -178,13 +292,13 @@ $(document).on('ready', function () {
         error: function () {
             readyCheck += 1;
             $(".allResults").append("<p>Error: Autocomplete countries fetch failed.. disabling field..</p>");
-            $("input[name='countryUri']").attr("disabled","disabled");
+            $("input[name='countryUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
                 $(".allResults").append("You may now use the search bar!");
-            }    
+            }
         }
     });
 
@@ -203,10 +317,10 @@ $(document).on('ready', function () {
         if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === 0) {
             $("#placeSearchForm input").addClass("invalid");
         } else if ((placeTypeURI === undefined || countryURI !== undefined) || placeName.trim().length > 0) {
-            if(placeTypeURI !== undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
+            if (placeTypeURI !== undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
                 $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
             }
-            if(countryURI === undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
+            if (countryURI === undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
                 $("#placeSearchForm input[name='countryUri']").addClass("invalid");
             }
             $("p.resultHeader").html("Fetching data.. please wait");
