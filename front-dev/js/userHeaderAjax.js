@@ -4,8 +4,7 @@ $(document).on('ready', function () {
         url: "graph/me",
         dataType: "json",
         success: function(data) {
-            console.log(data);
-            $(".user-box p.name").html(data.givenname);
+            $(".user-box p.name").html(data.name);
             $("img[alt='avatar']").attr("src",data.depiction);
         },
         error: function(data) {
