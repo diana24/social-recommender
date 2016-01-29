@@ -76,6 +76,12 @@ $(document).on('ready', function () {
             $("#placeSearchForm input").addClass("invalid");
         }
         if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
+            if(placeTypeURI !== undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
+                $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
+            }
+            if(countryURI !== undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
+                $("#placeSearchForm input[name='countryUri']").addClass("invalid");
+            }
             $("p.resultHeader").html("Fetching data.. please wait");
             $(".allResults").html("");
             jQuery.ajax({
