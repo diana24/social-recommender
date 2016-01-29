@@ -2,7 +2,7 @@
     ul
         li
             span.glyphicon.glyphicon-flag
-            a(href="{{url('home')}}") Recomandations
+            a(href="{{url('home')}}") Recommandations
         li
             span.glyphicon.glyphicon-search
             a(href="{{url('search')}}") Search
@@ -13,9 +13,10 @@
             span.glyphicon.glyphicon-star
             a(href="javascript:void(0)") Favorites
         li
+            span.glyphicon.glyphicon-file
+            a(href="{{url('report')}}") Report
+        li
             <?php if(Auth::user()->getGraphPath() !==null) {?>
             <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>"><span class="glyphicon glyphicon-unchecked"></span>Graph</a> 
             <?php } ?>
-        li
-            span.glyphicon.glyphicon-file
-            a(href="{{url('report')}}") Report
+        
