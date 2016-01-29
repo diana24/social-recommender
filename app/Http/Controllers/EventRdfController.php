@@ -30,6 +30,7 @@ class EventRdfController extends Controller
         $query='select * where {
                 { ?event rdf:type dbo:Event }.
                 ?event rdfs:label ?label.
+                optional{{?event dbo:wikiPageExternalLink ?wiki} union {?event dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?event dbo:location ?location} union {?event dbp:location ?location} }.
                 optional { {?event dbo:startDate ?startDate} union {?event dbp:startDate ?startDate} }.
                 optional { {?event dbo:endDate ?endDate} union {?event dbp:endDate ?endDate} }.
@@ -73,6 +74,14 @@ class EventRdfController extends Controller
                 $events[$uri]=[];
             }
             $event=$events[$uri];
+            if(isset($row->wiki)){
+                $event['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $event['link']=$uri;
+            }
             $event['title']=$row->label->getValue();
             if(isset($row->type) && method_exists($row->type, 'getUri')){
                 $typeUri = $row->type->getUri();

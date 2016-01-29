@@ -33,6 +33,7 @@ class EducationalInstitutionController extends Controller
         $query='select * where {
                 { ?edu rdf:type dbo:EducationalInstitution }.
                 ?edu rdfs:label ?label.
+                optional{{?edu dbo:wikiPageExternalLink ?wiki} union {?edu dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?edu dbo:location ?location} union {?edu dbp:location ?location} }.
                 optional { {?edu dbo:country ?country} union {?edu dbp:country ?country} }.
                 optional { {?edu dbo:numberOfAcademicStaff ?numberOfAcademicStaff} union {?edu dbp:numberOfAcademicStaff ?numberOfAcademicStaff} }.
@@ -87,6 +88,14 @@ class EducationalInstitutionController extends Controller
                 $edus[$uri]=[];
             }
             $edu=$edus[$uri];
+            if(isset($row->wiki)){
+                $edu['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $edu['link']=$uri;
+            }
             $edu['title']=$row->label->getValue();
 //            if(isset($row->type) && method_exists($row->type, 'getUri')){
 //                $typeUri = $row->type->getUri();

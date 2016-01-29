@@ -31,6 +31,7 @@ class PeopleRdfController extends Controller
                   union
                 { ?person rdf:type foaf:Person }.
                 ?person rdfs:label ?label.
+                optional{{?person dbo:wikiPageExternalLink ?wiki} union {?person dbp:wikiPageExternalLink ?wiki}}.
                 {?person dbo:name ?name} union {?person dbp:name ?name}.
                 {?person dbo:birthPlace ?birthPlace} union {?person dbp:birthPlace ?birthPlace}.
                 ?birthPlace rdfs:label ?bpLabel
@@ -75,6 +76,14 @@ class PeopleRdfController extends Controller
                 $people[$uri]=[];
             }
             $person=$people[$uri];
+            if(isset($row->wiki)){
+                $person['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $person['link']=$uri;
+            }
             $person['name']=$row->label->getValue();
             $person['name']= (isset($row->name) && method_exists($row->name,'getValue')) ? $row->name->getValue() : "";
             $person['profession']= (isset($row->profession) && method_exists($row->profession,'getValue')) ? $row->profession->getValue() : "";

@@ -23,6 +23,14 @@ class BookRdfController extends Controller
                 $books[$uri]=[];
             }
             $book=$books[$uri];
+            if(isset($row->wiki)){
+                $book['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $book['link']=$uri;
+            }
             $book['title']=$row->label->getValue();
             if(isset($row->author) && method_exists($row->author, 'getUri')){
                 $authorUri = $row->author->getUri();
@@ -122,6 +130,8 @@ class BookRdfController extends Controller
                   union
                 { ?book rdf:type owl:Thing }.
                 ?book rdfs:label ?label.
+
+                optional{{?book dbo:wikiPageExternalLink ?wiki} union {?book dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?book dbo:author ?author} union {?book dbp:author ?author} }.
                 optional { {?book dbo:illustrator ?illustrator} union {?book dbp:illustrator ?illustrator}}.
                 optional { {?book dbo:genre ?genre} union {?book dbp:genre ?genre}}.
