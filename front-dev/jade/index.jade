@@ -5,6 +5,14 @@ include snippets/user-header.jade
         include snippets/app-sidebar.jade
         .col-md-10.col-sm-12.application
             .results
-                p.resultHeader Welcome to SoR
+                p.resultHeader Recommandations
+                .row
+                    .btn-group(role="group",aria-label="...")
+                        a.btn.btn-default#films(href="javascript:void(0)") Recommend Films
+                        a.btn.btn-default#books(href="javascript:void(0)") Recommend Books
+                        a.btn.btn-default#edu(href="javascript:void(0)") Recommend Educational Institutes
+                        a.btn.btn-default#events(href="javascript:void(0)") Recommend Events
+                    </div>
                 .row.allResults
+{!! HTML::script('js/recommandations.js') !!}
 include snippets/footer.jade
