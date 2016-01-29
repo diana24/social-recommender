@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 ini_set('max_execution_time', 300);
 
@@ -58,7 +58,7 @@ class EventRdfController extends Controller
         }
         $query .= '} limit 50';
 
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 
         try{
             $result = $sparql->query($query);

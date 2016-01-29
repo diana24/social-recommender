@@ -1,0 +1,74 @@
+@extends('template')
+
+@section('title')
+    Muzaara System
+@endsection
+
+@section('menu')
+    @include('menus.landingMenu')
+@endsection
+
+@section('content')
+    <div class="container-fluid">
+        <div class="row landing-slider">
+            <div class="col-md-2 col-sm-4 slider col-md-offset-5 col-sm-offset-4">
+
+                <div class="row centered">
+                    <div class="slider-logo">
+                        <img src="../img/icon.png"/>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="signin_form center-block login_form_style">
+                        {!! Form::open(array('url' => 'users', 'class' => 'form', 'role' => 'form')) !!}
+                            {!! Form::text('username', null, ['class' => 'signin_input_username form-control', 'placeholder' => 'Username...']) !!}
+                            {!! Form::text('country', null, ['class' => 'signin_input_username form-control', 'placeholder' => 'Country...']) !!}
+                            {!! Form::text('company', null, ['class' => 'signin_input_username form-control', 'placeholder' => 'Company...']) !!}
+                            {!! Form::email('email', null, ['class' => 'signin_input_username form-control', 'placeholder' => 'Email...']) !!}
+                            {!! Form::password('password', ['class' => 'signin_input_password form-control', 'placeholder' => 'Password...']) !!}
+                            {!! Form::password('password_confirmation', ['class' => 'signin_input_password form-control', 'placeholder' => 'Re-enter password...']) !!}
+                            {!! Form::submit('Sign up',  ['class' => 'btn green-button']) !!}
+                        {!! Form::close() !!}
+
+                        {{--<form class="form-form-group"  id="login-form" role="form" method="POST" action="{{ url('/auth/login') }}">--}}
+                            {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
+
+                            {{--<div class="inner-addon left-addon" >--}}
+                                {{--<i class="glyphicon glyphicon-user"></i>--}}
+                                {{--<input type="text" class="form-control" placeholder="EMAIL" name="email" value="{{ old('email') }}"/>--}}
+                            {{--</div>--}}
+                            {{--@if ($errors->first('email'))--}}
+                                {{--<div class="error-message">{{ $errors->first('email') }}</div>--}}
+                            {{--@endif--}}
+                            {{--<div class="inner-addon left-addon">--}}
+                                {{--<i class="glyphicon glyphicon-lock"></i>--}}
+                                {{--<input type="password" class="form-control" name="password" placeholder="PASSWORD"/>--}}
+                            {{--</div>--}}
+                            {{--@if ($errors->first('password'))--}}
+                                {{--<div class="error-message">{{ $errors->first('password') }}</div>--}}
+                            {{--@endif--}}
+                            {{--<a class="link-position" href="{{ url('/password/email') }}">Forgot your password ?</a>--}}
+                            {{--<input type="submit" class="button" id ="buton-position" value="LOGIN">--}}
+
+                        {{--</form>--}}
+                    </div>
+                </div>
+
+                <div class="row centered">
+                    <div class="col-sm-12">
+                         @if(isset($login_error))
+                             {{ $login_error }}
+                         @endif
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('scripts')
+
+@endsection

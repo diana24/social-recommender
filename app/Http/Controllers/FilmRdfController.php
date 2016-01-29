@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 ini_set('max_execution_time', 300);
 
@@ -29,7 +29,7 @@ class FilmRdfController extends Controller
         $movieGenreUri= $request->get('movieGenreUri');
         $name = $request->get('name');
 
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 
         $query='select * where {
                 { ?film rdf:type dbo:Film }
@@ -223,7 +223,7 @@ class FilmRdfController extends Controller
             $n--;
         }
         $results=[];
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $mybooks = array_slice($mybooks, 0, $n);
         foreach($mybooks as $mb){
             $au = $mb['authors'][0];

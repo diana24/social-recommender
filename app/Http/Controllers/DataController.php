@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 ini_set('max_execution_time', 300);
 
@@ -16,7 +16,7 @@ class DataController extends Controller
     function getAllLiteraryGenres(Request $request=null){
         (new RdfController())->initRdf();
         $name = isset($request) ? $request->input('name') : "" ;
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
             '  ?book rdf:type dbo:Book .'.
@@ -40,7 +40,7 @@ class DataController extends Controller
     function getAllMovieGenres(Request $request=null){
         (new RdfController())->initRdf();
         $name = isset($request) ? $request->input('name') : "" ;
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
             '  ?book rdf:type dbo:Film .'.
@@ -63,7 +63,7 @@ class DataController extends Controller
     }
     function getAllCountries(Request $request=null){
         (new RdfController())->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $name = isset($request) ? $request->input('name') : "" ;
         $result = $sparql->query(
             'select ?country, ?label where {
@@ -82,7 +82,7 @@ class DataController extends Controller
     }
     function getAllEventTypes(Request $request=null){
         (new RdfController())->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'select distinct ?type, ?label where {
                 $type rdfs:subClassOf dbo:Event.
@@ -99,7 +99,7 @@ class DataController extends Controller
     }
     function getAllPlaceTypes(Request $request=null){
         (new RdfController())->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'select distinct ?type, ?label where {
                 $type rdfs:subClassOf dbo:Place.
@@ -116,7 +116,7 @@ class DataController extends Controller
     }
     function getAllEducationalInstitutionTypes(Request $request=null){
         (new RdfController())->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'select distinct ?type, ?label where {
                 $type rdfs:subClassOf dbo:EducationalInstitution.
@@ -133,7 +133,7 @@ class DataController extends Controller
     }
     function getAllLanguages(Request $request=null){
         (new RdfController())->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $name = isset($request) ? $request->input('name') : "" ;
         $result = $sparql->query(
             'select ?language, ?label where {
@@ -154,7 +154,7 @@ class DataController extends Controller
     function getAllCities(Request $request=null){
         if(isset($request) && isset($request['countryUri']) && isset($request['city'])){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select ?city, ?country, ?label where {
                         ?city rdf:type yago:City108524735.
@@ -179,7 +179,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -202,7 +202,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -225,7 +225,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -248,7 +248,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -272,7 +272,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -295,7 +295,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type foaf:Person.
@@ -318,7 +318,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?illustrator, ?label, ?val where {
                         ?illustrator rdf:type dbo:MusicalArtist.
@@ -342,7 +342,7 @@ class DataController extends Controller
         $name = $request->input('name');
         if(isset($name)){
             (new RdfController())->initRdf();
-            $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
                 'select distinct ?place, ?label where {
                         ?place rdf:type dbo:Place.

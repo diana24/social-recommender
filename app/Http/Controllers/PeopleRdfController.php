@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 use Mockery\CountValidator\Exception;
 
@@ -23,7 +23,7 @@ class PeopleRdfController extends Controller
         $profession= $request->get('personProfession');
         $countryUri = $request->get('personCountry');
 
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 
         $query='select *
                 where {
@@ -67,7 +67,7 @@ class PeopleRdfController extends Controller
     }
 
 
-    function unify($result, EasyRdf_Sparql_Client $sparql){
+    function unify($result, \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client $sparql){
         $people=[];
         foreach($result as $row){
             $uri = $row->person->getUri();
