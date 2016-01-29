@@ -24,6 +24,10 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::get('getFacebookAuthUrl', 'FacebookAuthController@getAuthUrl');
 Route::get('login', 'FacebookAuthController@authenticate');
 
+Route::get('report', function(){
+   return view('report');
+});
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('index');
