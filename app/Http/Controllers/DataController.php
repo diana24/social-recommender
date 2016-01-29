@@ -50,7 +50,7 @@ class DataController extends Controller
             '  FILTER regex( str(?label), "'.$name.'", "i" )'.
             '} ORDER BY DESC(count(?book)) '.
 //            '} ORDER BY (?label) '.
-            'LIMIT 300'
+            'LIMIT 250'
         );
         $lit = [];
         foreach($result as $row){
@@ -146,7 +146,7 @@ class DataController extends Controller
                 $type rdfs:subClassOf dbo:EducationalInstitution.
                 $type rdfs:label ?label
                 filter(lang(?label)="en")
-            } limit 50');
+            } limit 20');
         $countries = [];
         foreach($result as $row){
             $l['uri']=$row->type->getUri();
@@ -238,7 +238,7 @@ class DataController extends Controller
 
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } ORDER BY DESC(count(?book)) limit 400'
+                    } ORDER BY DESC(count(?book)) limit 450'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -262,7 +262,7 @@ class DataController extends Controller
                         {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } order by desc (?nr) limit 400'
+                    } order by desc (?nr) limit 200'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -286,7 +286,7 @@ class DataController extends Controller
                         {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } order by desc (?nr) limit 400'
+                    } order by desc (?nr) limit 300'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -310,7 +310,7 @@ class DataController extends Controller
                         ?film dbo:director ?illustrator.
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } limit 400'
+                    } limit 200'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -333,7 +333,7 @@ class DataController extends Controller
                         ?film dbo:starring ?illustrator.
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } limit 400'
+                    } limit 300'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -380,7 +380,8 @@ class DataController extends Controller
                         ?place dbo:populationTotal ?population
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } order by desc(?population) limit 700'
+                      FILTER ( ?place != <http://dbpedia.org/resource/List_of_countries_and_capitals_with_currency_and_language> )
+                    } order by desc(?population) limit 300'
             );
             $illustrators = [];
             foreach($result as $row){

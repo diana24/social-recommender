@@ -21,11 +21,9 @@ class FilmRdfController extends Controller
         }
         $directorUri = $request->get('directorUri');
         $actorUri = $request->get('actorUri');
-//        $fictionalCharacterUri = $request->get('fictionalCharacterUri');
         $musicalArtistUri = $request->get('musicalArtistUri');
         $originalLanguageUri = $request->get('originalLanguageUri');
         $countryUri = $request->get('countryUri');
-//        $releaseDate= $request->get('releaseDate');
         $movieGenreUri= $request->get('movieGenreUri');
         $name = $request->get('name');
 
@@ -36,16 +34,13 @@ class FilmRdfController extends Controller
                  union
                 { ?film rdf:type <http://dbpedia.org/ontology/Wikidata:Q11424> }
                   union
-                { ?film rdf:type owl:Thing }
-                  union
                 { ?film rdf:type sch:Movie }.
                 ?film rdfs:label ?label.
                 optional { ?film dbp:director ?director }.
                 optional { ?film dbp:starring ?actor }.
                 optional {{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?film dbp:musicComposer ?musicComposer} union {?film dbp:music ?musicComposer}}.
-                optional { ?film dbp:genre ?genre }.
-                optional { {?film dbp:imageCaption ?image} union {?film foaf:depiction ?image} }.';
+                optional { ?film dbp:genre ?genre }.';
 
         if(isset($directorUri)){
             $query .= "\n".' ?film dbp:director <'.$directorUri.'> .';
@@ -69,9 +64,7 @@ class FilmRdfController extends Controller
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
-////        if(isset($releaseDate)){
-////            $query .= "\n".'filter (?releaseDate = '.$releaseDate.')';
-////        }
+
         $query .= '}  limit 50';
 
         try{
@@ -205,23 +198,15 @@ class FilmRdfController extends Controller
 
             }
 
-            if(isset($row->image)){
-                $film['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                );
-            }
-            if(isset($row->releaseDate)){
-                $film['releaseDate']= method_exists($row->releaseDate, 'getValue') ? $row->releaseDate->getValue() : $row->releaseDate;
-            }
             $films[$uri]=$film;
 
         }
-//        dd($films);
+
         return json_encode($films);
     }
 
     public function recommendFilms(){
-        $mybooks =  (new RdfController())->getBooks(); //dd($mybooks);
+        $mybooks =  (new RdfController())->getBooks();
         $books=[];
         $i=0;
 
@@ -241,9 +226,7 @@ class FilmRdfController extends Controller
 
                 { ?book rdf:type dbo:WrittenWork }
                  union
-                { ?book rdf:type <http://dbpedia.org/class/Book> }
-                union
-                { ?book rdf:type owl:Thing }.
+                { ?book rdf:type <http://dbpedia.org/class/Book> }.
 
                 ?book rdfs:label ?label.
                 {?book dbo:author ?author} union {?book dbp:author ?author}.
@@ -256,15 +239,12 @@ class FilmRdfController extends Controller
                     $result = $sparql->query($query);
                     array_push($results,$result);
                 }catch (\Exception $e){
-//                dd($e);
                 }
 
 
             }catch (\Exception $e){
-//                dd($e);
             }
         }
-//        dd($results);
 
         $filmResults=[];
 
@@ -272,7 +252,7 @@ class FilmRdfController extends Controller
             foreach($result as $row){
                 $uri = $row->book->getUri();
 
-                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
+                $query = 'select distinct ?film, ?label, MIN(?wiki) as ?site where{
                     { optional{
                     ?x dbo:wikiPageDisambiguates <'.$uri.'>.
                     ?x dbo:wikiPageDisambiguates ?film.
@@ -283,8 +263,6 @@ class FilmRdfController extends Controller
 
                     ?film rdf:type dbo:Film.
                     ?film rdfs:label ?label.
-                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image}
-                    union {?film foaf:depiction ?image} union {?film dbo:thumbnail ?image} union {?film dbp:thumbnail ?image} }.
                     optional{{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                     filter(lang(?label)="en")
                 } limit 3';
@@ -296,14 +274,14 @@ class FilmRdfController extends Controller
                 }
             }
         }
-//        dd($filmResults);
+
 
         $films=[];
 
         foreach($filmResults as $filmResult){
             foreach($filmResult as $row){
                 $uri = $row->film->getUri();
-                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
+                $query = 'select distinct ?film, ?label, MIN(?wiki) as ?site where{
                     ?film rdf:type dbo:Film.
                     ?film rdfs:label ?label.
 
@@ -325,8 +303,6 @@ class FilmRdfController extends Controller
                     {?film dbo:genre ?x} union {?film dbo:genre ?x}.
                     {<'.$uri.'> dbo:genre ?x} union {<'.$uri.'> dbp:genre ?x}.
                     }}.
-                    optional { {?film dbp:imageCaption ?image} union {?film dbo:imageCaption ?image}
-                    union {?film foaf:depiction ?image} union {?film dbo:thumbnail ?image} union {?film dbp:thumbnail ?image} }.
                     optional{{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                     filter(lang(?label)="en")
                 } limit 3';
@@ -349,11 +325,6 @@ class FilmRdfController extends Controller
                 $film=$films[$uri];
                 $film['title']=$row->label->getValue();
 
-                if(isset($row->img)){
-                    $film['image']=(method_exists($row->img, 'getUri')) ? $row->img->getUri() : (
-                    (method_exists($row->img, 'getValue')) ? $row->img->getValue() : $row->img
-                    );
-                }
                 if(isset($row->site)){
                     $film['link']=(method_exists($row->site, 'getUri')) ? $row->site->getUri() : (
                     (method_exists($row->site, 'getValue')) ? $row->site->getValue() : $row->site
@@ -362,7 +333,7 @@ class FilmRdfController extends Controller
                 $films[$uri]=$film;
             }
         }
-//        dd($films);
+
         return json_encode($films);
     }
 }

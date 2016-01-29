@@ -86,15 +86,6 @@ class BookRdfController extends Controller
                 }
 
             }
-
-            if(isset($row->image)){
-                $book['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                );
-            }
-            if(isset($row->releaseDate)){
-                $book['releaseDate']= method_exists($row->releaseDate, 'getValue') ? $row->releaseDate->getValue() : $row->releaseDate;
-            }
             if(isset($row->numberOfPages)){
                 $book['numberOfPages']= method_exists($row->numberOfPages, 'getValue') ? $row->numberOfPages->getValue() : $row->numberOfPages;
             }
@@ -113,7 +104,6 @@ class BookRdfController extends Controller
         }
         $authorUri = $request->get('authorUri');
         $illustratorUri = $request->get('illustratorUri');
-//        $releaseDate= $request->get('releaseDate');
         $literaryGenreUri= $request->get('literaryGenreUri');
         $name = $request->get('name');
         $numberOfPagesMin = $request->get('numberOfPagesMin');
@@ -127,18 +117,14 @@ class BookRdfController extends Controller
                 { ?book rdf:type dbo:WrittenWork }
                  union
                 { ?book rdf:type <http://dbpedia.org/class/Book> }
-                  union
-                { ?book rdf:type owl:Thing }.
                 ?book rdfs:label ?label.
 
                 optional{{?book dbo:wikiPageExternalLink ?wiki} union {?book dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?book dbo:author ?author} union {?book dbp:author ?author} }.
                 optional { {?book dbo:illustrator ?illustrator} union {?book dbp:illustrator ?illustrator}}.
                 optional { {?book dbo:genre ?genre} union {?book dbp:genre ?genre}}.
-                optional { {?book dbp:imageCaption ?image} union {?book dbo:imageCaption ?image} union {?book foaf:depiction ?image} }.
                 optional { {?book dbo:numberOfPages ?numberOfPages} union {?book dbp:numberOfPages ?numberOfPages} }.
-                optional { {?book dbo:numberOfVolumes ?numberOfVolumes} union {?book dbp:numberOfVolumes ?numberOfVolumes} }.
-                optional { {?book dbp:releaseDate ?releaseDate} union {?book dbo:releaseDate ?releaseDate} }.';
+                optional { {?book dbo:numberOfVolumes ?numberOfVolumes} union {?book dbp:numberOfVolumes ?numberOfVolumes} }.';
         if(isset($authorUri)){
             $query .= "\n".' {?book dbo:author <'.$authorUri.'>} union {?book dbp:author <'.$authorUri.'>} .';
         }
@@ -161,10 +147,7 @@ class BookRdfController extends Controller
         if(isset($numberOfVolumes) && $numberOfVolumes > 0){
             $query .= "\n".'filter (?numberOfVolumes = '.$numberOfVolumes.')';
         }
-//        if(isset($releaseDate)){
-//            $query .= "\n".'filter (?releaseDate = '.$releaseDate.')';
-//        }
-        $query .= '}  limit 100'; //dd($query);
+        $query .= '}  limit 100';
 
         try{
             $result = $sparql->query($query);
@@ -173,12 +156,11 @@ class BookRdfController extends Controller
         }
 
         $books=$this->unify($result,$sparql);
-//        dd($books);
         return json_encode($books);
     }
 
     function recommendBooks(){
-        $mybooks =  (new RdfController())->getBooks(); //dd($mybooks);
+        $mybooks =  (new RdfController())->getBooks();
         $books=[];
         $i=0;
 
@@ -197,9 +179,7 @@ class BookRdfController extends Controller
 
                 { ?book rdf:type dbo:WrittenWork }
                  union
-                { ?book rdf:type <http://dbpedia.org/class/Book> }
-                  union
-                { ?book rdf:type owl:Thing }.
+                { ?book rdf:type <http://dbpedia.org/class/Book> }.
 
                 ?book rdfs:label ?label.
                 {?book dbo:author ?author} union {?book dbp:author ?author}
@@ -211,7 +191,6 @@ class BookRdfController extends Controller
 
                 {?book dbo:genre ?genre} union {?book dbp:genre ?genre}.
                 ?genre rdfs:label ?genLabel.
-                optional { {?book dbp:imageCaption ?image} union {?book dbo:imageCaption ?image} union {?book foaf:depiction ?image} }.
                 optional{{?book dbo:wikiPageExternalLink ?wiki} union {?book dbp:wikiPageExternalLink ?wiki}}.
 
                 filter ( lang(?label) = "en" && lang(?authorName) = "en" && lang(?publisherName) = "en" && lang(?genLabel) = "en")';
@@ -231,10 +210,8 @@ class BookRdfController extends Controller
 
 
             }catch (\Exception $e){
-//                dd($e);
             }
     }
-//        dd($results);
         foreach($results as $result){
             foreach($result as $row){
                 $uri = $row->book->getUri();
@@ -296,14 +273,9 @@ class BookRdfController extends Controller
                     }
 
                 }
-                if(isset($row->image)){
-                    $book['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                    (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                    );
-                }
                 $books[$uri]=$book;
             }
-        }//dd($books);
+        }
         return json_encode($books);
     }
 }

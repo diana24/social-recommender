@@ -21,7 +21,6 @@ class PlaceRdfController extends Controller
         $name = $request->get('name');
         $placeTypeUri = $request->get('placeTypeUri');
         $countryUri = $request->get('countryUri');
-//        $closeToPlaceUri = $request->get('closeToPlaceUri');
 
         (new RdfController())->initRdf();
         $query='select * where {
@@ -32,9 +31,6 @@ class PlaceRdfController extends Controller
         if(isset($countryUri)){
             $query .= "\n".' {?place dbo:country <'.$countryUri.'>} union {?place dbp:country <'.$countryUri.'>} .';
         }
-//        if(isset($closeToPlaceUri)){
-//            $query .= "\n".' {?place dbo:closeTo <'.$closeToPlaceUri.'>} union {?place dbp:closeTo <'.$closeToPlaceUri.'>} .';
-//        }
         if(isset($placeTypeUri)){
             $query .= "\n".' ?place rdf:type <'.$placeTypeUri.'> .';
         }
@@ -46,7 +42,7 @@ class PlaceRdfController extends Controller
 
         $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         try{
-            $result = $sparql->query($query); //dd($result);
+            $result = $sparql->query($query);
         } catch(\Exception $e){
             return json_encode([]);
         }
@@ -105,13 +101,8 @@ class PlaceRdfController extends Controller
             }
 
 
-            if(isset($row->image)){
-                $place['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                );
-            }
             $places[$uri]=$place;
-        }//dd($places);
+        }
         return json_encode($places);
     }
 

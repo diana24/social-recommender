@@ -38,8 +38,7 @@ class PeopleRdfController extends Controller
                 ?profession rdfs:label ?professionLabel
 
                 optional { {?person dbo:country ?country} union {?person dbp:country ?country} }.
-                ?country rdfs:label ?countryLabel
-                optional { {?person dbp:imageCaption ?image} union {?person dbo:imageCaption ?image} union {?person foaf:depiction ?image} }.
+                ?country rdfs:label ?countryLabel.
                 ';
         if(isset($countryUri)){
             $query .= "\n".' {?person dbo:country <'.$countryUri.'>} union {?person dbp:country <'.$countryUri.'>} .';
@@ -52,16 +51,15 @@ class PeopleRdfController extends Controller
             $query .= "\n".'filter regex(str(?name), "'.$name.'"^^xsd:string, "i")';
         }
 
-        $query .= '}  limit 50'; //dd($query);
+        $query .= '}  limit 50';
 
         try{
-            $result = $sparql->query($query); //dd($result);
+            $result = $sparql->query($query);
         } catch(\Exception $e){dd($e);
             return json_encode([]);
         }
 
         $people=$this->unify($result,$sparql);
-//        dd($people);
         return json_encode($people);
     }
 

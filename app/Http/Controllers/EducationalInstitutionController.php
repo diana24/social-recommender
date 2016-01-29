@@ -39,8 +39,7 @@ class EducationalInstitutionController extends Controller
                 optional { {?edu dbo:numberOfAcademicStaff ?numberOfAcademicStaff} union {?edu dbp:numberOfAcademicStaff ?numberOfAcademicStaff} }.
                 optional { {?edu dbo:principal ?principal} union {?edu dbp:principal ?principal} }.
                 optional { {?edu dbo:rector ?rector} union {?edu dbp:rector ?rector} }.
-                optional { {?edu dbo:numberOfStudents ?numberOfStudents} union {?edu dbp:numberOfStudents ?numberOfStudents} }.
-                optional { {?edu dbp:imageCaption ?image} union {?edu dbo:imageCaption ?image} union {?edu foaf:depiction ?image} }.';
+                optional { {?edu dbo:numberOfStudents ?numberOfStudents} union {?edu dbp:numberOfStudents ?numberOfStudents} }.';
         if(isset($locationUri)){
             $query .= "\n".' {?edu dbo:location <'.$locationUri.'>} union {?edu dbp:location <'.$locationUri.'>} .';
         }
@@ -187,13 +186,6 @@ class EducationalInstitutionController extends Controller
                 }
 
             }
-
-
-            if(isset($row->image)){
-                $edu['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                );
-            }
             if(isset($row->numberOfAcademicStaff)){
                 $edu['numberOfAcademicStaff']= method_exists($row->numberOfAcademicStaff, 'getValue') ? $row->numberOfAcademicStaff->getValue() : $row->numberOfAcademicStaff;
             }
@@ -230,11 +222,6 @@ class EducationalInstitutionController extends Controller
 
                 ?edu rdfs:label ?label.
                     optional{{?edu dbo:wikiPageExternalLink ?wiki} union {?edu dbp:wikiPageExternalLink ?wiki}}.
-                    optional { {?edu dbp:imageCaption ?image}
-                    union {?edu dbo:imageCaption ?image}
-                    union {?edu dbo:thumbnail ?image}
-                    union {?edu dbp:thumbnail ?image}
-                    union {?edu foaf:depiction ?image} }.
                 filter ( lang(?label) = "en") filter regex(str(?label), "'.$mb['name'].'", "i")
                  } limit 5';
 
@@ -243,10 +230,8 @@ class EducationalInstitutionController extends Controller
 
 
             }catch (\Exception $e){
-//                dd($e);
             }
         }
-//        dd($results);
 
         $eduResults=[];
 
@@ -277,26 +262,19 @@ class EducationalInstitutionController extends Controller
                     {
                     <'.$uri.'> dct:subject ?x.
                     ?edu dct:subject ?x.
-                    }
-
-                    optional { {?edu dbp:imageCaption ?image}
-                    union {?edu dbo:imageCaption ?image}
-                    union {?edu dbo:thumbnail ?image}
-                    union {?edu dbp:thumbnail ?image}
-                    union {?edu foaf:depiction ?image} }.
+                    }.
                     filter(lang(?label)="en")                               
                 } limit 50';
                 try{
-                    $x = $sparql->query($query); //dd($x);
+                    $x = $sparql->query($query);
                     array_push($eduResults,$x);
                 }catch(\Exception $e){
 
                 }
             }
         }
-        //
+
         $results=array_merge($results,$eduResults);
-//        dd($results);
         $edus=[];
         foreach($results as $eduResult){
             foreach($eduResult as $row){
@@ -307,11 +285,6 @@ class EducationalInstitutionController extends Controller
                 $edu=$edus[$uri];
                 $edu['name']=$row->label->getValue();
 
-                if(isset($row->img)){
-                    $edu['image']=(method_exists($row->img, 'getUri')) ? $row->img->getUri() : (
-                    (method_exists($row->img, 'getValue')) ? $row->img->getValue() : $row->img
-                    );
-                }
                 if(isset($row->site)){
                     $edu['link']=(method_exists($row->site, 'getUri')) ? $row->site->getUri() : (
                     (method_exists($row->site, 'getValue')) ? $row->site->getValue() : $row->site
@@ -323,7 +296,7 @@ class EducationalInstitutionController extends Controller
                 $edus[$uri]=$edu;
             }
         }
-//        dd($edus);
+
         return json_encode($edus);
     }
 
