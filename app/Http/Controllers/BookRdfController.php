@@ -152,23 +152,23 @@ class BookRdfController extends Controller
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
-        if(isset($numberOfPagesMin)){
+        if(isset($numberOfPagesMin) && $numberOfPagesMin > 0){
             $query .= "\n".'filter (?numberOfPages >= '.$numberOfPagesMin.')';
         }
-        if(isset($numberOfPagesMax)){
+        if(isset($numberOfPagesMax) && $numberOfPagesMax > 0){
             $query .= "\n".'filter (?numberOfPages <= '.$numberOfPagesMax.')';
         }
-        if(isset($numberOfVolumes)){
+        if(isset($numberOfVolumes) && $numberOfVolumes > 0){
             $query .= "\n".'filter (?numberOfVolumes = '.$numberOfVolumes.')';
         }
 //        if(isset($releaseDate)){
 //            $query .= "\n".'filter (?releaseDate = '.$releaseDate.')';
 //        }
-        $query .= '}  limit 200'; //dd($query);
+        $query .= '}  limit 100'; //dd($query);
 
         try{
             $result = $sparql->query($query);
-        } catch(\Exception $e){
+        } catch(\Exception $e){dd($e);
             return json_encode([]);
         }
 
