@@ -21,10 +21,10 @@ class EventRdfController extends Controller
         $name = $request->get('name');
         $eventTypeUri = $request->get('eventTypeUri');
         $locationUri = $request->get('locationUri');
-        $startDateMin = $request->get('startDateMin');
-        $startDateMax = $request->get('startDateMax');
-        $endDateMin = $request->get('endDateMin');
-        $endDateMax = $request->get('endDateMax');
+        $startDateMin = str_replace("/", "-", $request->get('startDateMin'));
+        $startDateMax = str_replace("/", "-", $request->get('startDateMax'));
+        $endDateMin = str_replace("/", "-", ('endDateMin'));
+        $endDateMax = str_replace("/", "-", $request->get('endDateMax'));
 
         (new RdfController())->initRdf();
         $query='select * where {
@@ -33,8 +33,7 @@ class EventRdfController extends Controller
                 optional{{?event dbo:wikiPageExternalLink ?wiki} union {?event dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?event dbo:location ?location} union {?event dbp:location ?location} }.
                 optional { {?event dbo:startDate ?startDate} union {?event dbp:startDate ?startDate} }.
-                optional { {?event dbo:endDate ?endDate} union {?event dbp:endDate ?endDate} }.
-                optional { {?event dbp:imageCaption ?image} union {?event dbo:imageCaption ?image} union {?event foaf:depiction ?image} }.';
+                optional { {?event dbo:endDate ?endDate} union {?event dbp:endDate ?endDate} }.';
         if(isset($locationUri)){
             $query .= "\n".' {?event dbo:location <'.$locationUri.'>} union {?event dbp:location <'.$locationUri.'>} .';
         }
@@ -120,13 +119,6 @@ class EventRdfController extends Controller
                 }
 
             }
-            
-
-            if(isset($row->image)){
-                $event['image']=(method_exists($row->image, 'getUri')) ? $row->image->getUri() : (
-                (method_exists($row->image, 'getValue')) ? $row->image->getValue() : $row->image
-                );
-            }
             if(isset($row->startDate)){
                 $event['startDate']= method_exists($row->startDate, 'getValue') ? $row->startDate->getValue() : $row->startDate;
             }
@@ -135,7 +127,7 @@ class EventRdfController extends Controller
             }
             $events[$uri]=$event;
         }
-//        dd($events);
+
         return json_encode($events);
     }
 
