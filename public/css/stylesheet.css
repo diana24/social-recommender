@@ -29,6 +29,17 @@ body {
   width: 100%;
 }
 
+.allResults .log {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+.allResults .log.info {
+  color: green;
+}
+.allResults .log.error {
+  color: red;
+}
+
 .googlePlusData {
   position: relative;
 }
@@ -73,11 +84,13 @@ body {
   font-family: 'Raleway', sans-serif;
   font-weight: 300;
   font-size: 36px;
-  margin: 0 img;
-  margin-width: 180px;
-  margin-height: 80px;
-  margin-display: inline-block;
-  margin-margin-right: 30px;
+  margin: 0;
+}
+.top-side .logo img {
+  width: 180px;
+  height: 80px;
+  display: inline-block;
+  margin-right: 30px;
 }
 .top-side .callAction {
   margin: 15px;
@@ -213,7 +226,7 @@ a:hover {
   border-right: none;
 }
 .resultWrapper p {
-  margin-bottom: 4px;
+  margin-bottom: 0;
   font-weight: 500;
 }
 .resultWrapper .addToList {
@@ -363,6 +376,11 @@ p.error {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+  }
+}
+@media screen and (max-width: 991px) {
+  h1.logo span {
+    display: none;
   }
 }
 .profile-form {

@@ -28,6 +28,18 @@ body {
 .loader {
     width: 100%;
 }
+.allResults {
+    .log {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+    .log.info {
+        color: green;
+    }
+    .log.error {
+        color: red;
+    }
+}
 .googlePlusData {
     position: relative;
     .tabAvatar {
@@ -74,7 +86,7 @@ body {
         font-family: 'Raleway', sans-serif;
         font-weight: 300;
         font-size: 36px;
-        margin: 0
+        margin: 0;
         img {
             width: 180px;
             height: 80px;
@@ -229,7 +241,7 @@ a:hover {
     border-bottom: none;
     border-right: none;
     p {
-      margin-bottom: 4px;
+      margin-bottom: 0;
       font-weight: 500;
     }
     .addToList {
@@ -381,7 +393,11 @@ p.error {
     display: flex;
   }
 }
-
+@media screen and (max-width: 991px) {
+    h1.logo span {
+        display: none;
+    }
+}
 .profile-form {
     padding: 0 30px;
     font-family: "Raleway",sans-serif;
