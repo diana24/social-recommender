@@ -27,6 +27,7 @@ class PlaceRdfController extends Controller
         $query='select * where {
                 { ?place rdf:type dbo:Place }.
                 ?place rdfs:label ?label.
+                optional{{?place dbo:wikiPageExternalLink ?wiki} union {?place dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?place dbo:country ?country} union {?place dbp:country ?country} }.';
         if(isset($countryUri)){
             $query .= "\n".' {?place dbo:country <'.$countryUri.'>} union {?place dbp:country <'.$countryUri.'>} .';
@@ -57,6 +58,14 @@ class PlaceRdfController extends Controller
                 $places[$uri]=[];
             }
             $place=$places[$uri];
+            if(isset($row->wiki)){
+                $place['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $place['link']=$uri;
+            }
             $place['title']=$row->label->getValue();
 //            if(isset($row->type) && method_exists($row->type, 'getUri')){
 //                $typeUri = $row->type->getUri();

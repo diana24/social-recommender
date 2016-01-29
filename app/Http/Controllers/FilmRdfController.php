@@ -42,6 +42,7 @@ class FilmRdfController extends Controller
                 ?film rdfs:label ?label.
                 optional { ?film dbp:director ?director }.
                 optional { ?film dbp:starring ?actor }.
+                optional {{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                 optional { {?film dbp:musicComposer ?musicComposer} union {?film dbp:music ?musicComposer}}.
                 optional { ?film dbp:genre ?genre }.
                 optional { {?film dbp:imageCaption ?image} union {?film foaf:depiction ?image} }.';
@@ -86,6 +87,14 @@ class FilmRdfController extends Controller
                 $films[$uri]=[];
             }
             $film=$films[$uri];
+            if(isset($row->wiki)){
+                $film['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                );
+            }
+            else{
+                $film['link']=$uri;
+            }
             $film['title']=$row->label->getValue();
             if(isset($row->director) && method_exists($row->director, 'getUri')){
                 $directorUri = $row->director->getUri();
