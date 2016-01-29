@@ -11,7 +11,7 @@ $(document).on('ready', function () {
         principals = {},
         rectors = {},
         readyCheck = 0,
-        readyCount = 1,
+        readyCount = 0,
         getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
                 method: 'get',
@@ -50,8 +50,6 @@ $(document).on('ready', function () {
                 }
             })
         };
-    $("p.resultHeader").html("Fetching initial data..");
-    $(".allResults").html("");
 
     $(function() {
         $( "#eventStartDateMin" ).datepicker({
@@ -90,47 +88,46 @@ $(document).on('ready', function () {
             $( "#eventEndDateMin" ).datepicker( "option", "maxDate", selectedDate );
             }
         });
-        readyCheck += 1;
-        $(".allResults").append("<p class='log info'>Added event datepickers..</p>");
-        if (readyCheck === readyCount) {
-            //$(".loader").remove();
-            $("#accordion").removeClass("hidden");
-            $("p.resultHeader").html("Initial fetch complete!");
-            $(".allResults").append("You may now use the search bar!");
-        }
     });
     $("#personInitialize").click(function() {
         $("#personInitialize").unbind().remove();
         $("#personPanel .initializeWrapper").removeClass("hidden");
         readyCount += 2;
         getData("/getProfessions", professions, ["personProfession"], "professions", false, "#personPanel .initializeWrapper", "#personSearchForm"); 
-        getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
+        getData("/getCountries", countries, ["personCountry"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
     });
-    /*
-    $("a[href='#searchPerson'][init='false']").click(function() {
-        var check = 0;
-        $("a[href='#searchPerson'][init='false']").attr("init", "true");
-        check += getData("/getProfessions", professions, ["personProfession"], "professions", false); 
-        check += getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false);
-        do {
-            if(check ===2) {
-                $("#personPanel .initializeWrapper").slideUp("fast");
-                $("#personSearchForm").removeClass("hidden");
-            }
-        } while(check!==2);
+    $("#eventInitialize").click(function() {
+        $("#eventInitialize").unbind().remove();
+        $("#eventPanel .initializeWrapper").removeClass("hidden");
+        readyCount += 2;
+        getData("/getPlaces", locations, ["locationUri"], "locations", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
+        getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
     });
-    */
-    /*
-    getData("/getRectors", rectors, ["rectorUri"], "rectors", true);
-    getData("/getPrincipals", principals, ["principalUri"], "principals", true);
-    getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false);
-    getData("/getPlaces", locations, ["locationUri"], "locations", true);
-    getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true);
-    getData("/getLiteraryGenres", literaryGenres, ["literaryGenreUri"], "literary genres", false);
-    getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true);
-    getData("/getAuthors", authors, ["authorUri"], "authors", true);
-    getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false);
-    */
+    $("#bookInitialize").click(function() {
+        $("#bookInitialize").unbind().remove();
+        $("#bookPanel .initializeWrapper").removeClass("hidden");
+        readyCount += 3;
+        getData("/getAuthors", authors, ["authorUri"], "authors", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
+        getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
+        getData("/getLiteraryGenres", literaryGenres, ["literaryGenreUri"], "literary genres", false, "#bookPanel .initializeWrapper", "#bookSearchForm");
+    });
+    $("#placeInitialize").click(function() {
+        $("#placeInitialize").unbind().remove();
+        $("#placePanel .initializeWrapper").removeClass("hidden");
+        readyCount += 2;
+        getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false, "#placePanel .initializeWrapper", "#placeSearchForm");
+        getData("/getCountries", countries, ["countryUri"], "countries", false, "#placePanel .initializeWrapper", "#placeSearchForm");
+    });
+    $("#instituteInitialize").click(function() {
+        $("#instituteInitialize").unbind().remove();
+        $("#institutePanel .initializeWrapper").removeClass("hidden");
+        readyCount += 5;
+        getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        getData("/getPlaces", locations, ["locationUri"], "locations", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        getData("/getRectors", rectors, ["rectorUri"], "rectors", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+    });
     
     $("#instituteSearchForm .btn").click(function (e) {
         e.preventDefault();

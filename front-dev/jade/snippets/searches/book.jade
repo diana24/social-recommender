@@ -2,9 +2,12 @@
     .panel-heading
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
-    .panel-collapse.collapse#searchBook(init="false")
-        .panel-body
-            {!! Form::open(array('url' => 'book', 'id' => 'bookSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
+    .panel-collapse.collapse#searchBook
+        .panel-body#bookPanel
+            a.initializeForm#bookInitialize(href="javascript:void(0)") Initialize form
+            .initializeWrapper.hidden
+                img.loader(src="images/loading.gif",alt="loading..")
+            {!! Form::open(array('url' => 'book', 'id' => 'bookSearchForm', 'class' => 'search-form hidden', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('bookTitle','Title') !!}

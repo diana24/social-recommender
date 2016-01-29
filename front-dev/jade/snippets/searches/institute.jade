@@ -3,8 +3,11 @@
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchInstitute") Search Educational Institutions
     .panel-collapse.collapse#searchInstitute
-        .panel-body
-            {!! Form::open(array('url' => 'institute', 'id' => 'instituteSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
+        .panel-body#institutePanel 
+            a.initializeForm#instituteInitialize(href="javascript:void(0)") Initialize form
+            .initializeWrapper.hidden
+                img.loader(src="images/loading.gif",alt="loading..")
+            {!! Form::open(array('url' => 'institute', 'id' => 'instituteSearchForm', 'class' => 'search-form hidden', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('instituteName','Name') !!}
