@@ -4,11 +4,12 @@ $(document).on('ready', function () {
         url: "graph/me",
         dataType: "json",
         success: function(data) {
-            console.log("success");
             console.log(data);
+            $(".user-box p.name").html(data.givenname);
+            $("img[alt='avatar']").attr("src",data.depiction);
         },
         error: function(data) {
-            //$(".user-box p.name").html($(".profile-form input[name='name'").val());
+            console.log('Request failed');
         }
     });
     
