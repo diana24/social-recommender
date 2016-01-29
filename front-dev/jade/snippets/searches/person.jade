@@ -8,22 +8,14 @@
             .row
                 .col-md-12
                     {!! Form::Label('Name','Name') !!}
-                .col-md-6.col-sm-6.col-xs-6
+                .col-md-12
                     .form-group
-                        {!! Form::text('personFirstName', null, ['class' => 'input  form-control', 'placeholder' => 'first name..']) !!}
-                .col-md-6.col-sm-6.col-xs-6
-                    .form-group
-                        {!! Form::text('personLastName', null, ['class' => 'input  form-control', 'placeholder' => 'last name..']) !!}
+                        {!! Form::text('personName', null, ['class' => 'input  form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12
                     {!! Form::Label('birthplace','Birthplace') !!}
                 .col-md-12
                     .form-group
                         {!! Form::text('personBirthPlace', null, ['class' => 'input  form-control', 'placeholder' => 'date..']) !!}
-                .col-md-12
-                    {!! Form::Label('profession','Profession') !!}
-                .col-md-12
-                    .form-group
-                        {!! Form::text('personProfession', null, ['class' => 'input  form-control', 'placeholder' => 'profession..']) !!}
                 .col-md-12
                     {!! Form::Label('nationality','Nationality') !!}
                 .col-md-12
