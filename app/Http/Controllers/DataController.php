@@ -380,7 +380,8 @@ class DataController extends Controller
                         ?place dbo:populationTotal ?population
                       filter regex(str(?label),"'.$name.'","i")
                       FILTER ( lang(?label) = "en" )
-                    } order by desc(?population) limit 500'
+                      FILTER ( ?place != <http://dbpedia.org/resource/List_of_countries_and_capitals_with_currency_and_language> )
+                    } order by desc(?population) limit 300'
             );
             $illustrators = [];
             foreach($result as $row){
