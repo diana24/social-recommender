@@ -3,13 +3,16 @@
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchFilm") Search Films
     .panel-collapse.collapse#searchFilm
-        .panel-body
-            {!! Form::open(array('url' => 'film', 'class' => 'search-form', 'role' => 'form')) !!}
+        .panel-body#filmPanel
+            a.initializeForm#filmInitialize(href="javascript:void(0)") Initialize form
+            .initializeWrapper.hidden
+                img.loader(src="images/loading.gif",alt="loading..")
+            {!! Form::open(array('url' => 'film', 'id' => 'filmSearchForm', 'class' => 'search-form hidden', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('filmName','Movie name') !!}
-                .form-group
-                    {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Movie name..']) !!}
+                    .form-group
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Movie name..']) !!}
                 .col-md-12
                     {!! Form::Label('directorName','Director name') !!}
                     .form-group
@@ -17,28 +20,23 @@
                 .col-md-12
                     {!! Form::Label('actorUri','Actor name') !!}
                     .form-group
-                        {!! Form::text('getActors', null, ['class' => 'input form-control', 'placeholder' => ' Actor name..']) !!}
+                        {!! Form::text('actorUri', null, ['class' => 'input form-control', 'placeholder' => ' Actor name..']) !!}
                 .col-md-12
                     {!! Form::Label('musicalArtistName','Musical artist name') !!}
-                .form-group
-                    {!! Form::text('musicalArtistUri', null, ['class' => 'input form-control', 'placeholder' => ' Musical artist name..']) !!}
+                    .form-group
+                        {!! Form::text('musicalArtistUri', null, ['class' => 'input form-control', 'placeholder' => ' Musical artist name..']) !!}
                 .col-md-12
                     {!! Form::Label('originLanguage','Original Language') !!}
-                .form-group
-                    {!! Form::text('originalLanguageUri', null, ['class' => 'input form-control', 'placeholder' => ' Original Language..']) !!}
+                    .form-group
+                        {!! Form::text('originalLanguageUri', null, ['class' => 'input form-control', 'placeholder' => ' Original Language..']) !!}
                 .col-md-12
                     {!! Form::Label('countryUri','Country') !!}
                     .form-group
-                        {!! Form::text('getCountries', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
+                        {!! Form::text('countryUri', null, ['class' => 'input form-control', 'placeholder' => ' Country..']) !!}
                 .col-md-12
                     {!! Form::Label('movieGenre','Movie genre') !!}
                     .form-group
                         {!! Form::text('movieGenreUri', null, ['class' => 'input form-control', 'placeholder' => ' Movie genre..']) !!}
-                .col-md-12
-                    {!! Form::Label('ranking_id','Ranking:') !!}
-                .col-md-12    
-                    .form-group
-                        {!! Form::select('ranking_id', array('','2'=>'1','3'=>'2','4'=>'3','5'=>'4','6'=>'5'),'5', ['class' => 'form-control']) !!}
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
                 {!! Form::close() !!}

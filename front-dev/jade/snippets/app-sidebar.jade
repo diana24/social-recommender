@@ -1,8 +1,11 @@
 .col-md-2.col-sm-12.sidebar
     ul
         li
+            span.glyphicon.glyphicon-flag
+            a(href="{{url('home')}}") Recomandations
+        li
             span.glyphicon.glyphicon-search
-            a(href="{{url('home')}}") Search
+            a(href="{{url('search')}}") Search
         li
             span.glyphicon.glyphicon-list-alt
             a(href="javascript:void(0)") Search History
@@ -10,8 +13,9 @@
             span.glyphicon.glyphicon-star
             a(href="javascript:void(0)") Favorites
         li
-            span.glyphicon.glyphicon-unchecked
-            a(href="graph.html") Graph
+            <?php if(Auth::user()->getGraphPath() !==null) {?>
+            <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>"><span class="glyphicon glyphicon-unchecked"></span>Graph</a> 
+            <?php } ?>
         li
             span.glyphicon.glyphicon-file
-            a(href="report.html") Report
+            a(href="{{url('report')}}") Report

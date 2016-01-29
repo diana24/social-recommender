@@ -12,6 +12,11 @@ $(document).on('ready', function () {
         rectors = {},
         readyCheck = 0,
         readyCount = 0,
+        actors = {},
+        directors = {},
+        movieGenres = {},
+        languages = {},
+        musicalArtists = {},
         getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
                 method: 'get',
@@ -127,6 +132,128 @@ $(document).on('ready', function () {
         getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
         getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
         getData("/getRectors", rectors, ["rectorUri"], "rectors", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+    });
+    $("#filmInitialize").click(function() {
+        $("#filmInitialize").unbind().remove();
+        $("#filmPanel .initializeWrapper").removeClass("hidden");
+        readyCount += 6;
+        getData("/getDirectors",directors, ["directorUri"], "directors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        getData("/getActors",actors, ["actorUri"], "actors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        getData("/getCountries", countries, ["countryUri"], "countries", false, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        getData("/getMovieGenres", movieGenres, ["movieGenreUri"], "movieGenres", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        getData("/getLanguages", languages, ["originalLanguageUri"], "languages", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        getData("/getMusicalArtists", musicalArtists, ["musicalArtistUri"], "musicalArtists", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+    });
+    
+    $("#filmSearchForm .btn").click(function (e) {
+        e.preventDefault();
+        $("#filmSearchForm input").removeClass("invalid");
+        var actorUri = actors[$("#filmSearchForm input[name='actorUri']").val().split(" ").join("_")],
+            directorUri = directors[$("#filmSearchForm input[name='directorUri']").val().split(" ").join("_")],
+            countryUri = countries[$("#filmSearchForm input[name='countryUri']").val().split(" ").join("_")],
+            movieGenreUri = movieGenres[$("#filmSearchForm input[name='movieGenreUri']").val().split(" ").join("_")],
+            originalLanguageUri = languages[$("#filmSearchForm input[name='originalLanguageUri']").val().split(" ").join("_")],
+            musicalArtistUri = musicalArtists[$("#filmSearchForm input[name='musicalArtistUri']").val().split(" ").join("_")],
+            name = $("#filmSearchForm input[name='name']").val(),
+            sendingData = {
+                name: name,
+                actorUri: actorUri,
+                directorUri: directorUri,
+                countryUri: countryUri,
+                movieGenreUri: movieGenreUri,
+                originalLanguageUri: originalLanguageUri,
+                musicalArtistUri: musicalArtistUri
+            },
+            comaCheck,
+            result;
+        if (directorUri !== undefined || countryUri !== undefined || movieGenreUri !== undefined || name.trim().length > 0 || originalLanguageUri !== undefined || musicalArtistUri !== undefined || actorUri !== undefined) {
+            
+            if (directorUri === undefined && $("#filmSearchForm input[name='directorUri']").val().length > 0) {
+                $("#filmSearchForm input[name='directorUri']").addClass("invalid");
+            }
+            if (countryUri === undefined && $("#filmSearchForm input[name='countryUri']").val().length > 0) {
+                $("#filmSearchForm input[name='countryUri']").addClass("invalid");
+            }
+            if (movieGenreUri === undefined && $("#filmSearchForm input[name='movieGenreUri']").val().length > 0) {
+                $("#filmSearchForm input[name='movieGenreUri']").addClass("invalid");
+            }
+            if (originalLanguageUri === undefined && $("#filmSearchForm input[name='originalLanguageUri']").val().length > 0) {
+                $("#filmSearchForm input[name='originalLanguageUri']").addClass("invalid");
+            }
+            if (musicalArtistUri === undefined && $("#filmSearchForm input[name='musicalArtistUri']").val().length > 0) {
+                $("#filmSearchForm input[name='musicalArtistUri']").addClass("invalid");
+            }
+            if (actorUri === undefined && $("#filmSearchForm input[name='actorUri']").val().length > 0) {
+                $("#filmSearchForm input[name='actorUri']").addClass("invalid");
+            }
+            $("p.resultHeader").html("Fetching data.. please wait");
+            $(".allResults").html("");
+            jQuery.ajax({
+                method: 'get',
+                url: "search/films",
+                dataType: "json",
+                data: sendingData,
+                success: function (data) {
+                    console.log(data);
+                    var count = 0,
+                        title,
+                        result,
+                        comaCheck,
+                        limitCheck,
+                        prop;
+                    for (prop in data) {
+                        if (data.hasOwnProperty(prop)) {
+                            count += 1;
+                        }
+                    }
+                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
+                    $.each(data, function (key, val) {
+                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                            '<div class="resultWrapper">' +
+                            '<p>Type: <span class="type">Film</span></p>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>';
+                        if(val.directors) {
+                            result += '<p>Directors: <span>';
+                            $.each(val.directors, function (key2, val2) {
+                                result += val2
+                            });
+                            result += '</span></p>';
+                        }
+                        if(val.composers) {
+                            limitCheck = 0;
+                            result += '<p>Composers: <span>';
+                            comaCheck = false;
+                            $.each(val.composers, function (key3, val3) {
+                                if(limitCheck < 3) {
+                                    result += (comaCheck ? ', ' : ' ') + val3;
+                                    comaCheck = true;
+                                }
+                            });
+                            result += '</span></p>';
+                        }
+                        if(val.actors) {
+                            limitCheck = 0;
+                            result += '<p>Actors: <span>';
+                            comaCheck = false;
+                            $.each(val.actors, function (key3, val3) {
+                                if(limitCheck < 3) {
+                                    result += (comaCheck ? ', ' : ' ') + val3;
+                                    comaCheck = true;
+                                }
+                            });
+                            result += '</span></p>';
+                        }
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        $(".allResults").append(result);
+                    });
+                },
+                error: function (data) {
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
+                }
+            });
+        }
     });
     
     $("#instituteSearchForm .btn").click(function (e) {
