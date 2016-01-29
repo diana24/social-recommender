@@ -316,8 +316,8 @@ $(document).on('ready', function () {
             result;
         if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === 0) {
             $("#placeSearchForm input").addClass("invalid");
-        } else if ((placeTypeURI === undefined || countryURI !== undefined) || placeName.trim().length > 0) {
-            if (placeTypeURI !== undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
+        } else if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
+            if (placeTypeURI === undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
                 $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
             }
             if (countryURI === undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
