@@ -4,7 +4,7 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchEvent") Search Events
     .panel-collapse.collapse#searchEvent
         .panel-body
-            {!! Form::open(array('url' => 'event', 'class' => 'search-form', 'role' => 'form')) !!}
+            {!! Form::open(array('url' => 'event', 'id' => 'personSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('eventName','Event name') !!}
@@ -22,18 +22,18 @@
                     {!! Form::Label('startDate','Start date') !!}                 
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('startDateMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}          
+                        {!! Form::text('startDateMin', null, ['class' => 'input form-control', 'id' => 'eventStartDateMin', 'placeholder' => 'minimum..']) !!}          
                 .col-md-6.col-sm-6.col-xs-6             
                     .form-group
-                        {!! Form::text('startDateMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
+                        {!! Form::text('startDateMax', null, ['class' => 'input form-control', 'id' => 'eventStartDateMax', 'placeholder' => 'maximum..']) !!}
                 .col-md-12
                     {!! Form::Label('endDate','End date') !!}                            
                 .col-md-6.col-sm-6.col-xs-6                         
                     .form-group
-                        {!! Form::text('endDateMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}
+                        {!! Form::text('endDateMin', null, ['class' => 'input form-control', 'id' => 'eventEndDateMax', 'placeholder' => 'minimum..']) !!}
                 .col-md-6.col-sm-6.col-xs-6 
                     .form-group 
-                        {!! Form::text('endDateMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
+                        {!! Form::text('endDateMax', null, ['class' => 'input form-control', 'id' => 'eventEndDateMax', 'placeholder' => 'maximum..']) !!}
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
             {!! Form::close() !!}

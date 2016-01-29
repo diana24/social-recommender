@@ -28,6 +28,9 @@ body {
 .loader {
     width: 100%;
 }
+.ui-datepicker-month {
+    color: black !important;
+}
 .allResults {
     .log {
         padding-left: 20px;
@@ -36,7 +39,7 @@ body {
     .log.info {
         color: green;
     }
-    .log.error {
+    .log.err {
         color: red;
     }
 }

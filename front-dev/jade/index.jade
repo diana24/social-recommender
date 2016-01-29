@@ -8,52 +8,7 @@ include snippets/user-header.jade
                 p.resultHeader There are 
                     span.resultNo 3 
                     | results based on your query.
-                .row.allResults 
-                    .col-lg-6.col-md-6.col-sm-12
-                        .resultWrapper
-                            img.resultImg(src="images/diana.jpg", alt="avatar")
-                            p Type: 
-                                span.type Person
-                            p Name: 
-                                span.name Mînzat Diana
-                            p Common friends:
-                                span.commonFriends.green 22
-                            p
-                                a(href="javascript:void(0)") Original link (Facebook)
-                            button.addToList(type="button")
-                                span.glyphicon.glyphicon-plus
-                            button.removeResult(type="button")
-                                span.glyphicon.glyphicon-minus
-                    .col-lg-6.col-md-6.col-sm-12
-                        .resultWrapper
-                            img.resultImg(src="images/ionela.jpg", alt="avatar")
-                            p Type: 
-                                span.type Person
-                            p Name: 
-                                span.name Ababi Ionela
-                            p Common friends:
-                                span.commonFriends.green 15
-                            p
-                                a(href="javascript:void(0)") Original link (Facebook)
-                            button.addToList(type="button")
-                                span.glyphicon.glyphicon-plus
-                            button.removeResult(type="button")
-                                span.glyphicon.glyphicon-minus
-                    .col-lg-6.col-md-6.col-sm-12
-                        .resultWrapper
-                            img.resultImg(src="images/event.jpg", alt="avatar")
-                            p Type: 
-                                span.type Event
-                            p Name: 
-                                span.name Ziua Izabelei
-                            p Friends going:
-                                span.commonFriends.green 66
-                            p
-                                a(href="javascript:void(0)") Original link (Facebook)
-                            button.addToList(type="button")
-                                span.glyphicon.glyphicon-plus
-                            button.removeResult(type="button")
-                                span.glyphicon.glyphicon-minus
+                .row.allResults
         include snippets/search-bar.jade
 {!! HTML::script('js/searches.js') !!}
 include snippets/footer.jade

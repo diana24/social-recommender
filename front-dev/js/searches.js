@@ -9,9 +9,50 @@ $(document).on('ready', function () {
         institutionTypes = {},
         professions = {},
         readyCheck = 0,
-        readyCount = 9;
+        readyCount = 10;
     $("p.resultHeader").html("Fetching initial data..");
     $(".allResults").html("");
+    $(function() {
+        $( "#eventStartDateMin" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 2,
+            dateFormat: "dd/mm/yy",
+            onClose: function( selectedDate ) {
+            $( "#eventStartDateMax" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#eventStartDateMax" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 2,
+            dateFormat: "dd/mm/yy",
+            onClose: function( selectedDate ) {
+            $( "#eventStartDateMin" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+        $( "#eventEndDateMin" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "dd/mm/yy",
+            onClose: function( selectedDate ) {
+            $( "#eventEndDateMax" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#eventEndDateMax" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "dd/mm/yy",
+            onClose: function( selectedDate ) {
+            $( "#eventEndDateMin" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+        readyCheck += 1;
+            $(".allResults").append("<p class='log info'>Added event datepickers..</p>");
+        });
+    
     jQuery.ajax({
         method: 'get',
         url: "/getEduInstitutionTypes",
@@ -37,7 +78,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete educational institution types failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete educational institution types failed.. disabling field..</p>");
             $("input[name='eduTypeUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -75,7 +116,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete locations failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete locations failed.. disabling field..</p>");
             $("input[name='locationUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -110,7 +151,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete event types failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete event types failed.. disabling field..</p>");
             $("input[name='eventTypeUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -145,7 +186,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete literary genres failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete literary genres failed.. disabling field..</p>");
             $("input[name='literaryGenreUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -183,7 +224,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete illustrators fetch failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete illustrators fetch failed.. disabling field..</p>");
             $("input[name='illustratorUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -221,7 +262,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete authors fetch failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete authors fetch failed.. disabling field..</p>");
             $("input[name='authorUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -256,7 +297,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete place types fetch failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete place types fetch failed.. disabling field..</p>");
             $("input[name='placeTypeUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -295,7 +336,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete countries fetch failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete countries fetch failed.. disabling field..</p>");
             $("input[name='countryUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
@@ -331,7 +372,7 @@ $(document).on('ready', function () {
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p class='log error'>Error: Autocomplete professions fetch failed.. disabling field..</p>");
+            $(".allResults").append("<p class='log err'>Error: Autocomplete professions fetch failed.. disabling field..</p>");
             $("input[name='countryUri']").attr("disabled", "disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
