@@ -24,6 +24,10 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::get('getFacebookAuthUrl', 'FacebookAuthController@getAuthUrl');
 Route::get('login', 'FacebookAuthController@authenticate');
 
+Route::get('report', function(){
+   return view('report');
+});
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('index');
@@ -95,6 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('recommendations/books', 'BookRdfController@recommendBooks');
         Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
         Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
+        Route::get('recommendations/events', 'EventRdfController@recommendEvents');
 
         Route::get('graph', 'GraphController@displayData');
         Route::get('graph/me', 'GraphController@displayPersonalData');

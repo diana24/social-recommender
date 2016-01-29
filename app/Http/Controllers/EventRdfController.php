@@ -131,4 +131,107 @@ class EventRdfController extends Controller
         return json_encode($events);
     }
 
+
+    public function recommendEvents()
+    {
+        $coords = [];
+        $path = Auth::user()->getGraphPath();
+        (new RdfController())->initRdf();
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $person = $graph;
+
+        if ($graph->type() == 'foaf:PersonalProfileDocument') {
+            $person = $graph->primaryTopic();
+        } elseif ($graph->type() == 'foaf:Person') {
+            $person = $graph->resource();
+        }
+        $c = $person->get('foaf:based_near');
+        if (isset($c)) {
+            $mycoord['lat'] = $c->get('geo:lat')->getValue();
+            $mycoord['long'] = $c->get('geo:long')->getValue();
+            array_push($coords, $mycoord);
+        }
+        foreach ($person->all('foaf:knows') as $p) {
+            $c = $p->get('foaf:based_near');
+            if (isset($c)) {
+                $mycoord['lat'] = $c->get('geo:lat')->getValue();
+                $mycoord['long'] = $c->get('geo:long')->getValue();
+                array_push($coords, $mycoord);
+            }
+        }
+        $i = 0;
+
+        shuffle($coords);
+
+        $n = 5;
+        while ($n > count($coords)) {
+            $n--;
+        }
+
+        $events = [];
+
+        foreach ($coords as $c) {
+            $lat = $c['lat'];
+            $long = $c['long'];
+
+            $query = 'select ?event, ?label, MIN(?location) as ?loc, ?locationLabel, ?startDate, ?endDate, ?wiki where {
+                { ?event rdf:type dbo:Event }.
+                ?event rdfs:label ?label.
+                optional{{?event dbo:wikiPageExternalLink ?wiki} union {?event dbp:wikiPageExternalLink ?wiki}}.
+                {?event dbo:location ?location} union {?event dbp:location ?location}.
+                ?location rdf:type dbo:Place.
+                ?location rdfs:label ?locationLabel.
+                ?location geo:lat ?lat.
+                ?location geo:long ?long.
+                optional { {?event dbo:startDate ?startDate} union {?event dbp:startDate ?startDate} }.
+                optional { {?event dbo:endDate ?endDate} union {?event dbp:endDate ?endDate} }.';
+
+
+            $query .= "\n" . 'filter ( lang(?label) = "en" && lang(?locationLabel) = "en")';
+            $query .= "\n" . 'filter ( ?long > ' . $long . ' - 2 && ?long < ' . $long . ' + 2 && ?lat > ' . $lat . ' - 2 && ?lat < ' . $lat . ' + 2)';
+
+            $query .= '} limit 50';
+
+            $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+
+            try {
+                $result = $sparql->query($query); //dd($result);
+                foreach($result as $row){
+                    $uri = $row->event->getUri();
+                    if(!array_has($events,$uri)){
+                        $events[$uri]=[];
+                    }
+                    $event=$events[$uri];
+                    if(isset($row->wiki)){
+                        $event['link']=(method_exists($row->wiki, 'getUri')) ? $row->wiki->getUri() : (
+                        (method_exists($row->wiki, 'getValue')) ? $row->wiki->getValue() : $row->wiki
+                        );
+                    }
+                    else{
+                        $event['link']=$uri;
+                    }
+                    $event['title']=$row->label->getValue();
+
+                    if(isset($row->loc) && method_exists($row->loc, 'getUri')){
+                        $event['location']['uri']=$row->loc->getUri();
+                    }
+                    if(isset($row->locationLabel) && method_exists($row->locationLabel, 'getValue')){
+                        $event['location']['name']=$row->locationLabel->getValue();
+                    }
+                if(isset($row->startDate)){
+                    $event['startDate']= method_exists($row->startDate, 'getValue') ? $row->startDate->getValue() : $row->startDate;
+                }
+                if(isset($row->endDate)){
+                    $event['endDate']= method_exists($row->endDate, 'getValue') ? $row->endDate->getValue() : $row->endDate;
+                }
+                $events[$uri]=$event;
+            }
+            } catch (\Exception $e) { //dd($e);
+                return json_encode([]);
+            }
+        }
+
+        return json_encode($events);
+    }
+
 }
