@@ -8,7 +8,7 @@ include snippets/user-header.jade
                 p.resultHeader There are 
                     span.resultNo 3 
                     | results based on your query.
-                .row
+                .row.allResults 
                     .col-lg-6.col-md-6.col-sm-12
                         .resultWrapper
                             img.resultImg(src="images/diana.jpg", alt="avatar")
@@ -55,5 +55,5 @@ include snippets/user-header.jade
                             button.removeResult(type="button")
                                 span.glyphicon.glyphicon-minus
         include snippets/search-bar.jade
-                
+{!! HTML::script('js/searches.js') !!}
 include snippets/footer.jade
