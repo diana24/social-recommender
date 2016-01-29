@@ -1,10 +1,13 @@
 .panel.panel-default
     .panel-heading
         h4.panel-title
-            a(data-toggle="collapse", data-parent="#accordion", href="#searchPerson") Search People
+            a(data-toggle="collapse", data-parent="#accordion", href="#searchPerson", init="false") Search People
     .panel-collapse.collapse#searchPerson
-        .panel-body
-            {!! Form::open(array('url' => 'person', 'id' => 'personSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
+        .panel-body#personPanel 
+            a.initializeForm#personInitialize(href="javascript:void(0)") Initialize form
+            .initializeWrapper.hidden
+                img.loader(src="images/loading.gif",alt="loading..")
+            {!! Form::open(array('url' => 'person', 'id' => 'personSearchForm', 'class' => 'search-form hidden', 'role' => 'form')) !!}
             .row
                 .col-md-12
                     {!! Form::Label('Name','Name') !!}

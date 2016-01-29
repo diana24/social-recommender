@@ -33,17 +33,6 @@ body {
   color: black !important;
 }
 
-.allResults .log {
-  padding-left: 20px;
-  margin-bottom: 0;
-}
-.allResults .log.info {
-  color: green;
-}
-.allResults .log.err {
-  color: red;
-}
-
 .googlePlusData {
   position: relative;
 }
@@ -63,6 +52,41 @@ body {
   display: block;
 }
 .socialMediaWrapper .authenticateLink:hover {
+  color: wheat;
+}
+
+.initializeWrapper {
+  min-height: 30px;
+  position: relative;
+}
+.initializeWrapper img {
+  position: absolute;
+  height: 159px;
+  width: 130px;
+  top: -102px;
+  right: 0;
+}
+.initializeWrapper .log {
+  text-align: center;
+  margin-bottom: 0;
+}
+.initializeWrapper .log.info {
+  color: green;
+}
+.initializeWrapper .log.err {
+  color: red;
+}
+
+.initializeForm {
+  font-size: 18px;
+  font-family: 'Raleway', sans-serif;
+  background: #337ab7;
+  color: white;
+  padding: 8px;
+  text-align: center;
+  display: block;
+}
+.initializeForm:hover {
   color: wheat;
 }
 

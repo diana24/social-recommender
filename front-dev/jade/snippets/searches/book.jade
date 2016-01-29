@@ -2,7 +2,7 @@
     .panel-heading
         h4.panel-title
             a(data-toggle="collapse", data-parent="#accordion", href="#searchBook") Search Books
-    .panel-collapse.collapse#searchBook
+    .panel-collapse.collapse#searchBook(init="false")
         .panel-body
             {!! Form::open(array('url' => 'book', 'id' => 'bookSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row

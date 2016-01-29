@@ -11,8 +11,8 @@ $(document).on('ready', function () {
         principals = {},
         rectors = {},
         readyCheck = 0,
-        readyCount = 12,
-        getData= function(url, containerObject, fields, description, data) {
+        readyCount = 1,
+        getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
                 method: 'get',
                 url: url,
@@ -31,23 +31,21 @@ $(document).on('ready', function () {
                         });
                     });
                     readyCheck += 1;
-                    $(".allResults").append("<p class='log info'>Added autocomplete " + description + "</p>");
+                    $(hideWrapper).append("<p class='log info'>Added autocomplete " + description + "</p>");
                     if (readyCheck === readyCount) {
-                        $(".loader").remove();
-                        $("#accordion").removeClass("hidden");
-                        $("p.resultHeader").html("Initial fetch complete!");
-                        $(".allResults").append("You may now use the search bar!");
+                        $(hideWrapper).remove();
+                        $(form).removeClass("hidden");
+                        
                     }
+                    return "<p class='log info'>Added autocomplete " + description + "</p>";
                 },
                 error: function () {
                     readyCheck += 1;
-                    $(".allResults").append("<p class='log err'>Error: Autocomplete " + description + " failed.. disabling field..</p>");
+                    $(hideWrapper).append("<p class='log err'>Error: Autocomplete " + description + " failed.. disabling field..</p>");
                     $("input[name='" + field + "']").attr("disabled", "disabled");
                     if (readyCheck === readyCount) {
-                        $(".loader").remove();
-                        $("#accordion").removeClass("hidden");
-                        $("p.resultHeader").html("Initial fetch complete!");
-                        $(".allResults").append("You may now use the search bar!");
+                        $(hideWrapper).remove();
+                        $(form).removeClass("hidden");
                     }
                 }
             })
@@ -93,8 +91,36 @@ $(document).on('ready', function () {
             }
         });
         readyCheck += 1;
-            $(".allResults").append("<p class='log info'>Added event datepickers..</p>");
-        });
+        $(".allResults").append("<p class='log info'>Added event datepickers..</p>");
+        if (readyCheck === readyCount) {
+            //$(".loader").remove();
+            $("#accordion").removeClass("hidden");
+            $("p.resultHeader").html("Initial fetch complete!");
+            $(".allResults").append("You may now use the search bar!");
+        }
+    });
+    $("#personInitialize").click(function() {
+        $("#personInitialize").unbind().remove();
+        $("#personPanel .initializeWrapper").removeClass("hidden");
+        readyCount += 2;
+        getData("/getProfessions", professions, ["personProfession"], "professions", false, "#personPanel .initializeWrapper", "#personSearchForm"); 
+        getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
+    });
+    /*
+    $("a[href='#searchPerson'][init='false']").click(function() {
+        var check = 0;
+        $("a[href='#searchPerson'][init='false']").attr("init", "true");
+        check += getData("/getProfessions", professions, ["personProfession"], "professions", false); 
+        check += getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false);
+        do {
+            if(check ===2) {
+                $("#personPanel .initializeWrapper").slideUp("fast");
+                $("#personSearchForm").removeClass("hidden");
+            }
+        } while(check!==2);
+    });
+    */
+    /*
     getData("/getRectors", rectors, ["rectorUri"], "rectors", true);
     getData("/getPrincipals", principals, ["principalUri"], "principals", true);
     getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false);
@@ -104,9 +130,7 @@ $(document).on('ready', function () {
     getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true);
     getData("/getAuthors", authors, ["authorUri"], "authors", true);
     getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false);
-    getData("/getCountries", countries, ["placeTypeUri","countryUri"], "countries", false);
-    getData("/getProfessions", professions, ["personProfession"], "professions", false);
-    
+    */
     
     $("#instituteSearchForm .btn").click(function (e) {
         e.preventDefault();
