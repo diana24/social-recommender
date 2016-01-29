@@ -137,7 +137,7 @@ class GraphController extends Controller
     }
 
     function toCdata($text){
-        return str_replace("&","\&", $text);
+        return str_replace("&","&amp;", $text);
     }
 
     function addEvents($fh, $client){
@@ -558,7 +558,7 @@ class GraphController extends Controller
     }
 
     function displayPersonalData(){
-        $me = (new RdfController())->getMyData();
+        $me = (new RdfController())->getMyData(); //dd($me);
         return json_encode($me);
     }
 

@@ -6,16 +6,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 use Mockery\CountValidator\Exception;
 ini_set('max_execution_time', 300);
 
 class BookRdfController extends Controller
 {
-    function unify($result, EasyRdf_Sparql_Client $sparql){
+    function unify($result, \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client $sparql){
         $books=[];
         foreach($result as $row){
             $uri = $row->book->getUri();
@@ -112,7 +112,7 @@ class BookRdfController extends Controller
         $numberOfPagesMax = $request->get('numberOfPagesMax');
         $numberOfVolumes = $request->get('numberOfVolumes');
 
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 
         $query='select *
                 where {
@@ -179,7 +179,7 @@ class BookRdfController extends Controller
             $n--;
         }
         $results=[];
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $mybooks = array_slice($mybooks, 0, $n);
         foreach($mybooks as $mb){
             try{

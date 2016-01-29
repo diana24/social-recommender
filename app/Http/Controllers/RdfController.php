@@ -6,30 +6,30 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Sparql_Client;
+use \App\Http\EasyRdf\EasyRdf_Graph;
+use \App\Http\EasyRdf\EasyRdf_Namespace;
+use \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client;
 use Illuminate\Support\Facades\Auth;
 ini_set('max_execution_time', 300);
 
 class RdfController extends Controller
 {
     function initRdf(){
-        EasyRdf_Namespace::set('postcode', 'http://data.ordnancesurvey.co.uk/ontology/postcode/');
-        EasyRdf_Namespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
-        EasyRdf_Namespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');
-        EasyRdf_Namespace::set('ag', 'http://statistics.data.gov.uk/def/administrative-geography/');
-        EasyRdf_Namespace::set('osag', 'http://data.ordnancesurvey.co.uk/ontology/admingeo/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('postcode', 'http://data.ordnancesurvey.co.uk/ontology/postcode/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('ag', 'http://statistics.data.gov.uk/def/administrative-geography/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('osag', 'http://data.ordnancesurvey.co.uk/ontology/admingeo/');
 
-        EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
-        EasyRdf_Namespace::set('rel', 'http://www.perceive.net/schemas/relationship/');
-        EasyRdf_Namespace::set('owl', 'http://www.w3.org/2002/07/owl#');
-        EasyRdf_Namespace::set('geo', 'http://www.w3.org/2003/01/geo/wgs84_pos#');
-        EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
-        EasyRdf_Namespace::set('dbr', 'http://dbpedia.org/resource/');
-        EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
-        EasyRdf_Namespace::set('dbc', 'http://dbpedia.org/class/');
-        EasyRdf_Namespace::set('sch', 'http://schema.org');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('rel', 'http://www.perceive.net/schemas/relationship/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('owl', 'http://www.w3.org/2002/07/owl#');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('geo', 'http://www.w3.org/2003/01/geo/wgs84_pos#');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dbr', 'http://dbpedia.org/resource/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dbc', 'http://dbpedia.org/class/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('sch', 'http://schema.org');
 //        EasyRdf_Namespace::set('bif', 'http://www.openlinksw.com/schemas/bif#');
         // http://bnb.data.bl.uk/sparql
     }
@@ -37,7 +37,7 @@ class RdfController extends Controller
     public function getDBPediaUri($resourceName="J. K. Rowling"){
         $resourceName = str_replace(" ","_",ucwords(strtolower($resourceName)));
         $this->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $uri = 'http://dbpedia.org/resource/'.$resourceName; //dd($uri);
         $result = $sparql->query(
             'select ?uri ?id { values ?uri { <'.$uri.'> } ?uri <http://dbpedia.org/ontology/wikiPageID> ?id }'
@@ -54,7 +54,7 @@ class RdfController extends Controller
     public function getResourceInfo($resourceName="The Lord of the Rings"){
 //        $resourceName = str_replace(" ","_",ucwords(strtolower($resourceName)));
         $this->initRdf();
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 //        $uri = 'http://dbpedia.org/resource/'.$resourceName; //dd($uri);
         $query = 'describe ?book where { ?book dbp:name \''.$resourceName.'\'@en }';
 //        $query = 'select * where { ?book rdf:type dbo:Book; dbp:name \''.$resourceName.'\'@en }';
@@ -66,7 +66,7 @@ class RdfController extends Controller
     public function getMyData(){
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
-        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
         $person = $graph;
 
         if ($graph->type() == 'foaf:PersonalProfileDocument') {
@@ -129,7 +129,7 @@ class RdfController extends Controller
     public function getEvents(){
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
-        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
         $events=[];
         foreach($graph->resources() as $resource){
             if($resource->type() == 'sch:Event'){
@@ -162,7 +162,7 @@ class RdfController extends Controller
     public function getBooks(){
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
-        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
         $books=[];
         foreach($graph->resources() as $resource){
             if($resource->type() == 'sch:Book'){
@@ -209,7 +209,7 @@ class RdfController extends Controller
     public function getSchools(){
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
-        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
         $books=[];
         foreach($graph->resources() as $resource){
             if($resource->type() == 'dbo:EducationalInstitution'){
@@ -226,7 +226,7 @@ class RdfController extends Controller
     public function getPeople(){
         $path = Auth::user()->getGraphPath();
         $this->initRdf();
-        $graph = EasyRdf_Graph::newAndLoad($path, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($path, 'rdfxml');
         $pp=[];
         if ($graph->type() == 'foaf:PersonalProfileDocument') {
             $person = $graph->primaryTopic();
@@ -360,7 +360,7 @@ class RdfController extends Controller
     function test(){
         $this->initRdf();
         $docuri = url("/")."/graphs/2.xml";
-        $graph = EasyRdf_Graph::newAndLoad($docuri, 'rdfxml');
+        $graph = \App\Http\EasyRdf\EasyRdf_Graph::newAndLoad($docuri, 'rdfxml');
 //        return $graph->dump('html');
 
 //        dd(json_decode($graph->serialise('json')));
@@ -375,10 +375,10 @@ class RdfController extends Controller
 
 
 
-        EasyRdf_Namespace::set('category', 'http://dbpedia.org/property/category:');
-        EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('category', 'http://dbpedia.org/property/category:');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
 
-        $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+        $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
             'SELECT ?name, ?nr WHERE {'.
             '  ?book rdf:type dbo:Book .'.
