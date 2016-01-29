@@ -9,32 +9,32 @@
                 .col-md-12
                     {!! Form::Label('bookTitle','Book title') !!}
                     .form-group
-                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' Book name..']) !!}
+                        {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => 'title..']) !!}
                 .col-md-12
                     {!! Form::Label('author','Author') !!}
                     .form-group
-                        {!! Form::text('authorUri', null, ['class' => 'input form-control', 'placeholder' => ' Author name..']) !!}
+                        {!! Form::text('authorUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
 
                 .col-md-12
                     {!! Form::Label('illustrator','Illustrator') !!}
                     .form-group 
-                        {!! Form::text('illustratorUri', null, ['class' => 'input form-control', 'placeholder' => ' Illustrator name..']) !!}
+                        {!! Form::text('illustratorUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12 
                     {!! Form::Label('literaryGenres','Literary Genres') !!}
                     .form-group 
-                        {!! Form::text('literaryGenreUri', null, ['class' => 'input form-control', 'placeholder' => 'Literary genre..']) !!}
+                        {!! Form::text('literaryGenreUri', null, ['class' => 'input form-control', 'placeholder' => 'genre..']) !!}
                 .col-md-12
                     {!! Form::Label('Number of Pages') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'Number of minimum pages...']) !!}
+                        {!! Form::text('numberOfPagesMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
-                        {!! Form::text('numberOfPagesMax', null, ['class' => 'input form-control', 'placeholder' => 'Number of maximum pages...']) !!}
+                        {!! Form::text('numberOfPagesMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
                 .col-md-12
                     {!! Form::label('numberOfVolumes','Number of Volumes') !!}
                     .form-group
-                        {!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'Number of Volumes...']) !!}	
+                        {!! Form::text('numberOfVolums', null, ['class' => 'input form-control', 'placeholder' => 'number of volumes..']) !!}	
                 .col-md-12.text-right
                     {!! Form::submit('Search',  ['class' => 'btn']) !!}
             {!! Form::close() !!}
