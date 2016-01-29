@@ -1,4 +1,4 @@
-$(document).on('ready', function() {
+$(document).on('ready', function () {
     var placeTypes = {},
         countries = {},
         readyCheck = 0;
@@ -6,9 +6,10 @@ $(document).on('ready', function() {
         method: 'get',
         url: "/getPlaceTypes",
         dataType: "json",
-        success: function(data) {
-            var autocompleteValues = [];
-            for (var key in data) {
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
                 autocompleteValues.push(data[key].name);
                 placeTypes[data[key].name.split(" ").join("_")] = data[key].uri;
             }
@@ -16,14 +17,14 @@ $(document).on('ready', function() {
                 source: autocompleteValues
             });
             readyCheck += 1;
-            if(readyCheck == 2) {
+            if (readyCheck === 2) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
             }
         },
-        error: function() {
+        error: function () {
             readyCheck += 1;
-            if(readyCheck == 2) {
+            if (readyCheck === 2) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
             }
@@ -33,9 +34,10 @@ $(document).on('ready', function() {
         method: 'get',
         url: "/getCountries",
         dataType: "json",
-        success: function(data) {
-            var autocompleteValues = [];
-            for (var key in data) {
+        success: function (data) {
+            var autocompleteValues = [],
+                key;
+            for (key in data) {
                 autocompleteValues.push(data[key].name);
                 countries[data[key].name.split(" ").join("_")] = data[key].uri;
             }
@@ -43,21 +45,21 @@ $(document).on('ready', function() {
                 source: autocompleteValues
             });
             readyCheck += 1;
-            if(readyCheck == 2) {
+            if (readyCheck === 2) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
             }
         },
-        error: function() {
+        error: function () {
             readyCheck += 1;
-            if(readyCheck == 2) {
+            if (readyCheck === 2) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
             }
         }
     });
 
-    $("#placeSearchForm .btn").click(function(e) {
+    $("#placeSearchForm .btn").click(function (e) {
         e.preventDefault();
         $("#placeSearchForm input[name='countryUri']").removeClass("invalid");
         $("#placeSearchForm input[name='placeTypeUri']").removeClass("invalid");
@@ -66,14 +68,14 @@ $(document).on('ready', function() {
             placeName = $("#placeSearchForm input[name='name']").val(),
             sendingData = {
                 name: placeName,
-                placeTypeUri:placeTypeURI,
+                placeTypeUri: placeTypeURI,
                 countryUri: countryURI
             },
             result;
-        if(countryURI === undefined && placeTypeURI === undefined && placeName.trim().length == "") {
+        if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === "") {
             $("#placeSearchForm input").addClass("invalid");
         }
-        if((placeTypeURI !== undefined || countryURI !== undefined)|| placeName.trim().length > 0) {
+        if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
             $("p.resultHeader").html("Fetching data.. please wait");
             $(".allResults").html("");
             jQuery.ajax({
@@ -81,32 +83,37 @@ $(document).on('ready', function() {
                 url: "search/places",
                 dataType: "json",
                 data: sendingData,
-                success: function(data) {
+                success: function (data) {
                     var count = 0,
                         title,
-                        result;
-                    for(var prop in data) {
-                        if(data.hasOwnProperty(prop)) {
-                            ++count;
+                        result,
+                        prop;
+                    for (prop in data) {
+                        if (data.hasOwnProperty(prop)) {
+                            count += 1;
                         }
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
-                    $.each(data, function(key, val) {
-                        console.log(val);
+                    $.each(data, function (key, val) {
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Place</span></p>' +
-                            '<p>Name: <span class="name">' + val.title + '</span></p>' +
-                            '<a href="' + key + '"> Original Link</a>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>';
+                        if (val.countries) {
+                            $.each(val.countries, function (key2, val2) {
+                                result += '<p>Country: ' + val2 + '</p>';
+                            });
+                        }
+                        result += '<a href="' + key + '"> Original Link</a>' +
                             '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                             '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
                 },
-                error: function(data) {
+                error: function (data) {
                     console.log("error");
                 }
-            }); 
+            });
         }
     });
     
