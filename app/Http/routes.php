@@ -38,6 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('profile', function () {
         return view('profile');
     });
+    Route::get('search', function () {
+        return view('search');
+    });
     Route::get('executeGetRequest', 'FacebookRequestController@executeGetRequest');
     Route::get('rdf', 'RdfController@getAutoRec');
     Route::get('createAuthUrl', 'GoogleAuthController@createAuthUrl');
