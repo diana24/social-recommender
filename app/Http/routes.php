@@ -95,6 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('recommendations/books', 'BookRdfController@recommendBooks');
         Route::get('recommendations/films', 'FilmRdfController@recommendFilms');
         Route::get('recommendations/edu', 'EducationalInstitutionController@recommendSchools');
+        Route::get('recommendations/events', 'EventRdfController@recommendEvents');
 
         Route::get('graph', 'GraphController@displayData');
         Route::get('graph/me', 'GraphController@displayPersonalData');
