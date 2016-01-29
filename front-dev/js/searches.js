@@ -25,17 +25,18 @@ $(document).on('ready', function () {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p>Error: Autocomplete literary genres failed</p>");
+            $(".allResults").append("<p>Error: Autocomplete literary genres failed.. disabling field..</p>");
+            $("input[name='literaryGenreUri']").attr("disabled","disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         }
     });
@@ -62,17 +63,18 @@ $(document).on('ready', function () {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p>Error: Autocomplete illustrators fetch failed</p>");
+            $(".allResults").append("<p>Error: Autocomplete illustrators fetch failed.. disabling field..</p>");
+            $("input[name='illustratorUri']").attr("disabled","disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         }
     });
@@ -99,17 +101,18 @@ $(document).on('ready', function () {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p>Error: Autocomplete authors fetch failed</p>");
+            $(".allResults").append("<p>Error: Autocomplete authors fetch failed.. disabling field..</p>");
+            $("input[name='authorUri']").attr("disabled","disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         }
     });
@@ -133,17 +136,18 @@ $(document).on('ready', function () {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p>Error: Autocomplete place types fetch failed</p>");
+            $(".allResults").append("<p>Error: Autocomplete place types fetch failed.. disabling field..</p>");
+            $("input[name='placeTypeUri']").attr("disabled","disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
         }
     });
@@ -167,18 +171,19 @@ $(document).on('ready', function () {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }
             
         },
         error: function () {
             readyCheck += 1;
-            $(".allResults").append("<p>Error: Autocomplete countries fetch failed</p>");
+            $(".allResults").append("<p>Error: Autocomplete countries fetch failed.. disabling field..</p>");
+            $("input[name='countryUri']").attr("disabled","disabled");
             if (readyCheck === readyCount) {
                 $(".loader").remove();
                 $("#accordion").removeClass("hidden");
                 $("p.resultHeader").html("Initial fetch complete!");
-                $(".allResults").html("You may now use the search bar!");
+                $(".allResults").append("You may now use the search bar!");
             }    
         }
     });
