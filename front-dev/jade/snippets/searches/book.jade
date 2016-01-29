@@ -22,16 +22,7 @@
                 .col-md-12 
                     {!! Form::Label('literaryGenres','Literary Genres') !!}
                     .form-group 
-                        {!! Form::select('literaryGenreUri', array(
-                        '2'=>'Comedy',
-                        '3'=>'Drama',
-                        '4'=>'Non-fiction',
-                        '5'=>'Realistic fiction',
-                        '6'=>'Romance Novel',
-                        '7'=>'Satire',
-                        '8'=>'Tragedy',
-                        '9'=>'Tragicomedy'
-                        ),'8', ['class'=>'form-control']) !!}
+                        {!! Form::text('literaryGenreUri', null, ['class' => 'input form-control', 'placeholder' => 'Literary genre..']) !!}
                 .col-md-12
                     {!! Form::Label('Number of Pages') !!}
                 .col-md-6.col-sm-6.col-xs-6
