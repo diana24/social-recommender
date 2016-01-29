@@ -63,19 +63,17 @@ $(document).on('ready', function() {
         $("#placeSearchForm input[name='placeTypeUri']").removeClass("invalid");
         var countryURI = countries[$("#placeSearchForm input[name='countryUri']").val().split(" ").join("_")],
             placeTypeURI = placeTypes[$("#placeSearchForm input[name='placeTypeUri']").val().split(" ").join("_")],
+            placeName = $("#placeSearchForm input[name='name']").val(),
             sendingData = {
-                name: $("#placeSearchForm input[name='name']").val(),
+                name: placeName,
                 placeTypeUri:placeTypeURI,
                 countryUri: countryURI
-            };
-        console.log(sendingData);
-        if(countryURI === undefined) {
-            $("#placeSearchForm input[name='countryUri']").addClass("invalid");
+            },
+            result;
+        if(countryURI === undefined && placeTypeURI === undefined && placeName.trim().length == "") {
+            $("#placeSearchForm input").addClass("invalid");
         }
-        if(placeTypeURI === undefined) {
-            $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
-        } 
-        if(placeTypeURI !== undefined && countryURI !== undefined) {
+        if((placeTypeURI !== undefined || countryURI !== undefined)|| placeName.trim().length > 0) {
             $("p.resultHeader").html("Fetching data.. please wait");
             $(".allResults").html("");
             jQuery.ajax({
@@ -93,18 +91,16 @@ $(document).on('ready', function() {
                         }
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
-                    console.log(data);
-                    $(data).each(function(key, val) {
-                        title = val.title;
-                        console.log(title);
-                        /*
+                    $.each(data, function(key, val) {
+                        console.log(val);
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
-                            '<div class="resultWrapper">' + '
+                            '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Place</span></p>' +
-                            '<p>Name: <span class="name">' + title + '</span></p>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>' +
+                            '<a href="' + key + '"> Original Link</a>' +
                             '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                             '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
-                        $(".allResults").append(result);*/
+                        $(".allResults").append(result);
                     });
                 },
                 error: function(data) {
