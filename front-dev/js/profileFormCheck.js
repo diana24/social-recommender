@@ -1,28 +1,19 @@
 $(document).on('ready', function () {
     
-    var MockData = {
-        name: "Test2 Muzaara", 
-        givenname: "Test2", 
-        family_name: "Muzaara", 
-        depiction: "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50", 
-        homepage: "https://plus.google.com/102033742137349953674",
-        gender: "Male"
-    };
-    
     jQuery.ajax({
         method: 'get',
         url: "graph/me",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             $(".loader").remove();
             $(".googlePlusData").append("<p>Name: " + data.name + "</a>");
             $(".googlePlusData").append("<p>Gender: " + data.gender + "</a>");
             $(".googlePlusData").append("<p><a href='" + data.homepage + "'>Homepage</p>");
-            $(".googlePlusData").append("<img src='"+ data.depiction + "' alt='avatar' class='tabAvatar'>");
+            $(".googlePlusData").append("<img src='" + data.depiction + "' alt='avatar' class='tabAvatar'>");
         },
-        error: function(data) {
+        error: function (data) {
             $(".loader").remove();
-            $(".googlePlusData").append("<p>Failed to retrieve user data..</p>
+            $(".googlePlusData").append("<p>Failed to retrieve user data..</p>");
         }
     });
     $(".clearErrors").click(function () {
