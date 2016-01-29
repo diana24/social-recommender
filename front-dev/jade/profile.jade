@@ -51,6 +51,9 @@ include snippets/user-header.jade
                                     i.fa.fa-google-plus 
                                     | Authenticate with Google+
                                 <?php } if(Auth::user()->getGraphPath() !==null) {?>
+                                <div class="googlePlusData">
+                                <img src="images/hex-loader2.gif" alt="loading.." class="loader">
+                                </div>
                                 <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>">View XML Graph</a> |
                                 <?php } if(true === Auth::user()->hasSocialAccount()) {?>
                                 a(href="{{url('/buildGraph')}}") Rebuild XML Graph
