@@ -30,6 +30,7 @@ class RdfController extends Controller
         \App\Http\EasyRdf\EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
         \App\Http\EasyRdf\EasyRdf_Namespace::set('dbc', 'http://dbpedia.org/class/');
         \App\Http\EasyRdf\EasyRdf_Namespace::set('sch', 'http://schema.org');
+        \App\Http\EasyRdf\EasyRdf_Namespace::set('dct', 'http://purl.org/dc/terms/');
 //        EasyRdf_Namespace::set('bif', 'http://www.openlinksw.com/schemas/bif#');
         // http://bnb.data.bl.uk/sparql
     }

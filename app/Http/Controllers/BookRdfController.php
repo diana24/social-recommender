@@ -208,6 +208,7 @@ class BookRdfController extends Controller
                 {?book dbo:publisher ?publisher} union {?book dbp:publisher ?publisher}
                 ?publisher rdfs:label ?publisherName
 
+
                 {?book dbo:genre ?genre} union {?book dbp:genre ?genre}.
                 ?genre rdfs:label ?genLabel.
                 optional { {?book dbp:imageCaption ?image} union {?book dbo:imageCaption ?image} union {?book foaf:depiction ?image} }.
@@ -258,12 +259,17 @@ class BookRdfController extends Controller
                     if(!array_has($book['authors'],$authorUri)){
                         $authorUri = $row->author->getUri();
                         $query = 'select ?authorName where { <'.$authorUri.'> rdfs:label ?authorName . filter (lang(?authorName)="en")} limit 1';
-                        $r = $sparql->query($query);
-                        foreach($r as $rw){
-                            if(isset($rw->authorName)){
-                                $authorName = $rw->authorName->getValue();
-                                $book['authors'][$authorUri]=$authorName;
+                        try{
+                            $r = $sparql->query($query);
+
+                            foreach($r as $rw){
+                                if(isset($rw->authorName)){
+                                    $authorName = $rw->authorName->getValue();
+                                    $book['authors'][$authorUri]=$authorName;
+                                }
                             }
+                        }catch(\Exception $e){
+
                         }
                     }
 
@@ -276,12 +282,16 @@ class BookRdfController extends Controller
                     if(!array_has($book['genres'],$genreUri)){
                         $genreUri = $row->genre->getUri();
                         $query = 'select ?genreName where { <'.$genreUri.'> rdfs:label ?genreName . filter (lang(?genreName)="en")} limit 1';
-                        $r = $sparql->query($query);
-                        foreach($r as $rw){
-                            if(isset($rw->genreName)){
-                                $genreName = $rw->genreName->getValue();
-                                $book['genres'][$genreUri]=$genreName;
+                        try{
+                            $r = $sparql->query($query);
+                            foreach($r as $rw){
+                                if(isset($rw->genreName)){
+                                    $genreName = $rw->genreName->getValue();
+                                    $book['genres'][$genreUri]=$genreName;
+                                }
                             }
+                        }catch(\Exception $e){
+
                         }
                     }
 

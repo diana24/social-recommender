@@ -207,6 +207,7 @@ class EducationalInstitutionController extends Controller
     }
 
     public function recommendSchools(){
+        (new RdfController())->initRdf();
         $myschools = (new RdfController())->getSchools();
 //        dd($myschools);
         #schools=[];
@@ -255,25 +256,28 @@ class EducationalInstitutionController extends Controller
                 $query = 'select distinct ?edu, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
                     ?edu rdf:type dbo:EducationalInstitution.
                     ?edu rdfs:label ?label.
+
                     optional{{?edu dbo:wikiPageExternalLink ?wiki} union {?edu dbp:wikiPageExternalLink ?wiki}}.
-                    {optional{
+
+                    {
                     {?edu dbo:country ?x} union {?edu dbo:country ?x}.
                     {<'.$uri.'> dbo:country ?x} union {<'.$uri.'> dbp:country ?x}.
-                    }}
+                    }
+
 
                     union
 
-                    {optional{
-                    {?edu dbo:alumni ?x} union {?edu dbo:alumni ?x}.
-                    {<'.$uri.'> dbo:alumni ?x} union {<'.$uri.'> dbp:alumni ?x}.
-                    }}
-
-                    union
-
-                    {optional{
+                    {
                     {?edu dbo:educationSystem ?x} union {?edu dbo:educationSystem ?x}.
                     {<'.$uri.'> dbo:educationSystem ?x} union {<'.$uri.'> dbp:educationSystem ?x}.
-                    }}.
+                    }
+
+                    union
+
+                    {
+                    <'.$uri.'> dct:subject ?x.
+                    ?edu dct:subject ?x.
+                    }
 
                     optional { {?edu dbp:imageCaption ?image}
                     union {?edu dbo:imageCaption ?image}
@@ -281,7 +285,7 @@ class EducationalInstitutionController extends Controller
                     union {?edu dbp:thumbnail ?image}
                     union {?edu foaf:depiction ?image} }.
                     filter(lang(?label)="en")                               
-                } limit 10';
+                } limit 50';
                 try{
                     $x = $sparql->query($query); //dd($x);
                     array_push($eduResults,$x);
@@ -312,6 +316,9 @@ class EducationalInstitutionController extends Controller
                     $edu['link']=(method_exists($row->site, 'getUri')) ? $row->site->getUri() : (
                     (method_exists($row->site, 'getValue')) ? $row->site->getValue() : $row->site
                     );
+                }
+                else{
+                    $edu['link']=$uri;
                 }
                 $edus[$uri]=$edu;
             }
