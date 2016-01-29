@@ -61,8 +61,7 @@ $(document).on('ready', function () {
 
     $("#placeSearchForm .btn").click(function (e) {
         e.preventDefault();
-        $("#placeSearchForm input[name='countryUri']").removeClass("invalid");
-        $("#placeSearchForm input[name='placeTypeUri']").removeClass("invalid");
+        $("#placeSearchForm input").removeClass("invalid");
         var countryURI = countries[$("#placeSearchForm input[name='countryUri']").val().split(" ").join("_")],
             placeTypeURI = placeTypes[$("#placeSearchForm input[name='placeTypeUri']").val().split(" ").join("_")],
             placeName = $("#placeSearchForm input[name='name']").val(),
@@ -72,14 +71,13 @@ $(document).on('ready', function () {
                 countryUri: countryURI
             },
             result;
-        if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === "") {
+        if (countryURI === undefined && placeTypeURI === undefined && placeName.trim().length === 0) {
             $("#placeSearchForm input").addClass("invalid");
-        }
-        if ((placeTypeURI !== undefined || countryURI !== undefined) || placeName.trim().length > 0) {
+        } else if ((placeTypeURI === undefined || countryURI !== undefined) || placeName.trim().length > 0) {
             if(placeTypeURI !== undefined && $("#placeSearchForm input[name='placeTypeUri']").val().length > 0) {
                 $("#placeSearchForm input[name='placeTypeUri']").addClass("invalid");
             }
-            if(countryURI !== undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
+            if(countryURI === undefined && $("#placeSearchForm input[name='countryUri']").val().length > 0) {
                 $("#placeSearchForm input[name='countryUri']").addClass("invalid");
             }
             $("p.resultHeader").html("Fetching data.. please wait");
@@ -110,7 +108,7 @@ $(document).on('ready', function () {
                                 result += '<p>Country: ' + val2 + '</p>';
                             });
                         }
-                        result += '<a href="' + key + '"> Original Link</a>' +
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
                             '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                             '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
