@@ -4,18 +4,18 @@
             a(data-toggle="collapse", data-parent="#accordion", href="#searchEvent") Search Events
     .panel-collapse.collapse#searchEvent
         .panel-body
-            {!! Form::open(array('url' => 'event', 'id' => 'personSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
+            {!! Form::open(array('url' => 'event', 'id' => 'eventSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
-                    {!! Form::Label('eventName','Event name') !!}
+                    {!! Form::Label('eventName','Name') !!}
                     .form-group 
                         {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}                    
                 .col-md-12
-                        {!! Form::Label('eventType','Event Type') !!}
+                        {!! Form::Label('eventType','Type') !!}
                         .form-group 
                             {!! Form::text('eventTypeUri', null, ['class' => 'input form-control', 'placeholder' => 'type..']) !!}
                 .col-md-12
-                    {!! Form::Label('locationUri','Event Location') !!}
+                    {!! Form::Label('locationUri','Location') !!}
                     .form-group 
                         {!! Form::text('locationUri', null, ['class' => 'input form-control', 'placeholder' => 'location..']) !!}
                 .col-md-12                     

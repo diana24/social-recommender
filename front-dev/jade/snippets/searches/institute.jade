@@ -7,11 +7,11 @@
             {!! Form::open(array('url' => 'institute', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
-                    {!! Form::Label('instituteName','Institute name') !!}
+                    {!! Form::Label('instituteName','Name') !!}
                     .form-group 
                         {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12
-                    {!! Form::Label('educationalInstituteType','Educational Institute Type') !!}
+                    {!! Form::Label('educationalInstituteType','Type') !!}
                     .form-group
                         {!! Form::text('eduTypeUri', null, ['class' => 'input form-control', 'placeholder' => 'type..']) !!}
                 .col-md-12
@@ -31,7 +31,7 @@
                     .form-group
                         {!! Form::text('rectorUri', null, ['class' => 'input form-control', 'placeholder' => 'name..']) !!}
                 .col-md-12                 
-                    {!! Form::Label('numberOFAcademicStaff','Number of Academic staff:') !!}
+                    {!! Form::Label('numberOFAcademicStaff','Number of Academic Staff') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group
                         {!! Form::text('nrOfAcademicStaffMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}
@@ -39,7 +39,7 @@
                     .form-group
                         {!! Form::text('nrOfAcademicStaffMax', null, ['class' => 'input form-control', 'placeholder' => 'maximum..']) !!}
                 .col-md-12             
-                    {!! Form::label('numberOFStudents','Number of Students:') !!}
+                    {!! Form::label('numberOFStudents','Number of Students') !!}
                 .col-md-6.col-sm-6.col-xs-6
                     .form-group 
                         {!! Form::text('nrOfStudentsMin', null, ['class' => 'input form-control', 'placeholder' => 'minimum..']) !!}

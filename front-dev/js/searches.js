@@ -99,8 +99,10 @@ $(document).on('ready', function () {
             var autocompleteValues = [],
                 key;
             for (key in data) {
-                autocompleteValues.push(data[key].name);
-                locations[data[key].name.split(" ").join("_")] = data[key].uri;
+                if(data[key].name !== "List of countries and capitals with currency and language") {
+                    autocompleteValues.push(data[key].name);
+                    locations[data[key].name.split(" ").join("_")] = data[key].uri;
+                }
             }
             $("input[name='locationUri']").autocomplete({
                 source: autocompleteValues
@@ -382,6 +384,81 @@ $(document).on('ready', function () {
             }
         }
     });
+    $("#eventSearchForm .btn").click(function (e) {
+        e.preventDefault();
+        $("#eventSearchForm input").removeClass("invalid");
+        var eventTypeUri = eventTypes[$("#eventSearchForm input[name='eventTypeUri']").val().split(" ").join("_")],
+            locationUri = locations[$("#eventSearchForm input[name='locationUri']").val().split(" ").join("_")],
+            name = $("#eventSearchForm input[name='name']").val(),
+            startDateMin = $("#eventSearchForm input[name='startDateMin']").val(),
+            startDateMax = $("#eventSearchForm input[name='startDateMax']").val(),
+            endDateMin = $("#eventSearchForm input[name='endDateMin']").val(),
+            endDateMax = $("#eventSearchForm input[name='endDateMax']").val(),
+            sendingData = {
+                name: name,
+                eventTypeUri: eventTypeUri,
+                locationUri: locationUri,
+                startDateMin: startDateMin,
+                endDateMin: endDateMin,
+                startDateMax: startDateMax,
+                endDateMax: endDateMax
+            },
+            comaCheck,
+            result;
+        if (eventTypeUri !== undefined || name.trim().length > 0 || locationUri !== undefined || startDateMin.trim().length > 0 || startDateMax.trim().length > 0 || endDateMin.trim().length > 0 || endDateMax.trim().length > 0) {
+            
+            if (eventTypeUri === undefined && $("#eventSearchForm input[name='eventTypeUri']").val().length > 0) {
+                $("#eventSearchForm input[name='eventTypeUri']").addClass("invalid");
+            }
+            
+            if (locationUri === undefined && $("#eventSearchForm input[name='locationUri']").val().length > 0) {
+                $("#eventSearchForm input[name='locationUri']").addClass("invalid");
+            }
+            
+            $("p.resultHeader").html("Fetching data.. please wait");
+            $(".allResults").html("");
+            jQuery.ajax({
+                method: 'get',
+                url: "search/events",
+                dataType: "json",
+                data: sendingData,
+                success: function (data) {
+                    var count = 0,
+                        title,
+                        result,
+                        prop;
+                    for (prop in data) {
+                        if (data.hasOwnProperty(prop)) {
+                            count += 1;
+                        }
+                    }
+                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
+                    $.each(data, function (key, val) {
+                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                            '<div class="resultWrapper">' +
+                            '<p>Type: <span class="type">Event</span></p>' +
+                            '<p>Name: <span class="name">' + val.title + '</span></p>';
+                        if(val.locations) {
+                            result += '<p>Locations: <span>';
+                            comaCheck = false;
+                            $.each(val.locations, function (key2, val2) {
+                                result += (comaCheck ? ', ' : ' ') + val2;
+                                comaCheck = true;
+                            });
+                            result += '</span></p>';
+                        }
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        $(".allResults").append(result);
+                    });
+                },
+                error: function (data) {
+                    $("p.resultHeader").html("Something wrong happened. Please try again.");
+                }
+            });
+        }
+    });
     $("#personSearchForm .btn").click(function (e) {
         e.preventDefault();
         $("#personSearchForm input").removeClass("invalid");
@@ -412,7 +489,6 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
-                    console.log(data);
                     var count = 0,
                         title,
                         result,
@@ -462,7 +538,7 @@ $(document).on('ready', function () {
                 numberOfVolumes: numberOfVolumes
             },
             result;
-        if (authorUri === undefined || titleName.trim().length > 0 || literaryGenreUri === undefined || illustratorUri === undefined || numberOfPagesMin.trim().length > 0 || numberOfPagesMax.trim().length > 0 || numberOfVolumes.trim().length > 0) {
+        if (authorUri !== undefined || titleName.trim().length > 0 || literaryGenreUri !== undefined || illustratorUri !== undefined || numberOfPagesMin.trim().length > 0 || numberOfPagesMax.trim().length > 0 || numberOfVolumes.trim().length > 0) {
             
             if (illustratorUri === undefined && $("#bookSearchForm input[name='illustratorUri']").val().length > 0) {
                 $("#bookSearchForm input[name='illustratorUri']").addClass("invalid");
@@ -484,7 +560,6 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
-                    console.log(data);
                     var count = 0,
                         title,
                         result,

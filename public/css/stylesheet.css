@@ -231,7 +231,10 @@ a:hover {
 }
 .resultWrapper p {
   margin-bottom: 0;
-  font-weight: 500;
+  font-weight: 700;
+}
+.resultWrapper p span {
+  font-weight: 400;
 }
 .resultWrapper .addToList {
   background: #008000 none repeat scroll 0% 0%;

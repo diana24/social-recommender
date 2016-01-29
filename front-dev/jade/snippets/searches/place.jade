@@ -7,11 +7,11 @@
             {!! Form::open(array('url' => 'place', 'id'=>'placeSearchForm', 'class' => 'search-form', 'role' => 'form')) !!}
             .row
                 .col-md-12
-                    {!! Form::Label('placeName','Place name') !!}
+                    {!! Form::Label('placeName','Name') !!}
                     .form-group
                         {!! Form::text('name', null, ['class' => 'input form-control', 'placeholder' => ' name..']) !!}
                 .col-md-12 
-                    {!! Form::Label('placeType','Place Type') !!}
+                    {!! Form::Label('placeType','Type') !!}
                     .form-group 
                         {!! Form::text('placeTypeUri', null, ['class' => 'input form-control', 'placeholder' => 'type..']) !!}
                 .col-md-12

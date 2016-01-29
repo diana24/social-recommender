@@ -244,8 +244,11 @@ a:hover {
     border-bottom: none;
     border-right: none;
     p {
-      margin-bottom: 0;
-      font-weight: 500;
+        margin-bottom: 0;
+        font-weight: 700;
+        span {
+            font-weight: 400;
+        }
     }
     .addToList {
         background: #008000 none repeat scroll 0% 0%;
