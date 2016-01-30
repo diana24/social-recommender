@@ -9,7 +9,7 @@ $(document).ready(function() {
             if(bookRecommendations !== "") {
                 $(".recomloading").addClass("hidden");
                 $(".allResults").html(bookRecommendations);
-                addToRemoveFromList();
+                
             } else {
                 jQuery.ajax({
                     method: 'get',
@@ -40,7 +40,7 @@ $(document).ready(function() {
                             bookRecommendations +="</div></div>";
                         });
                         $(".allResults").html(bookRecommendations);
-                        addToRemoveFromList();
+                        
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -82,7 +82,7 @@ $(document).ready(function() {
                             eventRecommendations +="</div></div>";
                         });
                         $(".allResults").html(eventRecommendations);
-                        addToRemoveFromList();
+                        
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -145,7 +145,7 @@ $(document).ready(function() {
                             filmRecommendations += '</div></div>';
                         });
                         $(".allResults").html(filmRecommendations);
-                        addToRemoveFromList();
+                        
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -187,7 +187,7 @@ $(document).ready(function() {
                             eduRecommendations += "</div></div>";
                         });
                         $(".allResults").html(eduRecommendations);
-                        addToRemoveFromList();
+                        
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
