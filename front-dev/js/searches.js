@@ -17,6 +17,34 @@ $(document).on('ready', function () {
         movieGenres = {},
         languages = {},
         musicalArtists = {},
+        addToRemoveFromList = function() {
+            $(".addToList").click(function() {
+                jQuery.ajax({
+                    method: 'post',
+                    url: "result/favorite",
+                    dataType: "json",
+                    data: $(this).attr("data"),
+                    success: function (data) {
+                    },
+                    error: function(data) {
+                        console.log("error");
+                    }
+                });
+            });
+            $(".removeResult").click(function() {
+                jQuery.ajax({
+                    method: 'post',
+                    url: "result/remove",
+                    dataType: "json",
+                    data: $(this).attr("data"),
+                    success: function (data) {
+                    },
+                    error: function(data) {
+                        console.log("error");
+                    }
+                });
+            });
+        },
         getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
                 method: 'get',
@@ -164,7 +192,7 @@ $(document).on('ready', function () {
         if(!stop) {
             $("#instituteInitialize").unbind().remove();
             $("#institutePanel .initializeWrapper").removeClass("hidden");
-            readyCount += 5;
+            readyCount += 4;
             getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
             getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
             getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
@@ -253,6 +281,10 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
+                        saveData = {
+                            type: 'Person',
+                        };
+                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Film</span></p>' +
@@ -291,10 +323,11 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -361,6 +394,10 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
+                        saveData = {
+                            type: 'Person',
+                        };
+                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Institution</span></p>' +
@@ -378,10 +415,11 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -438,6 +476,10 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
+                        saveData = {
+                            type: 'Person',
+                        };
+                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Event</span></p>' +
@@ -452,10 +494,11 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -496,6 +539,7 @@ $(document).on('ready', function () {
                     var count = 0,
                         title,
                         result,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -503,18 +547,24 @@ $(document).on('ready', function () {
                         }
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
+                    
                     $.each(data, function (key, val) {
-                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
-                            '<div class="resultWrapper">' +
-                            '<p>Type: <span class="type">Person</span></p>' +
-                            '<p>Name: <span class="name">' + val.name + '</span></p>' +
-                            '<p>Profession: <span class="profession">' + val.profession.name + '</span></p>' +
-                            '<p>Country: <span class="profession">' + val.country.name + '</span></p>' +
-                            '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        saveData = {
+                            type: 'Person',
+                        };
+                        saveData[key] = val;
+                        result = "<div class='col-lg-6 col-md-6 col-sm-12'>" +
+                            "<div class='resultWrapper'>" +
+                            "<p>Type: <span class='type'>Person</span></p>" +
+                            "<p>Name: <span class='name'>" + val.name + "</span></p>" +
+                            "<p>Profession: <span class='profession'>" + val.profession.name + "</span></p>" +
+                            "<p>Country: <span class='profession'>" + val.country.name + "</span></p>" +
+                            "<a target='_blank' href='" + val.link + "'> Original Link</a>" +
+                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>" +
+                            "<button type='button' class='removeResult' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-minus'></span></button></div></div>";
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -564,6 +614,10 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
+                    saveData = {
+                        type: 'Person',
+                    };
+                    saveData[key] = val;
                     var count = 0,
                         title,
                         result,
@@ -594,10 +648,11 @@ $(document).on('ready', function () {
                             }
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -664,5 +719,4 @@ $(document).on('ready', function () {
             });
         }
     });
-    
 });
