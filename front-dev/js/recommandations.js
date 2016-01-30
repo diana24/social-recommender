@@ -38,13 +38,12 @@ $(document).ready(function() {
                             bookRecommandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
                                 '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                                 '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
-                            $(".allResults").html(bookRecommandations);
                         });
-
+                        $(".allResults").html(bookRecommandations);
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
-                        $(".allResults").html("<div class='col-md-12'><p class='red'>Fetching recommandations failed.. Try again.</p></div>");
+                        $(".allResults").html("<div class='col-md-12'><p>Fetching recommandations failed.. Try again.</p></div>");
                         
                     }
                 })
@@ -81,13 +80,12 @@ $(document).ready(function() {
                             eventRecommandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
                                 '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
                                 '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
-                            $(".allResults").html(eventRecommandations);
                         });
-
+                        $(".allResults").html(eventRecommandations);
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
-                        $(".allResults").html("<div class='col-md-12'><p class='red'>Fetching recommandations failed.. Try again.</p></div>");
+                        $(".allResults").html("<div class='col-md-12'><p>Fetching recommandations failed.. Try again.</p></div>");
                     }
                 })
             }
@@ -97,19 +95,60 @@ $(document).ready(function() {
         if($(".recomloading").hasClass("hidden")) {
             $(".recomloading").removeClass("hidden");
             if(filmRecommandations !== "") {
-                $(".allResults").html(bookRecommandations);
+                $(".recomloading").addClass("hidden");
+                $(".allResults").html(filmRecommandations);
             } else {
                 jQuery.ajax({
                     method: 'get',
                     url: "recommendations/films",
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
                         $(".recomloading").addClass("hidden");
+                        $.each(data, function (key, val) {
+                            filmRecommandations += '<div class="col-lg-4 col-md-6 col-sm-12">' +
+                                '<div class="resultWrapper">' +
+                                '<p>Type: <span class="type">Film</span></p>' +
+                                '<p>Name: <span class="name">' + val.title + '</span></p>';
+                            if(val.directors) {
+                                filmRecommandations += '<p>Directors: <span>';
+                                $.each(val.directors, function (key2, val2) {
+                                    filmRecommandations += val2;
+                                });
+                                filmRecommandations += '</span></p>';
+                            }
+                            if(val.composers) {
+                                limitCheck = 0;
+                                filmRecommandations += '<p>Composers: <span>';
+                                comaCheck = false;
+                                $.each(val.composers, function (key3, val3) {
+                                    if(limitCheck < 3) {
+                                        filmRecommandations += (comaCheck ? ', ' : ' ') + val3;
+                                        comaCheck = true;
+                                    }
+                                });
+                                filmRecommandations += '</span></p>';
+                            }
+                            if(val.actors) {
+                                limitCheck = 0;
+                                filmRecommandations += '<p>Actors: <span>';
+                                comaCheck = false;
+                                $.each(val.actors, function (key3, val3) {
+                                    if(limitCheck < 3) {
+                                        filmRecommandations += (comaCheck ? ', ' : ' ') + val3;
+                                        comaCheck = true;
+                                    }
+                                });
+                                filmRecommandations += '</span></p>';
+                            }
+                            filmRecommandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';    
+                        });
+                        $(".allResults").html(filmRecommandations);
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
-                        $(".allResults").html("<div class='col-md-12'><p class='red'>Fetching recommandations failed.. Try again.</p></div>");
+                        $(".allResults").html("<div class='col-md-12'><p>Fetching recommandations failed.. Try again.</p></div>");
                     }
                 })
             }
@@ -119,19 +158,39 @@ $(document).ready(function() {
         if($(".recomloading").hasClass("hidden")) {
             $(".recomloading").removeClass("hidden");
             if(eduRecommandations !== "") {
-                $(".allResults").html(bookRecommandations);
+                $(".recomloading").addClass("hidden");
+                $(".allResults").html(eduRecommandations);
             } else {
                 jQuery.ajax({
                     method: 'get',
                     url: "recommendations/edu",
                     dataType: "json",
                     success: function (data) {
-                        console.log(data);
+                        $.each(data, function (key, val) {
+                            eduRecommandations = '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                                '<div class="resultWrapper">' +
+                                '<p>Type: <span class="type">Institution</span></p>' +
+                                '<p>Name: <span class="name">' + val.title + '</span></p>';
+                            if(val.numberOfStudents) {
+                                eduRecommandations += '<p>Students: <span>' + val.numberOfStudents + '</span></p>';
+                            }
+                            if(val.countries) {
+                                eduRecommandations += '<p>Country: <span>';
+                                $.each(val.countries, function (key2, val2) {
+                                    result += val2;
+                                });
+                                eduRecommandations += '</span></p>';
+                            }
+                            eduRecommandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
+                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
+                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                        });
+                        $(".allResults").append(eduRecommandations);
                         $(".recomloading").addClass("hidden");
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
-                        $(".allResults").html("<div class='col-md-12'><p class='red'>Fetching recommandations failed.. Try again.</p></div>");
+                        $(".allResults").html("<div class='col-md-12'><p>Fetching recommandations failed.. Try again.</p></div>");
                     }
                 })
             }

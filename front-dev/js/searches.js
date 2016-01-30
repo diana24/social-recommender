@@ -193,7 +193,6 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
-                    console.log(data);
                     var count = 0,
                         title,
                         result,
@@ -302,7 +301,6 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
-                    console.log(data);
                     var count = 0,
                         title,
                         result,
