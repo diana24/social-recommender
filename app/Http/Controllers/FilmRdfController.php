@@ -21,9 +21,11 @@ class FilmRdfController extends Controller
         }
         $directorUri = $request->get('directorUri');
         $actorUri = $request->get('actorUri');
+//        $fictionalCharacterUri = $request->get('fictionalCharacterUri');
         $musicalArtistUri = $request->get('musicalArtistUri');
         $originalLanguageUri = $request->get('originalLanguageUri');
         $countryUri = $request->get('countryUri');
+//        $releaseDate= $request->get('releaseDate');
         $movieGenreUri= $request->get('movieGenreUri');
         $name = $request->get('name');
 
@@ -33,6 +35,8 @@ class FilmRdfController extends Controller
                 { ?film rdf:type dbo:Film }
                  union
                 { ?film rdf:type <http://dbpedia.org/ontology/Wikidata:Q11424> }
+                  union
+                { ?film rdf:type owl:Thing }
                   union
                 { ?film rdf:type sch:Movie }.
                 ?film rdfs:label ?label.
@@ -201,12 +205,12 @@ class FilmRdfController extends Controller
             $films[$uri]=$film;
 
         }
-
+//        dd($films);
         return json_encode($films);
     }
 
     public function recommendFilms(){
-        $mybooks =  (new RdfController())->getBooks();
+        $mybooks =  (new RdfController())->getBooks(); //dd($mybooks);
         $books=[];
         $i=0;
 
@@ -226,7 +230,9 @@ class FilmRdfController extends Controller
 
                 { ?book rdf:type dbo:WrittenWork }
                  union
-                { ?book rdf:type <http://dbpedia.org/class/Book> }.
+                { ?book rdf:type <http://dbpedia.org/class/Book> }
+                union
+                { ?book rdf:type owl:Thing }.
 
                 ?book rdfs:label ?label.
                 {?book dbo:author ?author} union {?book dbp:author ?author}.
@@ -239,12 +245,15 @@ class FilmRdfController extends Controller
                     $result = $sparql->query($query);
                     array_push($results,$result);
                 }catch (\Exception $e){
+//                dd($e);
                 }
 
 
             }catch (\Exception $e){
+//                dd($e);
             }
         }
+//        dd($results);
 
         $filmResults=[];
 
@@ -252,7 +261,7 @@ class FilmRdfController extends Controller
             foreach($result as $row){
                 $uri = $row->book->getUri();
 
-                $query = 'select distinct ?film, ?label, MIN(?wiki) as ?site where{
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
                     { optional{
                     ?x dbo:wikiPageDisambiguates <'.$uri.'>.
                     ?x dbo:wikiPageDisambiguates ?film.
@@ -265,7 +274,7 @@ class FilmRdfController extends Controller
                     ?film rdfs:label ?label.
                     optional{{?film dbo:wikiPageExternalLink ?wiki} union {?film dbp:wikiPageExternalLink ?wiki}}.
                     filter(lang(?label)="en")
-                } limit 3';
+                } limit 5';
                 try{
                     $x = $sparql->query($query);
                     array_push($filmResults,$x);
@@ -274,14 +283,14 @@ class FilmRdfController extends Controller
                 }
             }
         }
-
+//        dd($filmResults);
 
         $films=[];
 
         foreach($filmResults as $filmResult){
             foreach($filmResult as $row){
                 $uri = $row->film->getUri();
-                $query = 'select distinct ?film, ?label, MIN(?wiki) as ?site where{
+                $query = 'select distinct ?film, ?label, MIN(?image) as ?img, MIN(?wiki) as ?site where{
                     ?film rdf:type dbo:Film.
                     ?film rdfs:label ?label.
 
@@ -333,7 +342,7 @@ class FilmRdfController extends Controller
                 $films[$uri]=$film;
             }
         }
-
+//        dd($films);
         return json_encode($films);
     }
 }

@@ -23,18 +23,19 @@ class PlaceRdfController extends Controller
         $countryUri = $request->get('countryUri');
 
         (new RdfController())->initRdf();
-        $query='select * where {
+        $query='select ?place, ?label, ?wiki, ?country,  ?countryLabel where {
                 { ?place rdf:type dbo:Place }.
                 ?place rdfs:label ?label.
                 optional{{?place dbo:wikiPageExternalLink ?wiki} union {?place dbp:wikiPageExternalLink ?wiki}}.
-                optional { {?place dbo:country ?country} union {?place dbp:country ?country} }.';
+                optional { {?place dbo:country ?country} union {?place dbp:country ?country} }.
+                ?country rdfs:label ?countryLabel';
         if(isset($countryUri)){
             $query .= "\n".' {?place dbo:country <'.$countryUri.'>} union {?place dbp:country <'.$countryUri.'>} .';
         }
         if(isset($placeTypeUri)){
             $query .= "\n".' ?place rdf:type <'.$placeTypeUri.'> .';
         }
-        $query .= "\n".'filter ( lang(?label) = "en" )';
+        $query .= "\n".'filter ( lang(?label) = "en" && lang(?countryLabel)="en")';
         if(isset($name) && strlen($name)){
             $query .= "\n".'filter regex(str(?label), "'.$name.'"^^xsd:string, "i")';
         }
@@ -82,21 +83,25 @@ class PlaceRdfController extends Controller
 //
 //            }
             if(isset($row->country) && method_exists($row->country, 'getUri')){
-                $countryUri = $row->country->getUri();
                 if(!isset($place['countries'])){
                     $place['countries']=[];
                 }
-                if(!array_has($place['countries'],$countryUri)){
-                    $countryUri = $row->country->getUri();
-                    $query = 'select ?countryName where { <'.$countryUri.'> rdfs:label ?countryName . filter (lang(?countryName)="en")} limit 1';
-                    $r = $sparql->query($query);
-                    foreach($r as $rw){
-                        if(isset($rw->countryName)){
-                            $countryName = $rw->countryName->getValue();
-                            $place['countries'][$countryUri]=$countryName;
-                        }
+                if(isset($row->country) && method_exists($row->country, 'getUri')){
+                    if(isset($row->countryLabel) && method_exists($row->countryLabel,'getValue')){
+                        $place['countries'][$row->country->getUri()]=$row->countryLabel->getValue();
                     }
                 }
+//                if(!array_has($place['countries'],$countryUri)){
+//                    $countryUri = $row->country->getUri();
+//                    $query = 'select ?countryName where { <'.$countryUri.'> rdfs:label ?countryName . filter (lang(?countryName)="en")} limit 1';
+//                    $r = $sparql->query($query);
+//                    foreach($r as $rw){
+//                        if(isset($rw->countryName)){
+//                            $countryName = $rw->countryName->getValue();
+//                            $place['countries'][$countryUri]=$countryName;
+//                        }
+//                    }
+//                }
 
             }
 
