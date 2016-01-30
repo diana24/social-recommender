@@ -25,10 +25,20 @@ Route::get('getFacebookAuthUrl', 'FacebookAuthController@getAuthUrl');
 Route::get('login', 'FacebookAuthController@authenticate');
 
 Route::get('report', function(){
-   return view('report');
+   if(Auth::check()){
+       return view('report');
+   }
+    else{
+        return view('guestReport');
+    }
 });
 Route::get('tehnical_report', function(){
-   return view('tehnical_report');
+    if(Auth::check()){
+        return view('tehnical_report');
+    }
+    else{
+        return view('guestTechnicalReport');
+    }
 });
 
 Route::group(['middleware' => 'auth'], function () {
