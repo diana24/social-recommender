@@ -41,7 +41,8 @@ include snippets/guest-header.jade
                         .form-group
                             {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'email..']) !!}
                     .col-md-12
-                        {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
+                        .form-group
+                            {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
                     .col-md-12.text-right
                         {!! Form::submit('Login',  ['class' => 'btn']) !!}
                 {!! Form::close() !!}
