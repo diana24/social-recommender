@@ -203,7 +203,7 @@ class BookRdfController extends Controller
                 foreach($mb['publishers'] as $publisher){
                     $query .= ' optional {filter regex(str(?publisherName), "' . $publisher . '"^^xsd:string, "i")}';
                 }
-                $query .= '} limit 10';
+                $query .= '} limit 50';
 
                   $result = $sparql->query($query);
                 array_push($results,$result);
@@ -233,22 +233,27 @@ class BookRdfController extends Controller
                     if(!isset($book['authors'])){
                         $book['authors']=[];
                     }
-                    if(!array_has($book['authors'],$authorUri)){
-                        $authorUri = $row->author->getUri();
-                        $query = 'select ?authorName where { <'.$authorUri.'> rdfs:label ?authorName . filter (lang(?authorName)="en")} limit 1';
-                        try{
-                            $r = $sparql->query($query);
-
-                            foreach($r as $rw){
-                                if(isset($rw->authorName)){
-                                    $authorName = $rw->authorName->getValue();
-                                    $book['authors'][$authorUri]=$authorName;
-                                }
-                            }
-                        }catch(\Exception $e){
-
-                        }
+                    if(isset($row->authorName) && method_exists($row->authorName,'getValue')){
+                        $book['authors'][$authorUri]=$row->authorName->getValue();
                     }
+
+
+//                    if(!array_has($book['authors'],$authorUri)){
+//                        $authorUri = $row->author->getUri();
+//                        $query = 'select ?authorName where { <'.$authorUri.'> rdfs:label ?authorName . filter (lang(?authorName)="en")} limit 1';
+//                        try{
+//                            $r = $sparql->query($query);
+//
+//                            foreach($r as $rw){
+//                                if(isset($rw->authorName)){
+//                                    $authorName = $rw->authorName->getValue();
+//                                    $book['authors'][$authorUri]=$authorName;
+//                                }
+//                            }
+//                        }catch(\Exception $e){
+//
+//                        }
+//                    }
 
                 }
                 if(isset($row->genre) && method_exists($row->genre, 'getUri')){
@@ -256,20 +261,8 @@ class BookRdfController extends Controller
                     if(!isset($book['genres'])){
                         $book['genres']=[];
                     }
-                    if(!array_has($book['genres'],$genreUri)){
-                        $genreUri = $row->genre->getUri();
-                        $query = 'select ?genreName where { <'.$genreUri.'> rdfs:label ?genreName . filter (lang(?genreName)="en")} limit 1';
-                        try{
-                            $r = $sparql->query($query);
-                            foreach($r as $rw){
-                                if(isset($rw->genreName)){
-                                    $genreName = $rw->genreName->getValue();
-                                    $book['genres'][$genreUri]=$genreName;
-                                }
-                            }
-                        }catch(\Exception $e){
-
-                        }
+                    if(isset($row->genLabel) && method_exists($row->genLabel,'getValue')){
+                        $book['genres'][$genreUri]=$row->genLabel->getValue();
                     }
 
                 }
