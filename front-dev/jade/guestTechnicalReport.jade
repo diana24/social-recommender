@@ -14,9 +14,6 @@ include snippets/guest-header.jade
                     a(href="{{url('auth/login')}}") Login 
                 li
                     a(href="{{url('report')}}") Report 
-.container-fluid.specification-side
-    .row
-        .col-md-12
-            h2 Start using SoR today!
-            include snippets/tehnical_report.jade
+.container-fluid(style="background:white")
+    include snippets/tehnical_report.jade
 include snippets/footer.jade

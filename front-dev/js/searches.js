@@ -55,74 +55,7 @@ $(document).on('ready', function () {
             })
         };
 
-    $(function() {
-        $( "#eventStartDateMin" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 2,
-            dateFormat: "yy-mm-dd",
-            onClose: function( selectedDate ) {
-                $( "#eventStartDateMax" ).datepicker( "option", "minDate", selectedDate );
-            }
-        });
-        $( "#eventStartDateMax" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 2,
-            dateFormat: "yy-mm-dd",
-            onClose: function( selectedDate ) {
-                $( "#eventStartDateMin" ).datepicker( "option", "maxDate", selectedDate );
-            }
-        });
-        $( "#eventEndDateMin" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 2,
-            dateFormat: "yy-mm-dd",
-            onClose: function( selectedDate ) {
-                $( "#eventEndDateMax" ).datepicker( "option", "minDate", selectedDate );
-            }
-        });
-        $( "#eventEndDateMax" ).datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 2,
-            dateFormat: "yy-mm-dd",
-            onClose: function( selectedDate ) {
-                $( "#eventEndDateMin" ).datepicker( "option", "maxDate", selectedDate );
-            }
-        });
-    });
-    $("#personInitialize").click(function() {
-        var stop = false;
-        $.each($(".initializeWrapper"), function(index,value) { 
-            if (!$(value).hasClass("hidden")) {
-                stop = true;
-            }
-        });
-        if(!stop) {
-            $("#personInitialize").unbind().remove();
-            $("#personPanel .initializeWrapper").removeClass("hidden");
-            readyCount += 2;
-            getData("/getProfessions", professions, ["personProfession"], "professions", false, "#personPanel .initializeWrapper", "#personSearchForm"); 
-            getData("/getCountries", countries, ["personCountry"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
-        }
-    });
-    $("#eventInitialize").click(function() {
-        var stop = false;
-        $.each($(".initializeWrapper"), function(index,value) { 
-            if (!$(value).hasClass("hidden")) {
-                stop = true;
-            }
-        });
-        if(!stop) {
-            $("#eventInitialize").unbind().remove();
-            $("#eventPanel .initializeWrapper").removeClass("hidden");
-            readyCount += 2;
-            getData("/getPlaces", locations, ["locationUri"], "locations", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
-            getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
-        }
-    });
+    
     $("#bookInitialize").click(function() {
         var stop = false;
         $.each($(".initializeWrapper"), function(index,value) { 
@@ -295,10 +228,10 @@ $(document).on('ready', function () {
                             });
                             result += '</span></p>';
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a></div></div>';
                         $(".allResults").append(result);
                     });
-                    
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -357,7 +290,6 @@ $(document).on('ready', function () {
                         title,
                         result,
                         comaCheck,
-                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -366,10 +298,6 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
-                        saveData = {
-                            type: 'Institution',
-                        };
-                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Institution</span></p>' +
@@ -386,152 +314,10 @@ $(document).on('ready', function () {
                             });
                             result += '</span></p>';
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a></div></div>';
                         $(".allResults").append(result);
                     });
-                    
-                },
-                error: function (data) {
-                    $("p.resultHeader").html("Something wrong happened. Please try again.");
-                }
-            });
-        }
-    });
-    $("#eventSearchForm .btn").click(function (e) {
-        e.preventDefault();
-        $("#eventSearchForm input").removeClass("invalid");
-        var eventTypeUri = eventTypes[$("#eventSearchForm input[name='eventTypeUri']").val().split(" ").join("_")],
-            locationUri = locations[$("#eventSearchForm input[name='locationUri']").val().split(" ").join("_")],
-            name = $("#eventSearchForm input[name='name']").val(),
-            startDateMin = $("#eventSearchForm input[name='startDateMin']").val(),
-            startDateMax = $("#eventSearchForm input[name='startDateMax']").val(),
-            endDateMin = $("#eventSearchForm input[name='endDateMin']").val(),
-            endDateMax = $("#eventSearchForm input[name='endDateMax']").val(),
-            sendingData = {
-                eventTypeUri: eventTypeUri,
-                name: name,
-                locationUri: locationUri,
-                startDateMin: startDateMin,
-                endDateMin: endDateMin,
-                startDateMax: startDateMax,
-                endDateMax: endDateMax
-            },
-            comaCheck,
-            result;
-        if (eventTypeUri !== undefined || name.trim().length > 0 || locationUri !== undefined || startDateMin.trim().length > 0 || startDateMax.trim().length > 0 || endDateMin.trim().length > 0 || endDateMax.trim().length > 0) {
-            
-            if (eventTypeUri === undefined && $("#eventSearchForm input[name='eventTypeUri']").val().length > 0) {
-                $("#eventSearchForm input[name='eventTypeUri']").addClass("invalid");
-            }
-            
-            if (locationUri === undefined && $("#eventSearchForm input[name='locationUri']").val().length > 0) {
-                $("#eventSearchForm input[name='locationUri']").addClass("invalid");
-            }
-            $("p.resultHeader").html("Fetching data.. please wait");
-            $(".allResults").html("");
-            jQuery.ajax({
-                method: 'get',
-                url: "search/events",
-                dataType: "json",
-                data: sendingData,
-                success: function (data) {
-                    var count = 0,
-                        title,
-                        result,
-                        saveData,
-                        prop;
-                    for (prop in data) {
-                        if (data.hasOwnProperty(prop)) {
-                            count += 1;
-                        }
-                    }
-                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
-                    $.each(data, function (key, val) {
-                        saveData = {
-                            type: 'Event',
-                        };
-                        saveData[key] = val;
-                        result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
-                            '<div class="resultWrapper">' +
-                            '<p>Type: <span class="type">Event</span></p>' +
-                            '<p>Name: <span class="name">' + val.title + '</span></p>';
-                        if(val.locations) {
-                            result += '<p>Locations: <span>';
-                            comaCheck = false;
-                            $.each(val.locations, function (key2, val2) {
-                                result += (comaCheck ? ', ' : ' ') + val2;
-                                comaCheck = true;
-                            });
-                            result += '</span></p>';
-                        }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
-                        $(".allResults").append(result);
-                    });
-                    
-                },
-                error: function (data) {
-                    $("p.resultHeader").html("Something wrong happened. Please try again.");
-                }
-            });
-        }
-    });
-    $("#personSearchForm .btn").click(function (e) {
-        e.preventDefault();
-        $("#personSearchForm input").removeClass("invalid");
-        var personCountry = countries[$("#personSearchForm input[name='personCountry']").val().split(" ").join("_")],
-            personProfession = professions[$("#personSearchForm input[name='personProfession']").val().split(" ").join("_")],
-            personName = $("#personSearchForm input[name='personName']").val(),
-            sendingData = {
-                personName: personName,
-                personProfession: personProfession,
-                personCountry: personCountry,
-            },
-            result;
-        if (personCountry !== undefined || personName.trim().length > 0 || personProfession !== undefined) {
-            
-            if (personProfession === undefined && $("#personSearchForm input[name='personProfession']").val().length > 0) {
-                $("#personSearchForm input[name='personProfession']").addClass("invalid");
-            }
-            
-            if (personCountry === undefined && $("#personSearchForm input[name='personCountry']").val().length > 0) {
-                $("#personSearchForm input[name='personCountry']").addClass("invalid");
-            }
-            
-            $("p.resultHeader").html("Fetching data.. please wait");
-            $(".allResults").html("");
-            jQuery.ajax({
-                method: 'get',
-                url: "search/people",
-                dataType: "json",
-                data: sendingData,
-                success: function (data) {
-                    var count = 0,
-                        title,
-                        result,
-                        saveData,
-                        prop;
-                    for (prop in data) {
-                        if (data.hasOwnProperty(prop)) {
-                            count += 1;
-                        }
-                    }
-                    $("p.resultHeader").html("There are " + count + " results based on your latest query.");
-                    
-                    $.each(data, function (key, val) {
-                        saveData = {
-                            type: 'Person',
-                        };
-                        saveData[key] = val;
-                        result = "<div class='col-lg-6 col-md-6 col-sm-12'>" +
-                            "<div class='resultWrapper'>" +
-                            "<p>Type: <span class='type'>Person</span></p>" +
-                            "<p>Name: <span class='name'>" + val.name + "</span></p>" +
-                            "<p>Profession: <span class='profession'>" + val.profession.name + "</span></p>" +
-                            "<p>Country: <span class='profession'>" + val.country.name + "</span></p>" +
-                            "<a target='_blank' href='" + val.link + "'> Original Link</a>";
-                        $(".allResults").append(result);
-                    });
-                    
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -584,7 +370,6 @@ $(document).on('ready', function () {
                     var count = 0,
                         title,
                         result,
-                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -593,10 +378,6 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
-                        saveData = {
-                            type: 'Book',
-                        };
-                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Book</span></p>' +
@@ -615,9 +396,10 @@ $(document).on('ready', function () {
                                 result += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
                             }
                         }
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a></div></div>';
                         $(".allResults").append(result);
                     });
-                    
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -655,7 +437,6 @@ $(document).on('ready', function () {
                     var count = 0,
                         title,
                         result,
-                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -664,10 +445,6 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
-                        saveData = {
-                            type: 'Place',
-                        };
-                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Place</span></p>' +
@@ -677,6 +454,7 @@ $(document).on('ready', function () {
                                 result += '<p>Country: ' + val2 + '</p>';
                             });
                         }
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a></div></div>';
                         $(".allResults").append(result);
                     });
                     

@@ -1,8 +1,12 @@
 .app-report
     .row
         .col-md-12
-            h1 SOR report
+            h1 SOR User Guide Report
+            a(href="{{url('tehnical_report')}}") 
+                span.glyphicon.glyphicon-file
+                | Switch to Technical Report
             h2 Table of contents
+            
             ul
                 li
                     a(href="#chapter1") 1. Start to know SOR
@@ -28,9 +32,6 @@
                     a(href="#chapter10") 9. Conclusion
                 li
                     a(href="#chapter11") 10. Bibliography
-                li
-                    span.glyphicon.glyphicon-file
-                    a(href="{{url('tehnical_report')}}") 11. Link to Technical report
                  
             h2#chapter1 1. Start to know SOR.
             p Social recommender is an application that is able to recommend certain people/events/places/books/films/educational institutes of interest according to a given FOAF graph build with information from a social network (for now Google+, but later on it has the possibility to be extended with more information from other social networks such as LinkedIn, Twitter etc.) and external resources. The information from the social networks will help provide more particular results based on what the user account contain.
