@@ -7,78 +7,415 @@
                 li
                     a(href="#chapter1") 1. Start to know SOR
                 li
-                    a(href="#chapter2") 2. Register
+                    a(href="#chapter2") 2. Objectives and constraints
                 li
-                    a(href="#chapter3") 3. Sign in
+                    a(href="#chapter3") 3. Register
                 li
-                    a(href="#chapter4") 4. Homepage
+                    a(href="#chapter4") 4. Sign in
                 li
-                    a(href="#chapter5") 5. Profile and Connection to Google account
+                    a(href="#chapter5") 5. Homepage and Profile
                 li
-                    a(href="#chapter6") 6. Search forms
+                    a(href="#chapter6") 6. Resources
                 li
-                    a(href="#chapter7") 7. Recommendations
+                    a(href="#chapter7") 7. Social network: Google+
                 li
-                    a(href="#chapter8") 8. Favorites and Report
-                 
+                    a(href="#chapter8") 8. FOAF Graph
+                ul
+                    li
+                        a(href="#chapter8p1") 8.1 Creation of FOAF graph
+                    li
+                        a(href="#chapter8p2") 8.2 Storage of FOAF graph
+                    li
+                        a(href="#chapter8p3") 8.3 Usage of FOAF graph
                 li
-                    a(href="#chapter9") 9. Signout
-                
+                    a(href="#chapter9") 9. API specifications
+               
                 li
-                    a(href="#chapter10") 10. Conclusion
+                    a(href="#chapter10") 10. Results - limited display of results
                 li
-                    a(href="#chapter11") 11. Bibliography
+                    a(href="#chapter11") 11. Caching
+                li
+                    a(href="#chapter12") 12. Favorites
+                li
+                    a(href="#chapter13") 13. Tehnical description of SOR-main points
+                li
+                    a(href="#chapter14") 14. Used resources (frameworks, scription languages)
+                li
+                    a(href="#chapter15") 15. Conclusion
+                li
+                    a(href="#chapter16") 16. Bibliography
                 li
                     span.glyphicon.glyphicon-file
-                    a(href="{{url('tehnical_report')}}") 12. Link to Technical report
+                    a(href="{{url('report')}}") 12. Link to User guide report
                  
             h2#chapter1 1. Start to know SOR.
             p Social recommender is an application that is able to recommend certain people/events/places/books/films/educational institutes of interest according to a given FOAF graph build with information from a social network (for now Google+, but later on it has the possibility to be extended with more information from other social networks such as LinkedIn, Twitter etc.) and external resources. The information from the social networks will help provide more particular results based on what the user account contain.
-            h2#chapter2 2. Register
-            p First step to create an user account is to register. The registration requires filling in a form with personal information about the client such as email and password. Note that email should contain @ and be unique for every user.  Some indications are displayed in case of nonconformities regarding the email and the password. E.g. Email and Password must contain at least 8 letters.
-            p img(src="images/register.png" alt="sor")
-            p After registering with valid information, it will redirect to Homepage.
-            p As a remark, using the information from the registration step, like email and a password, the user can sign into a defined account directly to homepage.  
+            h2#chapter2 2. Objectives and constraints.
+            p Create an application that recommends (randomly or on request) to the user certain people/events/places/books/films/educational institutes of interesting according to social networks (Google+).
+            p Application constraints: 
+            ul
+                li The application should be a responsive application
+                li Service oriented application
+                li Restful API
+                li An application built on the existing social and semantic Web technologies
+                li The code-source and specific content must be available under the terms of the open source licenses( Git hub)
 
-            h2#chapter3 3. Homepage
-            p Homepage is the staring page of the application and may contain results of searches for persons, places, events, books, films, educational institutes. 
-            p On the right of the screen, a list of search forms is available. There, the user can fill in all necessary information to perform a search. Results will be displayed in the center of the screen and are based on a social network (Google) and external resources. 
-            p img(src="images/homepage.png" alt="sor")
-            h2#chapter4 4. Profile and Connection to Google account
-            p Before having actual results, the user must connect to Google account from Profile page. 
-            p As you can see, Profile page is related to the user information.  A form is available in profile page that allows the user to change profile user settings.
-            p img(src="images/profile.png" alt="sor")
-            h2#chapter5 5. Search Forms
-            p After connecting to a Google account, Search forms can be used. To access search forms from Profile, use Search option from the left of the screen.
-            p Notice that on Profile page an option of rebuilding the XML graph is available. This ensures that the user can receive updated information as needed.
-            p The results are not based only on the graph, but also on external resources, extending the results considerably.
-            p One of the most interesting search forms is Search Films. The search basically returns films based on books that have status read/reading in Google account.  Also check the rest of the forms: Search People, Search Events, Search Places, Search Books and Search Educational Institutes.
-            p img(src="images/films_results.png" alt="sor")
-            p Study cases: 
+            h2#chapter3 3. Register
+            p First step to create an user account is to register. The registration requires filling in a form with personal information about the client such as email and password.
+            p Note: The email and password are unique for every user.
+            h2#chapter4 4. Sign in
+            p Using the information from the registration step, like email and a password, the user can sign into a defined account directly to homepage.  
+             
+            h2#chapter5 5. Homepage and Profile
+            p Homepage is the staring page of the application and may contain results of searches for persons, places, events, books, films, educational institutes. On the right of the screen, a list of forms is available. There, the user can fill in all necessary information to perform a search. Results will be displayed in the center of the screen and are based on a social network (Google) and external resources. 
+            p Profile is related to the user information.  A form is available in profile page that allows the user to change profile user settings.
+            
+            h2#chapter6 6. Resources
+            p Resources are used to get accurate recommendations for the user. We use multiple open data sources in RDF format and their corresponding ontologies.
+            p Here are some examples of resources that could be used for this application:
+             li 
+                    a(href="http://wiki.dbpedia.org/") Dbpedia 
+                    | is a crowd-sourced community effort to extract structured information from Wikipedia and make this information available on the Web. 
+                li 
+                    a(href="http://www.geonames.org/") Geonames.org 
+                    | - the geographical database covers all countries and contains over eight million place names that are available for download free of charge.
+                li 
+                    a(href="http://schema.org/") Schema.org 
+                    | is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond.
+            
+            h2#chapter7 7.  Social networks: Google+
+            p The FOAF graph will be constructed based on information from Google and external resources. The user must be connected to a Google account in order to create the graph and then be provided with the random or requested recommendations.
+            h2#chapter8 8.  FOAF graph
+            p FOAF graph (friend of a friend) is a RDF file that stores personal information taken from a social network (Google). 
+            p Personal information means information from Google profile, including user's friends, events educational institutes, domains of work and study, stores, electronics, clothes and so on, books, films, and so on.
+            h3#chapter8p1 8.1 Creation of FOAF graph
+            p A FOAF graph is created first when the client connects to a social network, in a RDF format (.xml). The client has the possibility to update the content of the graph every time he/she requests so with: Rebuild XML Graph. The graph contains: people associated with the user account, schools, events, books, other People and organizations.
+            p Example of FOAF graph content: 
+            p 
+                img(src="images/foaf.png" alt="sor")
+            h3#chapter8p2 8.2 Storage of FOAF graph
+            p FOAF graph will be loaded on the server side (on the cloud application platform Heroku) every time it is created/updated. There will be a RDF graph or more for each user that has an account for this application.
+            h3#chapter8p3 8.3 Usage of FOAF graph
+            p  The graph is used for:
+            ul 
+                li random generated recommendations  displayed on homepage
+                li user request generated recommendations.
+
+            
+            h2#chapter9 9. API specifications
+            p  RAML file describes the API specifications of the application. The API specifications of the application are structured in four main modules:
+            ul 
+                li 
+                    span.strong Randomly generated recommandations 
+                    br
+                    | Based on users’s FOAF graph, the app will first extract similarities – most common occurrences of things (films, books), most popular events. It will also take into account user’s geographical location and current town as listed on Google. Considering this data, it will search for educational institutes nearby, similar books, films, people who went to the same school and other things. Finally, the user will see query results filtered by type on his home page, or he can request the list by calling the following endpoints:  
+                    code /recommendations?item_type=[TYPE_OF_ITEM]
+                    | , where TYPE_OF_ITEM is one of: book, film, educational institute. Forms of the 3 classes are available on the right of the Homepage, serving as a filter where the client can chose the type of recommendations to see.
+
+                li 
+                    span.strong Graph content
+                    br
+                    | The user can see the content of his generated FOAF graph, sorted by relevance and filterd by item type, by calling the following uri:   
+                    code /graph?item_type= [TYPE_OF_ITEM]
+                    |, is one of: the user account, schools, events, books, other people and organizations.
+
+                li 
+                    span.strong Search module
+                    br
+                    |The user will be able to look for stuff by defining his own criteria in five different forms for each type of resource. Some examples – the client wants to get all books of Agatha Christie first published after 1940; the client wants to get all universities with over 5000 students and at least 2 Nobel Prize laureates.
+                    br
+                    | All search features will be available by querying the following endpoint: 
+                    code /search/[TYPE_OF_ITEM]
+                    | , with TYPE_OF_ITEM one of: person, event, film, book, place, institution of education.
+
+                li 
+                    span.strong Saved items 
+                    br
+                    | User will have the possibility to save some of the results in Favorites. The item specified will be stored into database.
+                    br
+                    | By calling the endpoint 
+                    code /saved-items?item_type=[TYPE_OF_ITEM]
+                    | ,  the user will get the list of all items. For lists, a call to /lists/[list_id] is required.
+         
+          h2#chapter10 10. Results - limited display of results
+            p Results are displayed in Homepage, containing the name of the results and other information, according to the type of result.   
+            p The constraints of the number of items displayed are:
+            ul 
+                li minimum number of results:  5
+                li maximum number of results:  50
+                li default: 10 
+            h2#chapter11 11. Caching 
+            p  Queries send by the user are saved on server side, in our database. This way, they will be available to the client from any computer, anytime.
+            h2#chapter12 12. User favorites
+            p A list of favorites will be saved for the user when he/she indicates the results preferred by the user, meaning the results are included in favorites when a search is performed.
+            
+            h2#chapter13 13. Technical description of SOR
+            p Our application is developed using Laravel 5.1 framework, Grunt, Bootstrap and Jade technologies. For social network connection, we used the Google php api client. All SPARQL queries are run with EasyRdf library. We included Geocoder library (a(href="https://github.com/geocoder-php/Geocoder") https://github.com/geocoder-php/Geocoder) for place name to coordinate conversion and a JsonLD implementation ( a(href="https://github.com/lanthaler/JsonLD") https://github.com/lanthaler/JsonLD) for query results serialization.
+            p The application uses Google+ connection, also taking data from Google Books and requiring data from Google Maps and Google Coordinates for geolocation. Google+ does not currently offer support for knowledge graphs, but we built a linked data graph using non-semantic data from user’s profile. Every person in user’s circles is mapped as a foaf:knows property of the graph owner and as a resource of type foaf:Person.
+            
+            p 
+            span.strong People Data
+            p For every person in the graph, including the owner, we mapped the following properties (from their corresponding ontologies):
             ul
                 li
-                    Example case study: results for wine regions in France
-            p img(src="images/study_wine_regions.png" alt="sor")
+                
+                    |code foaf:name
+                    li
+                    
+                     |code  foaf:givenname
+                li
+                       |code foaf:family_name
+                li
+                       |code foaf:depiction
+                       |(profile picture)
+                li                       
+                       |foaf:homepage
+                       |(link to Google+ profile)
+                li
+                        |code foaf:page
+                        |(one or more pages on other social sites)
+                li       |code dbp:website
+                        |(one or more websites)
+                li     
+                        |code foaf:gender
+                li
+                        |code dbo:occupation
+                li
+                        |code dbo:school
+                li
+                      |code  foaf:based_near
+                      |with 
+                       
+                      |code geo:lat 
+                      |and 
+                       
+                      |code geo:long
+                      | attributes
+               li       
+                       |code dbo:country
+               li
+                       |code sch:description
+                       | “about me” section
+
+            p Data sources:
+            
             ul
                 li
-                    Example – gardens of United States. We both map the type of place – garden – and the country – United States – to the corresponding resources.
-            p img(src="images/gardens_united_states.png" alt="sor")
-            h2#chapter6 6. Recommendations
-            p Another option of SOR from the left side of the screen is Recommendations. Practically this offers the opportunity to receive random recommendations of Books, Films, Events and Educational Institutes based on the user Google account.
-            p img(src="images/recommendations.png" alt="sor")
-            
-            h2#chapter7 7.  Favorites and Report
-            p The user can save to Favorites some liked results and also check the report of the presentation in Report option. 
-            p img(src="images/favorites.png" alt="sor")
-            h2#chapter8 8.  Logout
-            p Lastly, to leave the application, use the Log outoption from the top right side of the screen. This signs out from user’s account. 
-            
-            h2#chapter9 9. Conclusion
-            p As a conclusion, Social Recommender is a web application that user social networks (Google) and other external resources to recommend the user certain people, events, place, books and films.
-            p Feel free to check out SOR!
+                    a(href="https://plus.google.com/") https://plus.google.com/
+                li
+                    a(href="https://books.google.com/") https://books.google.com/
+                li
+                    a(href="https://www.google.com/calendar/") https://www.google.com/calendar/
+                li
+                    a("https://dbpedia.org/") http://dbpedia.org/
+                li
+                    a(href="https://schema.org/") http://schema.org/
+                li
+                        a(href="http://www.w3.org/2003/01/geo/wgs84_pos/")http://www.w3.org/2003/01/geo/wgs84_pos/
+            p For every person who provides a location in his/her profile, we use Geocoder to convert the textual information into semantic data. All people are identified by their own Google+ ids.  
+            p 
+                span.strong Book Data
+            p Next, a list of books will be retrieved from user’s Google Books account. For books we can only have basic descriptive data (like name, author name, publisher, number of pages, rating details, genre, ISBN (with both 10 and 13 digits) and a Google Books id. Publishers and authors are mapped as organizations and people, respectively, with generated ids in the same RDF graph.
+
+
+
+             p We are not provided any URIs/links, so our semantic searches based on this data can fail.
+             p Example:  The 5th book of J. K. Rowling’s Harry Potter series has its name stated as:
+             p Harry Potter And The Order Of The Phoenix Book.
+             p 
+                    img(src="images/potter.png" alt="sor")
+           p In this case, queries that search a partial name matching will either fail or be timed out. A solution is to search by a combination of features – name, author, genre, publisher – using partial matchings and the SPARQL’s optional/union clauses.
            
-            h2#chapter10 10. Bibliography
-            p SOR:
+           
+           
+            p span.strong Event data
+            p Events from Google+ profile along with other events are retrieved from Google Calendars. We picked only those calendars whose owner is the user himself, to exclude generic events like Christmas, New Year, legal holidays.
+            p We get the same basic data – title, description, date, website link and location (if specified), and also a Google+ id.
+            
+            
+            
+            p span.strong Recommendations
+            
+            p Once the graph is created, automatic recommendations can be generated. We implemented three types of recommendations:
+            
+            ul 
+                li 
+                    for books
+                li 
+                    for films 
+                li 
+                    for educational institutions (such as schools, colleges,  libraries)
+                    for educational institutions (such as schools, colleges,  libraries)
+            p span.strong Book Recommendations
+            p The app randomly retrieves a list of at most 5 books from the graph. Next, it attempts to match them to the corresponding entities from DBpedia, as described above. For each entity, a list of at most 10 books is retrieved. The books must have either the same author, publisher or literary genre. The diversity of recommendations is assured when the user has lots of books in his Google library, because they start from randomly chosen books. Partial results will be send in case the query fails for a book or is timed out (see example above). 
+            
+            p span.strong Film Recommendations
+            
+            p Because Google+ does not provide any information about user’s favorite movies (everything is a “page”), we thought that it would be interesting to give movie recommendations starting from favorite books. The process is quite similar: 5 books randomly picked from graph. They are mapped to entities and an URI is returned. Next, we query DBpedia for objects of type dbo:Film which match at least one of the following criteria:
+            
+                ul
+                    li 
+                        it is disambiguated by the same resource as the book:
+            p 
+                 img(src="images/db1.png" alt="sor")
+             
+                ul 
+                    li 
+                        it is based on the book
+            p 
+                img(src="images/db2.png" alt="sor")
+                
+            p Now we get a list of movies inspired by the books we read, if any. The next step is to search even more films the user might like. Given the list, we look for movies that have either the same director, same genre or one mutual actor.
+            p All recommendations, as well as searches, return a lot of information, including external references for each object.
+            
+            p 
+                span.strong Searches
+            p We implemented searches for 6 types of objects:
+            
+                ul
+                    li 
+                        People
+                    li 
+                        Places (gardens, historical monuments etc)
+                    li 
+                        Educational Institutions
+                    li  
+                        Books
+                    li 
+                        films
+                    li 
+                        Events
+                        
+           p This module can be used without social profile connection. All searches are strictly semantic, which means that for almost every criteria we use URIs. A list of resources is initially retrieved using ajax requests.
+                
+            p Example – gardens of United States. We both map the type of place – garden – and the country – United States – to the corresponding resources. The user selects a name, but searches by an URI.
+            p 
+                img(src="images/gardens_united_states.png" alt="sor")
+            
+            p Here is the list of criteria it checks for each type of entity (at least one selected for a valid query)
+            
+            p 
+                span.strong People
+                ul 
+                    li
+                        name
+                    li
+                        profession(URI)
+                    li
+                        country (URI)    
+            p 
+             span.strong Places
+              ul 
+                     li
+                        name
+                    li
+                        type(URI)
+                    li
+                         country(URI)   
+            p     
+             span.strong Event
+              ul 
+                    li
+                        name
+                    li
+                        type(URI)
+                    li
+                        location(URI)
+                     li
+                        start date(mim/max values, date)
+                     li
+                        end_date(mim/max values, date)
+            p 
+             span.strong Books
+              ul 
+                    li
+                        title
+                    li 
+                        author(URI)
+                    li 
+                        litracy genre(URI)
+                    li
+                        number of pages(min/max values, numeric)
+                    li number of volumes(numeric)
+                    
+            p 
+             span.strong Films
+              ul 
+                    li
+                        title
+                    li 
+                        director(URI)
+                    li
+                        actor(URI)
+                    li
+                        musical artist (URI)
+                    li
+                        original language(URI)
+                    li 
+                        country(URI)
+                    li      
+                        movie genre(URI)
+                    
+            p 
+             span.strong Educational Institutes
+              ul 
+                    li
+                        name
+                    li
+                        type(URI)
+                    li 
+                        location(URI)
+                    li
+                        country(URI)
+                    li
+                        principal(URI)
+                    li 
+                        rector(URI)
+                    li
+                        number of academic staff(min/max values, numeric)
+                    li 
+                        number of students ( min/max values, numeric)
+                    
+                        
+            p e.g. case study: results for films name France
+            p 
+            
+                 img(src="images/film_france.png" alt="sor")
+            
+            
+            h2#chapter14 14. Resources (tools, frameworks, scripting languages) used for on creation of SOR
+            ul
+                li
+                    Laravel framework – PHP web application framework that follows model-view –controller application pattern.
+                li
+                    PHP (Hypertext preprocessor) – a server scripting language 
+                li
+                    HTML (Hypertext markup language) - is a language set for markup tags.
+                li
+                    CSS (Cascade Style Sheets) – styling added to HTML elements
+                
+                li
+                    Jade – is a language for writing HTML
+                
+                li
+                    Grunt – tool that runs jade files and creates HTML files. 
+                
+                li
+                    Ajax (Asynchronous JavaScript and XML)- helps create asynchronous web application( the content is changed dynamically, without the need to change the entire page).
+                li
+                    JsonLD implementation – helps JSON to interrogate data at web-scale (LD- linked data)
+                li
+                    Bootstrap – a front end framework used in creating HTML and CSS.
+                li
+                    Sparql- is used as a systematic query language for RDF file.
+                 li
+                    Heroku cloud application platform “based on managed container system”.
+           h2#chapter15 15. Conclusion
+            p Social Recommender is a web application that user social networks (Google) and other external resources to recommend the user certain people, events, places, books and films.
+            
+            h2#chapter16 16. Bibliography
+            
+              p SOR:
                 a(href="http://social-recommender.herokuapp.com/") http://social-recommender.herokuapp.com/
             p DBpedia: 
                 a(href="http://wiki.dbpedia.org/ http://wiki.dbpedia.org/") http://wiki.dbpedia.org/ http://wiki.dbpedia.org/    
@@ -97,4 +434,9 @@
                 a(href="https://socialrecommender.wordpress.com/about/") https://socialrecommender.wordpress.com/about/
             p Web project page:
                 a(href="http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html") http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html 
+            
+            
+            
+            
+     
  
