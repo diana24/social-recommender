@@ -17,4 +17,4 @@
 <img src="images/hex-loader2.gif" alt="loading.." class="loader">
 </div>
 <a target="_blank" href="<?php echo Auth::user()->getGraphPath() ?>">View XML Graph</a> |
-<?php } if(true === Auth::user()->hasSocialAccount()) {?><a href="{{url('/buildGraph')}}">Rebuild XML Graph</a><?php }?></div></div></div></div></div></div></div></div>{!! HTML::script('js/profileFormCheck.js') !!}<footer class="container-fluid footer-side"><div class="row"><div class="col-md-12"><p>Web Application Development Project</p><a href="http://profs.info.uaic.ro/~busaco/teach/courses/wade/">Course Page</a></div></div></footer>{!! HTML::script('js/bootstrap.min.js')  !!}
+<?php } if(true === Auth::user()->hasSocialAccount()) {?><a href="{{url('/buildGraph')}}">Rebuild XML Graph</a><?php }?></div></div></div></div></div></div></div></div>{!! HTML::script('js/profileFormCheck.js') !!}<footer class="container-fluid footer-side"><div class="row"><div class="col-md-12"><p>Web Application Development Project</p><a href="http://profs.info.uaic.ro/~busaco/teach/courses/wade/" target="_blank">Course Page</a></div></div></footer>{!! HTML::script('js/bootstrap.min.js')  !!}
