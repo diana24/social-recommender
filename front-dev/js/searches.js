@@ -33,21 +33,6 @@ $(document).on('ready', function () {
                     }
                 });
             });
-            $(".removeResult").click(function() {
-                var thisElement = this;
-                jQuery.ajax({
-                    method: 'post',
-                    url: "result/remove",
-                    dataType: "json",
-                    data: $(thisElement).attr("data"),
-                    success: function (data) {
-                        $(thisElement).parent(".resultWrapper").parent(".col-lg-6.col-md-6.col-sm-12").remove();
-                    },
-                    error: function(data) {
-                        console.log("error");
-                    }
-                });
-            });
         },
         getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
@@ -328,8 +313,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -421,8 +405,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -501,8 +484,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -567,8 +549,7 @@ $(document).on('ready', function () {
                             "<p>Profession: <span class='profession'>" + val.profession.name + "</span></p>" +
                             "<p>Country: <span class='profession'>" + val.country.name + "</span></p>" +
                             "<a target='_blank' href='" + val.link + "'> Original Link</a>" +
-                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>" +
-                            "<button type='button' class='removeResult' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-minus'></span></button></div></div>";
+                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>";
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -656,8 +637,7 @@ $(document).on('ready', function () {
                             }
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';;
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -721,8 +701,7 @@ $(document).on('ready', function () {
                             });
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
