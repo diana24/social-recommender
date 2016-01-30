@@ -36,6 +36,7 @@ $(document).ready(function() {
                                     bookRecommendations += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
                                 }
                             }
+                            bookRecomandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             bookRecommendations +="</div></div>";
                         });
                         $(".allResults").html(bookRecommendations);
@@ -77,6 +78,7 @@ $(document).ready(function() {
                                 });
                                 eventRecommendations += '</span></p>';
                             }
+                            eventRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             eventRecommendations +="</div></div>";
                         });
                         $(".allResults").html(eventRecommendations);
@@ -139,6 +141,7 @@ $(document).ready(function() {
                                 });
                                 filmRecommendations += '</span></p>';
                             }
+                            filmRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             filmRecommendations += '</div></div>';
                         });
                         $(".allResults").html(filmRecommendations);
@@ -180,6 +183,7 @@ $(document).ready(function() {
                                 });
                                 eduRecommendations += '</span></p>';
                             }
+                            eduRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             eduRecommendations += "</div></div>";
                         });
                         $(".allResults").html(eduRecommendations);
