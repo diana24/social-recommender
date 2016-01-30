@@ -60,36 +60,36 @@ $(document).on('ready', function () {
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 2,
-            dateFormat: "dd/mm/yy",
+            dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-            $( "#eventStartDateMax" ).datepicker( "option", "minDate", selectedDate );
+                $( "#eventStartDateMax" ).datepicker( "option", "minDate", selectedDate );
             }
         });
         $( "#eventStartDateMax" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 2,
-            dateFormat: "dd/mm/yy",
+            dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-            $( "#eventStartDateMin" ).datepicker( "option", "maxDate", selectedDate );
+                $( "#eventStartDateMin" ).datepicker( "option", "maxDate", selectedDate );
             }
         });
         $( "#eventEndDateMin" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
-            numberOfMonths: 3,
-            dateFormat: "dd/mm/yy",
+            numberOfMonths: 2,
+            dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-            $( "#eventEndDateMax" ).datepicker( "option", "minDate", selectedDate );
+                $( "#eventEndDateMax" ).datepicker( "option", "minDate", selectedDate );
             }
         });
         $( "#eventEndDateMax" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
-            numberOfMonths: 3,
-            dateFormat: "dd/mm/yy",
+            numberOfMonths: 2,
+            dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-            $( "#eventEndDateMin" ).datepicker( "option", "maxDate", selectedDate );
+                $( "#eventEndDateMin" ).datepicker( "option", "maxDate", selectedDate );
             }
         });
     });
@@ -190,7 +190,7 @@ $(document).on('ready', function () {
             getData("/getLanguages", languages, ["originalLanguageUri"], "languages", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
             getData("/getMusicalArtists", musicalArtists, ["musicalArtistUri"], "musicalArtists", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
         }
-    });
+    });   
     
     $("#filmSearchForm .btn").click(function (e) {
         e.preventDefault();
@@ -261,7 +261,7 @@ $(document).on('ready', function () {
                         if(val.directors) {
                             result += '<p>Directors: <span>';
                             $.each(val.directors, function (key2, val2) {
-                                result += val2
+                                result += val2;
                             });
                             result += '</span></p>';
                         }
@@ -273,6 +273,7 @@ $(document).on('ready', function () {
                                 if(limitCheck < 3) {
                                     result += (comaCheck ? ', ' : ' ') + val3;
                                     comaCheck = true;
+                                    limitCheck += 1;
                                 }
                             });
                             result += '</span></p>';
@@ -285,6 +286,7 @@ $(document).on('ready', function () {
                                 if(limitCheck < 3) {
                                     result += (comaCheck ? ', ' : ' ') + val3;
                                     comaCheck = true;
+                                    limitCheck += 1;
                                 }
                             });
                             result += '</span></p>';
@@ -300,15 +302,15 @@ $(document).on('ready', function () {
                 }
             });
         }
-    });
-    
+    });    
     $("#instituteSearchForm .btn").click(function (e) {
         e.preventDefault();
         $("#instituteSearchForm input").removeClass("invalid");
         var eduTypeUri = institutionTypes[$("#instituteSearchForm input[name='eduTypeUri']").val().split(" ").join("_")],
             locationUri = locations[$("#instituteSearchForm input[name='locationUri']").val().split(" ").join("_")],
-            rectorUri = locations[$("#instituteSearchForm input[name='rectorUri']").val().split(" ").join("_")],
-            principalUri = locations[$("#instituteSearchForm input[name='principalUri']").val().split(" ").join("_")],
+            countryUri = countries[$("#instituteSearchForm input[name='countryUri']").val().split(" ").join("_")],
+            rectorUri = rectors[$("#instituteSearchForm input[name='rectorUri']").val().split(" ").join("_")],
+            principalUri = principals[$("#instituteSearchForm input[name='principalUri']").val().split(" ").join("_")],
             name = $("#instituteSearchForm input[name='name']").val(),
             nrOfAcademicStaffMin = $("#instituteSearchForm input[name='nrOfAcademicStaffMin']").val(),
             nrOfAcademicStaffMax = $("#instituteSearchForm input[name='nrOfAcademicStaffMax']").val(),
@@ -318,6 +320,7 @@ $(document).on('ready', function () {
                 name: name,
                 eduTypeUri: eduTypeUri,
                 locationUri: locationUri,
+                countryUri: countryUri,
                 rectorUri: rectorUri,
                 principalUri: principalUri,
                 nrOfAcademicStaffMin: nrOfAcademicStaffMin,
@@ -327,10 +330,13 @@ $(document).on('ready', function () {
             },
             comaCheck,
             result;
-        if (rectorUri !== undefined || principalUri !== undefined || eduTypeUri !== undefined || name.trim().length > 0 || locationUri !== undefined || nrOfAcademicStaffMin.trim().length > 0 || nrOfAcademicStaffMax.trim().length > 0 || nrOfStudentsMin.trim().length > 0 || nrOfStudentsMax.trim().length > 0) {
+        if (rectorUri !== undefined || principalUri !== undefined || eduTypeUri !== undefined || countryUri !== undefined || name.trim().length > 0 || locationUri !== undefined || nrOfAcademicStaffMin.trim().length > 0 || nrOfAcademicStaffMax.trim().length > 0 || nrOfStudentsMin.trim().length > 0 || nrOfStudentsMax.trim().length > 0) {
             
             if (rectorUri === undefined && $("#instituteSearchForm input[name='rectorUri']").val().length > 0) {
                 $("#instituteSearchForm input[name='rectorUri']").addClass("invalid");
+            }
+            if (countryUri === undefined && $("#instituteSearchForm input[name='countryUri']").val().length > 0) {
+                $("#instituteSearchForm input[name='countryUri']").addClass("invalid");
             }
             if (locationUri === undefined && $("#instituteSearchForm input[name='locationUri']").val().length > 0) {
                 $("#instituteSearchForm input[name='locationUri']").addClass("invalid");
@@ -370,8 +376,10 @@ $(document).on('ready', function () {
                         }
                         if(val.countries) {
                             result += '<p>Country: <span>';
+                            comaCheck = false;
                             $.each(val.countries, function (key2, val2) {
-                                result += val2;
+                                result += (comaCheck ? ', ' : ' ') + val2;
+                                comaCheck = true;
                             });
                             result += '</span></p>';
                         }
@@ -398,8 +406,8 @@ $(document).on('ready', function () {
             endDateMin = $("#eventSearchForm input[name='endDateMin']").val(),
             endDateMax = $("#eventSearchForm input[name='endDateMax']").val(),
             sendingData = {
-                name: name,
                 eventTypeUri: eventTypeUri,
+                name: name,
                 locationUri: locationUri,
                 startDateMin: startDateMin,
                 endDateMin: endDateMin,
@@ -417,7 +425,6 @@ $(document).on('ready', function () {
             if (locationUri === undefined && $("#eventSearchForm input[name='locationUri']").val().length > 0) {
                 $("#eventSearchForm input[name='locationUri']").addClass("invalid");
             }
-            
             $("p.resultHeader").html("Fetching data.. please wait");
             $(".allResults").html("");
             jQuery.ajax({
