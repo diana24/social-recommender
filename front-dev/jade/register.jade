@@ -9,7 +9,9 @@ include snippets/guest-header.jade
         .col-md-12
             ul.menu
                 li
-                    <a href=<?php echo url('auth/login') ?>> Login </a>
+                    a(href="{{url('auth/login')}}") Login
+                li
+                    a(href="{{url('report')}}") Report
 .container-fluid.specification-side
     .row
         .col-md-12

@@ -1,0 +1,22 @@
+include snippets/guest-header.jade
+
+.container-fluid.top-side
+    .row
+        .col-md-12
+            h1.logo
+                {!! HTML::image('images/logo.png', 'Social Recommender') !!}
+                span Social Recommender
+        .col-md-12
+            ul.menu
+                li
+                    a(href="{{url('auth/register')}}") Register 
+                li
+                    a(href="{{url('auth/login')}}") Login 
+                li
+                    a(href="{{url('report')}}") Report 
+.container-fluid.specification-side
+    .row
+        .col-md-12
+            h2 Start using SoR today!
+            include snippets/tehnical_report.jade
+include snippets/footer.jade

@@ -9,8 +9,9 @@ include snippets/guest-header.jade
         .col-md-12
             ul.menu
                 li
-                    <a href=<?php echo url('auth/register') ?>> Register </a>
-                    
+                    a(href="{{url('auth/register')}}") Register 
+                li
+                    a(href="{{url('report')}}") Report  
 .container-fluid.specification-side
     .row
         .col-md-12
