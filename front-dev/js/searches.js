@@ -166,7 +166,6 @@ $(document).on('ready', function () {
             $("#institutePanel .initializeWrapper").removeClass("hidden");
             readyCount += 5;
             getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
-            getData("/getPlaces", locations, ["locationUri"], "locations", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
             getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
             getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
             getData("/getRectors", rectors, ["rectorUri"], "rectors", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
@@ -307,7 +306,6 @@ $(document).on('ready', function () {
         e.preventDefault();
         $("#instituteSearchForm input").removeClass("invalid");
         var eduTypeUri = institutionTypes[$("#instituteSearchForm input[name='eduTypeUri']").val().split(" ").join("_")],
-            locationUri = locations[$("#instituteSearchForm input[name='locationUri']").val().split(" ").join("_")],
             countryUri = countries[$("#instituteSearchForm input[name='countryUri']").val().split(" ").join("_")],
             rectorUri = rectors[$("#instituteSearchForm input[name='rectorUri']").val().split(" ").join("_")],
             principalUri = principals[$("#instituteSearchForm input[name='principalUri']").val().split(" ").join("_")],
@@ -319,7 +317,6 @@ $(document).on('ready', function () {
             sendingData = {
                 name: name,
                 eduTypeUri: eduTypeUri,
-                locationUri: locationUri,
                 countryUri: countryUri,
                 rectorUri: rectorUri,
                 principalUri: principalUri,
@@ -330,16 +327,13 @@ $(document).on('ready', function () {
             },
             comaCheck,
             result;
-        if (rectorUri !== undefined || principalUri !== undefined || eduTypeUri !== undefined || countryUri !== undefined || name.trim().length > 0 || locationUri !== undefined || nrOfAcademicStaffMin.trim().length > 0 || nrOfAcademicStaffMax.trim().length > 0 || nrOfStudentsMin.trim().length > 0 || nrOfStudentsMax.trim().length > 0) {
+        if (rectorUri !== undefined || principalUri !== undefined || eduTypeUri !== undefined || countryUri !== undefined || name.trim().length > 0 || nrOfAcademicStaffMin.trim().length > 0 || nrOfAcademicStaffMax.trim().length > 0 || nrOfStudentsMin.trim().length > 0 || nrOfStudentsMax.trim().length > 0) {
             
             if (rectorUri === undefined && $("#instituteSearchForm input[name='rectorUri']").val().length > 0) {
                 $("#instituteSearchForm input[name='rectorUri']").addClass("invalid");
             }
             if (countryUri === undefined && $("#instituteSearchForm input[name='countryUri']").val().length > 0) {
                 $("#instituteSearchForm input[name='countryUri']").addClass("invalid");
-            }
-            if (locationUri === undefined && $("#instituteSearchForm input[name='locationUri']").val().length > 0) {
-                $("#instituteSearchForm input[name='locationUri']").addClass("invalid");
             }
             if (principalUri === undefined && $("#instituteSearchForm input[name='principalUri']").val().length > 0) {
                 $("#instituteSearchForm input[name='principalUri']").addClass("invalid");
