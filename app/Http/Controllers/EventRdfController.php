@@ -21,10 +21,10 @@ class EventRdfController extends Controller
         $name = $request->get('name');
         $eventTypeUri = $request->get('eventTypeUri');
         $locationUri = $request->get('locationUri');
-        $startDateMin = str_replace("/", "-", $request->get('startDateMin'));
-        $startDateMax = str_replace("/", "-", $request->get('startDateMax'));
-        $endDateMin = str_replace("/", "-", ('endDateMin'));
-        $endDateMax = str_replace("/", "-", $request->get('endDateMax'));
+        $startDateMin = $request->get('startDateMin');
+        $startDateMax = $request->get('startDateMax');
+        $endDateMin = $request->get('endDateMin');
+        $endDateMax = $request->get('endDateMax');
 
         (new RdfController())->initRdf();
         $query='select * where {
