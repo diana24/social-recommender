@@ -35,9 +35,9 @@ class PeopleRdfController extends Controller
                 {?person dbo:name ?name} union {?person dbp:name ?name}.
                 {?person dbo:profession ?profession} union {?person dbp:profession ?profession}.
 
-                ?profession rdfs:label ?professionLabel
+                ?profession rdfs:label ?professionLabel.
 
-                optional { {?person dbo:country ?country} union {?person dbp:country ?country} }.
+                {?person dbo:country ?country} union {?person dbp:country ?country} .
                 ?country rdfs:label ?countryLabel.
                 ';
         if(isset($countryUri)){

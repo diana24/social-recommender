@@ -42,21 +42,29 @@ class DataController extends Controller
         $name = isset($request) ? $request->input('name') : "" ;
         $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
         $result = $sparql->query(
-            'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
-            '  ?book rdf:type foaf:Person .'.
-            '  {?book dbo:profession ?literary_genre} union {?book dbp:profession ?literary_genre}.'.
-            '  ?literary_genre rdfs:label ?label .'.
-            '  FILTER ( lang(?label) = "en" )'.
-            '  FILTER regex( str(?label), "'.$name.'", "i" )'.
-            '} ORDER BY DESC(count(?book)) '.
-//            '} ORDER BY (?label) '.
-            'LIMIT 250'
+//            'SELECT str(?literary_genre) AS ?gen_literar, count(?book) AS ?nr_carti, ?label WHERE {'.
+//            '  ?book rdf:type foaf:Person .'.
+//            '  {?book dbo:profession ?literary_genre} union {?book dbp:profession ?literary_genre}.'.
+//            '  ?literary_genre rdfs:label ?label .'.
+//            '  FILTER ( lang(?label) = "en" )'.
+//            '  FILTER regex( str(?label), "'.$name.'", "i" )'.
+//            '} ORDER BY DESC(count(?book)) '.
+////            '} ORDER BY (?label) '.
+//            'LIMIT 250'
+
+            'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a foaf:Person ;
+                          dbo:profession ?illustrator.
+                        ?illustrator rdfs:label ?label.
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
         );
         $lit = [];
         foreach($result as $row){
-            $l['uri']=$row->gen_literar->getValue();
+            $l['uri']=$row->illustrator->getUri();
             $l['name']=$row->label->getValue();
-            $l['book_count']=$row->nr_carti->getValue();
+//            $l['book_count']=$row->nr_carti->getValue();
             array_push($lit,$l);
         }
        return json_encode($lit);
@@ -163,9 +171,8 @@ class DataController extends Controller
             'select ?language, ?label where {
                 ?language rdf:type dbo:Language.
                 ?language rdfs:label ?label.
-                FILTER regex( str(?label), "'.$name.'", "i" )
                 FILTER ( lang(?label)="en" )
-                } order by ?label limit 240'
+                } order by ?label limit 500'
         );
         $countries = [];
         foreach($result as $row){
@@ -205,14 +212,22 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select ?illustrator, ?label, ?val, count(?book) AS ?nr_carti where{
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, ?val, count(?book) AS ?nr_carti where{
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        ?book rdf:type dbo:WrittenWork.
+//                        ?book dbo:illustrator ?illustrator.
+//                      filter regex(str(?label),"'.$name.'", "i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } ORDER BY DESC(count(?book)) limit 400'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:WrittenWork ;
+                          dbo:illustrator ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        ?book rdf:type dbo:WrittenWork.
-                        ?book dbo:illustrator ?illustrator.
-                      filter regex(str(?label),"'.$name.'", "i")
-                      FILTER ( lang(?label) = "en" )
-                    } ORDER BY DESC(count(?book)) limit 400'
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -229,16 +244,24 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select ?illustrator, ?label, ?val, count(?book) AS ?nr_carti where {
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, ?val, count(?book) AS ?nr_carti where {
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        ?book dbo:author ?illustrator.
+//
+//                       ?book rdf:type dbo:WrittenWork.
+//
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } ORDER BY DESC(count(?book)) limit 450'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:WrittenWork ;
+                          dbo:author ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        ?book dbo:author ?illustrator.
-
-                       ?book rdf:type dbo:WrittenWork.
-
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } ORDER BY DESC(count(?book)) limit 450'
+                          FILTER ( lang(?label) = "en" )
+                } limit 5000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -255,14 +278,22 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select ?illustrator, ?label, ?val, count(?nr) where {
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, ?val, count(?nr) where {
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        {?edu dbo:principal ?illustrator.} union {?edu dbp:principal ?illustrator.}.
+//                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } order by desc (count(?nr)) limit 200'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:EducationalInstitution ;
+                          dbo:principal ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        {?edu dbo:principal ?illustrator.} union {?edu dbp:principal ?illustrator.}.
-                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } order by desc (?nr) limit 200'
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -279,14 +310,22 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val, count(?nr)  where {
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, ?val, count(?nr)  where {
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        {?edu dbo:rector ?illustrator.} union {?edu dbp:rector ?illustrator.}.
+//                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } order by desc (count(?nr)) limit 300'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:EducationalInstitution ;
+                          dbo:rector ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        {?edu dbo:rector ?illustrator.} union {?edu dbp:rector ?illustrator.}.
-                        {?edu dbo:numberOfStudents ?nr} union {?edu dbp:numberOfStudents ?nr} .
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } order by desc (?nr) limit 300'
+                          FILTER ( lang(?label) = "en" )
+                } limit 300'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -304,13 +343,21 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val where {
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, count(?film) as ?val where {
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        ?film dbo:director ?illustrator.
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } order by desc(count(?film)) limit 200'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:Film ;
+                          dbo:director ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        ?film dbo:director ?illustrator.
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } limit 200'
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -327,13 +374,21 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val where {
-                        ?illustrator rdf:type foaf:Person.
+//                'select ?illustrator, ?label, ?val, count(?film) as ?val2 where {
+//                        ?illustrator rdf:type foaf:Person.
+//                        ?illustrator rdfs:label ?label.
+//                        ?film dbo:starring ?illustrator.
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } order by desc(count(?film)) limit 300'
+
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:Film ;
+                          dbo:starring ?illustrator.
                         ?illustrator rdfs:label ?label.
-                        ?film dbo:starring ?illustrator.
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } limit 300'
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -350,14 +405,21 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select distinct ?illustrator, ?label, ?val where {
-                        ?illustrator rdf:type dbo:MusicalArtist.
+//                'select distinct ?illustrator, ?label, ?val where {
+//                        ?illustrator rdf:type dbo:MusicalArtist.
+//                        ?illustrator rdfs:label ?label.
+//                        {?film dbo:musicComposer ?illustrator} union {?film dbp:music ?illustrator}
+//                        union {?film dbp:musicComposer ?illustrator} union {?film dbo:music ?illustrator}.
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                    } limit 400'
+                'SELECT distinct ?illustrator, ?label
+                WHERE {
+                     ?movie a dbo:Film .
+                          {?movie dbo:music ?illustrator} union {?movie dbo:musicComposer ?illustrator}.
                         ?illustrator rdfs:label ?label.
-                        {?film dbo:musicComposer ?illustrator} union {?film dbp:music ?illustrator}
-                        union {?film dbp:musicComposer ?illustrator} union {?film dbo:music ?illustrator}.
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                    } limit 400'
+                          FILTER ( lang(?label) = "en" )
+                } limit 1000'
             );
             $illustrators = [];
             foreach($result as $row){
@@ -374,14 +436,21 @@ class DataController extends Controller
             (new RdfController())->initRdf();
             $sparql = new \App\Http\EasyRdf\Sparql\EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
             $result = $sparql->query(
-                'select ?place, ?label, count(?population) where {
-                        ?place rdf:type dbo:Place.
-                        ?place rdfs:label ?label.
-                        ?place dbo:populationTotal ?population
-                      filter regex(str(?label),"'.$name.'","i")
-                      FILTER ( lang(?label) = "en" )
-                      FILTER ( ?place != <http://dbpedia.org/resource/List_of_countries_and_capitals_with_currency_and_language> )
-                    } order by desc(?population) limit 300'
+//                'select ?place, ?label, count(?population) where {
+//                        ?place rdf:type dbo:Place.
+//                        ?place rdfs:label ?label.
+//                        ?place dbo:populationTotal ?population
+//                      filter regex(str(?label),"'.$name.'","i")
+//                      FILTER ( lang(?label) = "en" )
+//                      FILTER ( ?place != <http://dbpedia.org/resource/List_of_countries_and_capitals_with_currency_and_language> )
+//                    } order by desc(?population) limit 300'
+
+                'SELECT distinct ?place, ?label
+                WHERE {
+                     ?place a dbo:Place ;
+                          rdfs:label ?label.
+                          FILTER ( lang(?label) = "en" )
+                } limit 3000'
             );
             $illustrators = [];
             foreach($result as $row){
