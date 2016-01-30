@@ -137,7 +137,7 @@
                     code /saved-items?item_type=[TYPE_OF_ITEM]
                     | ,  the user will get the list of all items. For lists, a call to /lists/[list_id] is required.
          
-          h2#chapter10 10. Results - limited display of results
+            h2#chapter10 10. Results - limited display of results
             p Results are displayed in Homepage, containing the name of the results and other information, according to the type of result.   
             p The constraints of the number of items displayed are:
             ul 
@@ -157,49 +157,21 @@
             span.strong People Data
             p For every person in the graph, including the owner, we mapped the following properties (from their corresponding ontologies):
             ul
-                li
-                
-                    |code foaf:name
-                    li
-                    
-                     |code  foaf:givenname
-                li
-                       |code foaf:family_name
-                li
-                       |code foaf:depiction
-                       |(profile picture)
-                li                       
-                       |foaf:homepage
-                       |(link to Google+ profile)
-                li
-                        |code foaf:page
-                        |(one or more pages on other social sites)
-                li       |code dbp:website
-                        |(one or more websites)
-                li     
-                        |code foaf:gender
-                li
-                        |code dbo:occupation
-                li
-                        |code dbo:school
-                li
-                      |code  foaf:based_near
-                      |with 
-                       
-                      |code geo:lat 
-                      |and 
-                       
-                      |code geo:long
-                      | attributes
-               li       
-                       |code dbo:country
-               li
-                       |code sch:description
-                       | “about me” section
-
-            p Data sources:
-            
-            ul
+                   li  foaf:name
+                   li   foaf:givenname
+                   li  foaf:family_name
+                   li   foaf:depiction(profile picture)
+                   li     foaf:homepage (link to Google+ profile)
+                   li   foaf:page (one or more pages on other social sites)
+                   li      dbp:website(one or more websites)
+                   li        foaf:gender
+                   li   dbo:occupation
+                   li   dbo:school
+                   li   foaf:based_near with code geo:lat and geo:long attributes
+                   li     dbo:country
+                   li   sch:description “about me” section
+           p Data sources: 
+           ul
                 li
                     a(href="https://plus.google.com/") https://plus.google.com/
                 li
@@ -211,7 +183,7 @@
                 li
                     a(href="https://schema.org/") http://schema.org/
                 li
-                        a(href="http://www.w3.org/2003/01/geo/wgs84_pos/")http://www.w3.org/2003/01/geo/wgs84_pos/
+                    a(href="http://www.w3.org/2003/01/geo/wgs84_pos/") http://www.w3.org/2003/01/geo/wgs84_pos/
             p For every person who provides a location in his/her profile, we use Geocoder to convert the textual information into semantic data. All people are identified by their own Google+ ids.  
             p 
                 span.strong Book Data
@@ -239,31 +211,26 @@
             p Once the graph is created, automatic recommendations can be generated. We implemented three types of recommendations:
             
             ul 
-                li 
-                    for books
-                li 
-                    for films 
-                li 
-                    for educational institutions (such as schools, colleges,  libraries)
-                    for educational institutions (such as schools, colleges,  libraries)
-            p span.strong Book Recommendations
-            p The app randomly retrieves a list of at most 5 books from the graph. Next, it attempts to match them to the corresponding entities from DBpedia, as described above. For each entity, a list of at most 10 books is retrieved. The books must have either the same author, publisher or literary genre. The diversity of recommendations is assured when the user has lots of books in his Google library, because they start from randomly chosen books. Partial results will be send in case the query fails for a book or is timed out (see example above). 
+                li for books
+                li for films 
+                li  for educational institutions, such as schools, colleges, libraries.
+           p 
+                span.strong Book Recommendations
+           p The app randomly retrieves a list of at most 5 books from the graph. Next, it attempts to match them to the corresponding entities from DBpedia, as described above. For each entity, a list of at most 10 books is retrieved. The books must have either the same author, publisher or literary genre. The diversity of recommendations is assured when the user has lots of books in his Google library, because they start from randomly chosen books. Partial results will be send in case the query fails for a book or is timed out (see example above). 
             
             p span.strong Film Recommendations
             
             p Because Google+ does not provide any information about user’s favorite movies (everything is a “page”), we thought that it would be interesting to give movie recommendations starting from favorite books. The process is quite similar: 5 books randomly picked from graph. They are mapped to entities and an URI is returned. Next, we query DBpedia for objects of type dbo:Film which match at least one of the following criteria:
             
                 ul
-                    li 
-                        it is disambiguated by the same resource as the book:
+                    li  it is disambiguated by the same resource as the book:
             p 
-                 img(src="images/db1.png" alt="sor")
+                 img(src="images/dbo1.png" alt="sor")
              
                 ul 
-                    li 
-                        it is based on the book
+                    li  it is based on the book
             p 
-                img(src="images/db2.png" alt="sor")
+                img(src="images/dbo2.png" alt="sor")
                 
             p Now we get a list of movies inspired by the books we read, if any. The next step is to search even more films the user might like. Given the list, we look for movies that have either the same director, same genre or one mutual actor.
             p All recommendations, as well as searches, return a lot of information, including external references for each object.
@@ -273,18 +240,12 @@
             p We implemented searches for 6 types of objects:
             
                 ul
-                    li 
-                        People
-                    li 
-                        Places (gardens, historical monuments etc)
-                    li 
-                        Educational Institutions
-                    li  
-                        Books
-                    li 
-                        films
-                    li 
-                        Events
+                    li People
+                    li  Places (gardens, historical monuments etc)
+                    li  Educational Institutions
+                    li   Books
+                    li  films
+                    li  Events
                         
            p This module can be used without social profile connection. All searches are strictly semantic, which means that for almost every criteria we use URIs. A list of resources is initially retrieved using ajax requests.
                 
@@ -297,84 +258,54 @@
             p 
                 span.strong People
                 ul 
-                    li
-                        name
-                    li
-                        profession(URI)
-                    li
-                        country (URI)    
+                    li name
+                    li profession(URI)
+                    li country (URI)    
             p 
              span.strong Places
               ul 
-                     li
-                        name
-                    li
-                        type(URI)
-                    li
-                         country(URI)   
+                    li name
+                    li type(URI)
+                    li country(URI)   
             p     
              span.strong Event
               ul 
-                    li
-                        name
-                    li
-                        type(URI)
-                    li
-                        location(URI)
-                     li
-                        start date(mim/max values, date)
-                     li
-                        end_date(mim/max values, date)
+                    li  name
+                    li type(URI)
+                    li  location(URI)
+                     li start date(mim/max values, date)
+                     li end_date(mim/max values, date)
             p 
              span.strong Books
               ul 
-                    li
-                        title
-                    li 
-                        author(URI)
-                    li 
-                        litracy genre(URI)
-                    li
-                        number of pages(min/max values, numeric)
+                    li  title
+                    li  author(URI)
+                    li  litracy genre(URI)
+                    li  number of pages(min/max values, numeric)
                     li number of volumes(numeric)
                     
             p 
              span.strong Films
               ul 
-                    li
-                        title
-                    li 
-                        director(URI)
-                    li
-                        actor(URI)
-                    li
-                        musical artist (URI)
-                    li
-                        original language(URI)
-                    li 
-                        country(URI)
-                    li      
-                        movie genre(URI)
+                    li  title
+                    li  director(URI)
+                    li  actor(URI)
+                    li  musical artist (URI)
+                    li original language(URI)
+                    li  country(URI)
+                    li   movie genre(URI)
                     
             p 
              span.strong Educational Institutes
               ul 
-                    li
-                        name
-                    li
-                        type(URI)
-                    li 
-                        location(URI)
-                    li
-                        country(URI)
-                    li
-                        principal(URI)
-                    li 
-                        rector(URI)
-                    li
-                        number of academic staff(min/max values, numeric)
-                    li 
-                        number of students ( min/max values, numeric)
+                    li  name
+                    li  type(URI)
+                    li  location(URI)
+                    li country(URI)
+                    li  principal(URI)
+                    li rector(URI)
+                    li  number of academic staff(min/max values, numeric)
+                    li number of students ( min/max values, numeric)
                     
                         
             p e.g. case study: results for films name France
@@ -385,37 +316,26 @@
             
             h2#chapter14 14. Resources (tools, frameworks, scripting languages) used for on creation of SOR
             ul
-                li
-                    Laravel framework – PHP web application framework that follows model-view –controller application pattern.
-                li
-                    PHP (Hypertext preprocessor) – a server scripting language 
-                li
-                    HTML (Hypertext markup language) - is a language set for markup tags.
-                li
-                    CSS (Cascade Style Sheets) – styling added to HTML elements
+                li  Laravel framework – PHP web application framework that follows model-view –controller application pattern.
+                li PHP (Hypertext preprocessor) – a server scripting language 
+                li HTML (Hypertext markup language) - is a language set for markup tags.
+                li CSS (Cascade Style Sheets) – styling added to HTML elements
                 
-                li
-                    Jade – is a language for writing HTML
+                li Jade – is a language for writing HTML
                 
-                li
-                    Grunt – tool that runs jade files and creates HTML files. 
+                li Grunt – tool that runs jade files and creates HTML files. 
                 
-                li
-                    Ajax (Asynchronous JavaScript and XML)- helps create asynchronous web application( the content is changed dynamically, without the need to change the entire page).
-                li
-                    JsonLD implementation – helps JSON to interrogate data at web-scale (LD- linked data)
-                li
-                    Bootstrap – a front end framework used in creating HTML and CSS.
-                li
-                    Sparql- is used as a systematic query language for RDF file.
-                 li
-                    Heroku cloud application platform “based on managed container system”.
+                li Ajax (Asynchronous JavaScript and XML)- helps create asynchronous web application( the content is changed dynamically, without the need to change the entire page).
+                li JsonLD implementation – helps JSON to interrogate data at web-scale (LD- linked data)
+                li  Bootstrap – a front end framework used in creating HTML and CSS.
+                li  Sparql- is used as a systematic query language for RDF file.
+                li  Heroku cloud application platform “based on managed container system”.
            h2#chapter15 15. Conclusion
-            p Social Recommender is a web application that user social networks (Google) and other external resources to recommend the user certain people, events, places, books and films.
+           p Social Recommender is a web application that user social networks (Google) and other external resources to recommend the user certain people, events, places, books and films.
             
             h2#chapter16 16. Bibliography
             
-              p SOR:
+            p SOR:
                 a(href="http://social-recommender.herokuapp.com/") http://social-recommender.herokuapp.com/
             p DBpedia: 
                 a(href="http://wiki.dbpedia.org/ http://wiki.dbpedia.org/") http://wiki.dbpedia.org/ http://wiki.dbpedia.org/    
@@ -433,7 +353,7 @@
             p Blog:  
                 a(href="https://socialrecommender.wordpress.com/about/") https://socialrecommender.wordpress.com/about/
             p Web project page:
-                a(href="http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html") http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html 
+            a(href="http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html") http://profs.info.uaic.ro/~busaco/teach/courses/wade/web-projects.html 
             
             
             

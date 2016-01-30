@@ -19,25 +19,14 @@ $(document).on('ready', function () {
         musicalArtists = {},
         addToRemoveFromList = function() {
             $(".addToList").click(function() {
+                var thisElement = this;
                 jQuery.ajax({
                     method: 'post',
                     url: "result/favorite",
                     dataType: "json",
-                    data: $(this).attr("data"),
+                    data: {data: $(thisElement).attr("data")},
                     success: function (data) {
-                    },
-                    error: function(data) {
-                        console.log("error");
-                    }
-                });
-            });
-            $(".removeResult").click(function() {
-                jQuery.ajax({
-                    method: 'post',
-                    url: "result/remove",
-                    dataType: "json",
-                    data: $(this).attr("data"),
-                    success: function (data) {
+                        $(thisElement).remove();
                     },
                     error: function(data) {
                         console.log("error");
@@ -324,8 +313,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -417,8 +405,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -497,8 +484,7 @@ $(document).on('ready', function () {
                             result += '</span></p>';
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -563,8 +549,7 @@ $(document).on('ready', function () {
                             "<p>Profession: <span class='profession'>" + val.profession.name + "</span></p>" +
                             "<p>Country: <span class='profession'>" + val.country.name + "</span></p>" +
                             "<a target='_blank' href='" + val.link + "'> Original Link</a>" +
-                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>" +
-                            "<button type='button' class='removeResult' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-minus'></span></button></div></div>";
+                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>";
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -652,8 +637,7 @@ $(document).on('ready', function () {
                             }
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';;
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
@@ -717,8 +701,7 @@ $(document).on('ready', function () {
                             });
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
                     addToRemoveFromList();
