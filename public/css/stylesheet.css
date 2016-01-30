@@ -25,6 +25,12 @@ body {
   font-size: 30px;
 }
 
+.recomloading {
+  position: absolute;
+  top: -127px;
+  left: 270px;
+}
+
 .loader {
   width: 100%;
 }

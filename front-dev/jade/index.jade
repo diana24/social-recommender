@@ -7,12 +7,13 @@ include snippets/user-header.jade
             .results
                 p.resultHeader Recommandations
                 .row
-                    .btn-group(role="group",aria-label="...")
-                        a.btn.btn-default#films(href="javascript:void(0)") Recommend Films
-                        a.btn.btn-default#books(href="javascript:void(0)") Recommend Books
-                        a.btn.btn-default#edu(href="javascript:void(0)") Recommend Educational Institutes
-                        a.btn.btn-default#events(href="javascript:void(0)") Recommend Events
-                    </div>
+                    .col-md-12
+                        .btn-group(style="z-index: 1" role="group",aria-label="...")
+                            a.btn.btn-default#film(href="javascript:void(0)") Recommend Films
+                            a.btn.btn-default#book(href="javascript:void(0)") Recommend Books
+                            a.btn.btn-default#edu(href="javascript:void(0)") Recommend Educational Institutes
+                            a.btn.btn-default#event(href="javascript:void(0)") Recommend Events
+                        img.recomloading.hidden(src="images/loading.gif" alt="loading..")
                 .row.allResults
 {!! HTML::script('js/recommandations.js') !!}
 include snippets/footer.jade

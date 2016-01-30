@@ -42,7 +42,6 @@ $(document).on('ready', function () {
                         $(form).removeClass("hidden");
                         
                     }
-                    return "<p class='log info'>Added autocomplete " + description + "</p>";
                 },
                 error: function () {
                     readyCheck += 1;
