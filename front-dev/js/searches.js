@@ -94,54 +94,102 @@ $(document).on('ready', function () {
         });
     });
     $("#personInitialize").click(function() {
-        $("#personInitialize").unbind().remove();
-        $("#personPanel .initializeWrapper").removeClass("hidden");
-        readyCount += 2;
-        getData("/getProfessions", professions, ["personProfession"], "professions", false, "#personPanel .initializeWrapper", "#personSearchForm"); 
-        getData("/getCountries", countries, ["personCountry"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#personInitialize").unbind().remove();
+            $("#personPanel .initializeWrapper").removeClass("hidden");
+            readyCount += 2;
+            getData("/getProfessions", professions, ["personProfession"], "professions", false, "#personPanel .initializeWrapper", "#personSearchForm"); 
+            getData("/getCountries", countries, ["personCountry"], "countries", false, "#personPanel .initializeWrapper", "#personSearchForm");
+        }
     });
     $("#eventInitialize").click(function() {
-        $("#eventInitialize").unbind().remove();
-        $("#eventPanel .initializeWrapper").removeClass("hidden");
-        readyCount += 2;
-        getData("/getPlaces", locations, ["locationUri"], "locations", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
-        getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#eventInitialize").unbind().remove();
+            $("#eventPanel .initializeWrapper").removeClass("hidden");
+            readyCount += 2;
+            getData("/getPlaces", locations, ["locationUri"], "locations", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
+            getData("/getEventTypes", eventTypes, ["eventTypeUri"], "event types", true, "#eventPanel .initializeWrapper", "#eventSearchForm");
+        }
     });
     $("#bookInitialize").click(function() {
-        $("#bookInitialize").unbind().remove();
-        $("#bookPanel .initializeWrapper").removeClass("hidden");
-        readyCount += 3;
-        getData("/getAuthors", authors, ["authorUri"], "authors", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
-        getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
-        getData("/getLiteraryGenres", literaryGenres, ["literaryGenreUri"], "literary genres", false, "#bookPanel .initializeWrapper", "#bookSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#bookInitialize").unbind().remove();
+            $("#bookPanel .initializeWrapper").removeClass("hidden");
+            readyCount += 3;
+            getData("/getAuthors", authors, ["authorUri"], "authors", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
+            getData("/getIllustrators", illustrators, ["illustratorUri"], "illustrators", true, "#bookPanel .initializeWrapper", "#bookSearchForm");
+            getData("/getLiteraryGenres", literaryGenres, ["literaryGenreUri"], "literary genres", false, "#bookPanel .initializeWrapper", "#bookSearchForm");
+        }
     });
     $("#placeInitialize").click(function() {
-        $("#placeInitialize").unbind().remove();
-        $("#placePanel .initializeWrapper").removeClass("hidden");
-        readyCount += 2;
-        getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false, "#placePanel .initializeWrapper", "#placeSearchForm");
-        getData("/getCountries", countries, ["countryUri"], "countries", false, "#placePanel .initializeWrapper", "#placeSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#placeInitialize").unbind().remove();
+            $("#placePanel .initializeWrapper").removeClass("hidden");
+            readyCount += 2;
+            getData("/getPlaceTypes", placeTypes, ["placeTypeUri"], "place types", false, "#placePanel .initializeWrapper", "#placeSearchForm");
+            getData("/getCountries", countries, ["countryUri"], "countries", false, "#placePanel .initializeWrapper", "#placeSearchForm");
+        }
     });
     $("#instituteInitialize").click(function() {
-        $("#instituteInitialize").unbind().remove();
-        $("#institutePanel .initializeWrapper").removeClass("hidden");
-        readyCount += 5;
-        getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
-        getData("/getPlaces", locations, ["locationUri"], "locations", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
-        getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
-        getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
-        getData("/getRectors", rectors, ["rectorUri"], "rectors", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#instituteInitialize").unbind().remove();
+            $("#institutePanel .initializeWrapper").removeClass("hidden");
+            readyCount += 5;
+            getData("/getEduInstitutionTypes", institutionTypes, ["eduTypeUri"], "educational institution types", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+            getData("/getPlaces", locations, ["locationUri"], "locations", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+            getData("/getCountries", countries, ["countryUri"], "countries", false, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+            getData("/getPrincipals", principals, ["principalUri"], "principals", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+            getData("/getRectors", rectors, ["rectorUri"], "rectors", true, "#institutePanel .initializeWrapper", "#instituteSearchForm");
+        }
     });
     $("#filmInitialize").click(function() {
-        $("#filmInitialize").unbind().remove();
-        $("#filmPanel .initializeWrapper").removeClass("hidden");
-        readyCount += 6;
-        getData("/getDirectors",directors, ["directorUri"], "directors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
-        getData("/getActors",actors, ["actorUri"], "actors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
-        getData("/getCountries", countries, ["countryUri"], "countries", false, "#filmPanel .initializeWrapper", "#filmSearchForm");
-        getData("/getMovieGenres", movieGenres, ["movieGenreUri"], "movieGenres", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
-        getData("/getLanguages", languages, ["originalLanguageUri"], "languages", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
-        getData("/getMusicalArtists", musicalArtists, ["musicalArtistUri"], "musicalArtists", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        var stop = false;
+        $.each($(".initializeWrapper"), function(index,value) { 
+            if (!$(value).hasClass("hidden")) {
+                stop = true;
+            }
+        });
+        if(!stop) {
+            $("#filmInitialize").unbind().remove();
+            $("#filmPanel .initializeWrapper").removeClass("hidden");
+            readyCount += 6;
+            getData("/getDirectors",directors, ["directorUri"], "directors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+            getData("/getActors",actors, ["actorUri"], "actors", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+            getData("/getCountries", countries, ["countryUri"], "countries", false, "#filmPanel .initializeWrapper", "#filmSearchForm");
+            getData("/getMovieGenres", movieGenres, ["movieGenreUri"], "movieGenres", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+            getData("/getLanguages", languages, ["originalLanguageUri"], "languages", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+            getData("/getMusicalArtists", musicalArtists, ["musicalArtistUri"], "musicalArtists", true, "#filmPanel .initializeWrapper", "#filmSearchForm");
+        }
     });
     
     $("#filmSearchForm .btn").click(function (e) {
