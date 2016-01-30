@@ -17,23 +17,6 @@ $(document).on('ready', function () {
         movieGenres = {},
         languages = {},
         musicalArtists = {},
-        addToRemoveFromList = function() {
-            $(".addToList").click(function() {
-                var thisElement = this;
-                jQuery.ajax({
-                    method: 'post',
-                    url: "result/favorite",
-                    dataType: "json",
-                    data: {data: $(thisElement).attr("data")},
-                    success: function (data) {
-                        $(thisElement).remove();
-                    },
-                    error: function(data) {
-                        console.log("error");
-                    }
-                });
-            });
-        },
         getData= function(url, containerObject, fields, description, data, hideWrapper, form) {
             jQuery.ajax({
                 method: 'get',
@@ -312,11 +295,10 @@ $(document).on('ready', function () {
                             });
                             result += '</span></p>';
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -404,11 +386,10 @@ $(document).on('ready', function () {
                             });
                             result += '</span></p>';
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -483,11 +464,10 @@ $(document).on('ready', function () {
                             });
                             result += '</span></p>';
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
+                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -548,11 +528,10 @@ $(document).on('ready', function () {
                             "<p>Name: <span class='name'>" + val.name + "</span></p>" +
                             "<p>Profession: <span class='profession'>" + val.profession.name + "</span></p>" +
                             "<p>Country: <span class='profession'>" + val.country.name + "</span></p>" +
-                            "<a target='_blank' href='" + val.link + "'> Original Link</a>" +
-                            "<button type='button' class='addToList' data='" + JSON.stringify(saveData) + "'><span class='glyphicon glyphicon-plus'></span></button>";
+                            "<a target='_blank' href='" + val.link + "'> Original Link</a>";
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -636,11 +615,9 @@ $(document).on('ready', function () {
                                 result += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
                             }
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';;
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");
@@ -700,11 +677,9 @@ $(document).on('ready', function () {
                                 result += '<p>Country: ' + val2 + '</p>';
                             });
                         }
-                        result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         $(".allResults").append(result);
                     });
-                    addToRemoveFromList();
+                    
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");

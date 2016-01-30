@@ -2,28 +2,7 @@ $(document).ready(function() {
     var bookRecommendations="",
         eventRecommendations="",
         filmRecommendations="",
-        eduRecommendations="",
-        addToRemoveFromList = function() {
-            $(".addToList").click(function() {
-                var thisElement = this;
-                jQuery.ajax({
-                    method: 'post',
-                    url: "result/favorite",
-                    dataType: "json",
-                    data: {data: $(thisElement).attr("data")},
-                    success: function (data) {
-                        $(thisElement).remove();
-                        bookRecommendations="";
-                        eventRecommendations="";
-                        filmRecommendations="";
-                        eduRecommendations="";
-                    },
-                    error: function(data) {
-                        console.log("error");
-                    }
-                });
-            });
-        };
+        eduRecommendations="";
     $("#book").click(function() {
         if($(".recomloading").hasClass("hidden")) {
             $(".recomloading").removeClass("hidden");
@@ -57,8 +36,6 @@ $(document).ready(function() {
                                     bookRecommendations += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
                                 }
                             }
-                            bookRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         });
                         $(".allResults").html(bookRecommendations);
                         addToRemoveFromList();
@@ -99,8 +76,6 @@ $(document).ready(function() {
                                 });
                                 eventRecommendations += '</span></p>';
                             }
-                            eventRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         });
                         $(".allResults").html(eventRecommendations);
                         addToRemoveFromList();
@@ -162,8 +137,6 @@ $(document).ready(function() {
                                 });
                                 filmRecommendations += '</span></p>';
                             }
-                            filmRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         });
                         $(".allResults").html(filmRecommendations);
                         addToRemoveFromList();
@@ -204,8 +177,6 @@ $(document).ready(function() {
                                 });
                                 eduRecommendations += '</span></p>';
                             }
-                            eduRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>';
                         });
                         $(".allResults").html(eduRecommendations);
                         addToRemoveFromList();
