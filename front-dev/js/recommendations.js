@@ -5,12 +5,18 @@ $(document).ready(function() {
         eduRecommendations="",
         addToRemoveFromList = function() {
             $(".addToList").click(function() {
+                var thisElement = this;
                 jQuery.ajax({
                     method: 'post',
                     url: "result/favorite",
                     dataType: "json",
-                    data: $(this).attr("data"),
+                    data: $(thisElement).attr("data"),
                     success: function (data) {
+                        $(thisElement).remove();
+                        bookRecommendations="";
+                        eventRecommendations="";
+                        filmRecommendations="";
+                        eduRecommendations="";
                     },
                     error: function(data) {
                         console.log("error");
@@ -18,19 +24,25 @@ $(document).ready(function() {
                 });
             });
             $(".removeResult").click(function() {
+                var thisElement = this;
                 jQuery.ajax({
                     method: 'post',
                     url: "result/remove",
                     dataType: "json",
-                    data: $(this).attr("data"),
+                    data: $(thisElement).attr("data"),
                     success: function (data) {
+                        $(thisElement).parent(".resultWrapper").parent(".col-lg-6.col-md-6.col-sm-12").remove();
+                        bookRecommendations="";
+                        eventRecommendations="";
+                        filmRecommendations="";
+                        eduRecommendations="";
                     },
                     error: function(data) {
                         console.log("error");
                     }
                 });
             });
-        },;
+        };
     $("#book").click(function() {
         if($(".recomloading").hasClass("hidden")) {
             $(".recomloading").removeClass("hidden");

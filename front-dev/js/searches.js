@@ -19,12 +19,14 @@ $(document).on('ready', function () {
         musicalArtists = {},
         addToRemoveFromList = function() {
             $(".addToList").click(function() {
+                var thisElement = this;
                 jQuery.ajax({
                     method: 'post',
                     url: "result/favorite",
                     dataType: "json",
-                    data: $(this).attr("data"),
+                    data: $(thisElement).attr("data"),
                     success: function (data) {
+                        $(thisElement).remove();
                     },
                     error: function(data) {
                         console.log("error");
@@ -32,12 +34,14 @@ $(document).on('ready', function () {
                 });
             });
             $(".removeResult").click(function() {
+                var thisElement = this;
                 jQuery.ajax({
                     method: 'post',
                     url: "result/remove",
                     dataType: "json",
-                    data: $(this).attr("data"),
+                    data: $(thisElement).attr("data"),
                     success: function (data) {
+                        $(thisElement).parent(".resultWrapper").parent(".col-lg-6.col-md-6.col-sm-12").remove();
                     },
                     error: function(data) {
                         console.log("error");
