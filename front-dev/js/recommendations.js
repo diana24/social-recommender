@@ -42,7 +42,7 @@ $(document).ready(function() {
                         if(bookRecommendations.length>0) {
                             $(".allResults").html(bookRecommendations);
                         } else {
-                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                            $(".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>");
                         }
                     },
                     error: function () {
@@ -87,7 +87,7 @@ $(document).ready(function() {
                         if(eventRecommendations.length>0) {
                             $(".allResults").html(eventRecommendations);
                         } else {
-                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                            $(".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>");
                         }
                     },
                     error: function () {
@@ -153,7 +153,7 @@ $(document).ready(function() {
                         if(filmRecommendations.length>0) {
                             $(".allResults").html(filmRecommendations);
                         } else {
-                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                            $(".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>");
                         }
                     },
                     error: function () {
@@ -198,7 +198,7 @@ $(document).ready(function() {
                         if(eduRecommendations.length>0) {
                             $(".allResults").html(eduRecommendations);
                         } else {
-                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                            $(".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>");
                         }
                     },
                     error: function () {
