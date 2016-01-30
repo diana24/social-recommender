@@ -43,11 +43,6 @@ include snippets/guest-header.jade
                     .col-md-12
                         {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'password..']) !!}
                     .col-md-12.text-right
-                        .checkbox
-                            input(type="checkbox", value="") 
-                            | Remember me
-                    .col-md-12.text-right
-                        <a href=<?php echo url('forgottenPassword') ?>> Forgotten password?  </a>
                         {!! Form::submit('Login',  ['class' => 'btn']) !!}
                 {!! Form::close() !!}
 {!! HTML::script('js/loginFormCheck.js') !!}
