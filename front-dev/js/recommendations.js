@@ -167,7 +167,7 @@ $(document).ready(function() {
                     dataType: "json",
                     success: function (data) {
                         $.each(data, function (key, val) {
-                            eduRecommendations += '<div class="col-lg-6 col-md-6 col-sm-12">' +
+                            eduRecommendations += '<div class="col-lg-4 col-md-6 col-sm-12">' +
                                 '<div class="resultWrapper">' +
                                 '<p>Type: <span class="type">Institution</span></p>' +
                                 '<p>Name: <span class="name">' + val.name + '</span></p>';
