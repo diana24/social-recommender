@@ -170,7 +170,7 @@ $(document).ready(function() {
                             eduRecommendations += '<div class="col-lg-6 col-md-6 col-sm-12">' +
                                 '<div class="resultWrapper">' +
                                 '<p>Type: <span class="type">Institution</span></p>' +
-                                '<p>Name: <span class="name">' + val.title + '</span></p>';
+                                '<p>Name: <span class="name">' + val.name + '</span></p>';
                             if(val.numberOfStudents) {
                                 eduRecommendations += '<p>Students: <span>' + val.numberOfStudents + '</span></p>';
                             }
