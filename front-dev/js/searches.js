@@ -24,7 +24,7 @@ $(document).on('ready', function () {
                     method: 'post',
                     url: "result/favorite",
                     dataType: "json",
-                    data: $(thisElement).attr("data"),
+                    data: {data: $(thisElement).attr("data")},
                     success: function (data) {
                         $(thisElement).remove();
                     },
