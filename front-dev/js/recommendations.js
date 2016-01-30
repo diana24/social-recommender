@@ -36,7 +36,7 @@ $(document).ready(function() {
                                     bookRecommendations += '<p>Year: <span class="releaseDate">' + val.releaseDate + '</span></p>';
                                 }
                             }
-                            bookRecomandations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
+                            bookRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             bookRecommendations +="</div></div>";
                         });
                         $(".allResults").html(bookRecommendations);
