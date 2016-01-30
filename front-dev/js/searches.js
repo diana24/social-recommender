@@ -273,6 +273,7 @@ $(document).on('ready', function () {
                         result,
                         comaCheck,
                         limitCheck,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -282,7 +283,7 @@ $(document).on('ready', function () {
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
                         saveData = {
-                            type: 'Person',
+                            type: 'Film',
                         };
                         saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
@@ -386,6 +387,7 @@ $(document).on('ready', function () {
                         title,
                         result,
                         comaCheck,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -395,7 +397,7 @@ $(document).on('ready', function () {
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
                         saveData = {
-                            type: 'Person',
+                            type: 'Institution',
                         };
                         saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
@@ -468,6 +470,7 @@ $(document).on('ready', function () {
                     var count = 0,
                         title,
                         result,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -477,7 +480,7 @@ $(document).on('ready', function () {
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
                         saveData = {
-                            type: 'Person',
+                            type: 'Event',
                         };
                         saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
@@ -614,13 +617,10 @@ $(document).on('ready', function () {
                 dataType: "json",
                 data: sendingData,
                 success: function (data) {
-                    saveData = {
-                        type: 'Person',
-                    };
-                    saveData[key] = val;
                     var count = 0,
                         title,
                         result,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -629,6 +629,10 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
+                        saveData = {
+                            type: 'Book',
+                        };
+                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Book</span></p>' +
@@ -690,6 +694,7 @@ $(document).on('ready', function () {
                     var count = 0,
                         title,
                         result,
+                        saveData,
                         prop;
                     for (prop in data) {
                         if (data.hasOwnProperty(prop)) {
@@ -698,6 +703,10 @@ $(document).on('ready', function () {
                     }
                     $("p.resultHeader").html("There are " + count + " results based on your latest query.");
                     $.each(data, function (key, val) {
+                        saveData = {
+                            type: 'Place',
+                        };
+                        saveData[key] = val;
                         result = '<div class="col-lg-6 col-md-6 col-sm-12">' +
                             '<div class="resultWrapper">' +
                             '<p>Type: <span class="type">Place</span></p>' +
@@ -708,8 +717,8 @@ $(document).on('ready', function () {
                             });
                         }
                         result += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                            '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                            '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                            '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
                 },
