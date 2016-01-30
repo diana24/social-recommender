@@ -39,8 +39,11 @@ $(document).ready(function() {
                             bookRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             bookRecommendations +="</div></div>";
                         });
-                        $(".allResults").html(bookRecommendations);
-                        
+                        if(bookRecommendations.length>0) {
+                            $(".allResults").html(bookRecommendations);
+                        } else {
+                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                        }
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -81,8 +84,11 @@ $(document).ready(function() {
                             eventRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             eventRecommendations +="</div></div>";
                         });
-                        $(".allResults").html(eventRecommendations);
-                        
+                        if(eventRecommendations.length>0) {
+                            $(".allResults").html(eventRecommendations);
+                        } else {
+                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                        }
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -144,8 +150,11 @@ $(document).ready(function() {
                             filmRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             filmRecommendations += '</div></div>';
                         });
-                        $(".allResults").html(filmRecommendations);
-                        
+                        if(filmRecommendations.length>0) {
+                            $(".allResults").html(filmRecommendations);
+                        } else {
+                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                        }
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -186,8 +195,11 @@ $(document).ready(function() {
                             eduRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>';
                             eduRecommendations += "</div></div>";
                         });
-                        $(".allResults").html(eduRecommendations);
-                        
+                        if(eduRecommendations.length>0) {
+                            $(".allResults").html(eduRecommendations);
+                        } else {
+                            $".allResults").html("<div class='col-md-12'>Sorry, we can't offer you any recommendations based on your current prefferences</p></div>"
+                        }
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
