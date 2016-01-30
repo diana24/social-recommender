@@ -721,6 +721,7 @@ $(document).on('ready', function () {
                             '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         $(".allResults").append(result);
                     });
+                    addToRemoveFromList();
                 },
                 error: function (data) {
                     $("p.resultHeader").html("Something wrong happened. Please try again.");

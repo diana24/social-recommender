@@ -2,13 +2,42 @@ $(document).ready(function() {
     var bookRecommendations="",
         eventRecommendations="",
         filmRecommendations="",
-        eduRecommendations="";
+        eduRecommendations="",
+        addToRemoveFromList = function() {
+            $(".addToList").click(function() {
+                jQuery.ajax({
+                    method: 'post',
+                    url: "result/favorite",
+                    dataType: "json",
+                    data: $(this).attr("data"),
+                    success: function (data) {
+                    },
+                    error: function(data) {
+                        console.log("error");
+                    }
+                });
+            });
+            $(".removeResult").click(function() {
+                jQuery.ajax({
+                    method: 'post',
+                    url: "result/remove",
+                    dataType: "json",
+                    data: $(this).attr("data"),
+                    success: function (data) {
+                    },
+                    error: function(data) {
+                        console.log("error");
+                    }
+                });
+            });
+        },;
     $("#book").click(function() {
         if($(".recomloading").hasClass("hidden")) {
             $(".recomloading").removeClass("hidden");
             if(bookRecommendations !== "") {
                 $(".recomloading").addClass("hidden");
                 $(".allResults").html(bookRecommendations);
+                addToRemoveFromList();
             } else {
                 jQuery.ajax({
                     method: 'get',
@@ -36,10 +65,11 @@ $(document).ready(function() {
                                 }
                             }
                             bookRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         });
                         $(".allResults").html(bookRecommendations);
+                        addToRemoveFromList();
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -78,10 +108,11 @@ $(document).ready(function() {
                                 eventRecommendations += '</span></p>';
                             }
                             eventRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         });
                         $(".allResults").html(eventRecommendations);
+                        addToRemoveFromList();
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -141,10 +172,11 @@ $(document).ready(function() {
                                 filmRecommendations += '</span></p>';
                             }
                             filmRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';    
+                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         });
                         $(".allResults").html(filmRecommendations);
+                        addToRemoveFromList();
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
@@ -166,6 +198,7 @@ $(document).ready(function() {
                     url: "recommendations/edu",
                     dataType: "json",
                     success: function (data) {
+                        $(".recomloading").addClass("hidden");
                         $.each(data, function (key, val) {
                             eduRecommendations += '<div class="col-lg-4 col-md-6 col-sm-12">' +
                                 '<div class="resultWrapper">' +
@@ -182,11 +215,11 @@ $(document).ready(function() {
                                 eduRecommendations += '</span></p>';
                             }
                             eduRecommendations += '<a target="_blank" href="' + val.link + '"> Original Link</a>' +
-                                '<button type="button" class="addToList"><span class="glyphicon glyphicon-plus"></span></button>' +
-                                '<button type="button" class="removeResult"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
+                                '<button type="button" class="addToList" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-plus"></span></button>' +
+                            '<button type="button" class="removeResult" data="' + JSON.stringify(saveData) + '"><span class="glyphicon glyphicon-minus"></span></button></div></div>';
                         });
                         $(".allResults").html(eduRecommendations);
-                        $(".recomloading").addClass("hidden");
+                        addToRemoveFromList();
                     },
                     error: function () {
                         $(".recomloading").addClass("hidden");
