@@ -27,6 +27,9 @@ Route::get('login', 'FacebookAuthController@authenticate');
 Route::get('report', function(){
    return view('report');
 });
+Route::get('tehnical_report', function(){
+   return view('tehnical_report');
+});
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {

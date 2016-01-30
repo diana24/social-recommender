@@ -17,10 +17,10 @@ return [
         'https://www.googleapis.com/auth/books',
         'https://www.googleapis.com/auth/coordinate.readonly',
         'https://maps.google.com/maps/feeds/',
-        'https://www.google.com/calendar/feeds/',
+        'https://www.google.com/calendar/feeds/'
 //        'https://www.google.com/m8/feeds/',
     ],
     "redirectUri" => "http://localhost:8080/oauth2callback",
     "appName" => "SoR",
-    "refreshToken" => '1/SVJ8geBJh7Ob8jQSIxr1qUYpDifP9a9n4WO6XMQlEkI',
+    "refreshToken" => '1/SVJ8geBJh7Ob8jQSIxr1qUYpDifP9a9n4WO6XMQlEkI'
 ];
