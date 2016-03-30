@@ -7,4 +7,4 @@ Social Recommender (SoR) is a web application that recommends people, events and
 * Octavian Fermuş
 * Diana Mînzat
 
-#### Project page: [click here](http://students.info.uaic.ro/~diana.minzat/sor)
+#### Project page: [link](http://students.info.uaic.ro/~diana.minzat/sor)
